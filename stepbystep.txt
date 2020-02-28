@@ -1,0 +1,11 @@
+1.clone repo
+2.cd Backend/
+3. npm i
+4. npm start
+5. truy cap database: https://account.mongodb.com/account/login?signedOut=true (login with google)
+taikhoan: *********
+matkhau: *******
+5.1. vào collections
+5.2. vào collections users
+5.3. thêm 1 document: insert Document (thêm dai di)
+6. truy cap localhost:8000/user/find
