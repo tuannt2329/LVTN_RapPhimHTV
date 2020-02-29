@@ -1,22 +1,5 @@
 const bcrypt = require('bcrypt')
 
-const queryCallback = (response, responseName) => {
-  return (error, result) => {
-    if (error) {
-      response.send({ error })
-    } else {
-      if (responseName) {
-        const responseObject = {}
-        responseObject[responseName] = result
-
-        response.send(responseObject)
-      } else {
-        response.send(result)
-      }
-    }
-  }
-}
-
 const handler = ({ model }, _) => async (req, res) => {
   const { email, password } = req.body
   if (!email) {
@@ -37,7 +20,7 @@ const handler = ({ model }, _) => async (req, res) => {
     } catch (error) {
       res.send({ error })
     }
-    
+
     !res.headersSent && res.send({ error })
   }
 }

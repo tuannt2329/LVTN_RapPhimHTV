@@ -1,1 +1,2 @@
-module.exports = [require('./login')]
+module.exports = [require('./login'),
+                  require('./signup')]

@@ -1,11 +1,24 @@
 1.clone repo
+
 2.cd Backend/
+
 3. npm i
+
 4. npm start
+
 5. truy cap database: https://account.mongodb.com/account/login?signedOut=true (login with google)
-taikhoan: *********
-matkhau: *******
-5.1. vào collections
-5.2. vào collections users
-5.3. thêm 1 document: insert Document (thêm dai di)
-6. truy cap localhost:8000/user/find
+++taikhoan: *********
+++matkhau: *******
+--5.1. vào collections
+--5.2. vào collections users
+--5.3. thêm 1 document: insert Document (thêm dai di)
+
+***doi voi cac ham "get" dung browser
+6. truy cap localhost:8000/user/find (method get)
+
+***doi voi cac ham "post, put, delete" dung postman 
+7. truy cap localhost:8000/user/signup (method post) => dang ky tai khoan
+--(firstName, lastName, gender (khong bat buoc), email, password)
+
+8. truy cap localhost:8000/user/login (method post) => dang ky tai khoan
+--(email, password)
