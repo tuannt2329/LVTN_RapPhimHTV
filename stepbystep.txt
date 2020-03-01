@@ -20,5 +20,14 @@
 7. truy cap localhost:8000/user/signup (method post) => dang ky tai khoan
 --(firstName, lastName, gender (khong bat buoc), email, password)
 
-8. truy cap localhost:8000/user/login (method post) => dang ky tai khoan
+8. truy cap localhost:8000/user/login (method post) => dang nhap tai khoan
 --(email, password)
+
+9. quen mat khau 
+--9.1. truy cap http://localhost:8000/user/verification (method put) => lay ma xac nhan
+----(email)
+--9.2. truy cap http://localhost:8000/user/updateInfo (method put) => lay lai mat khau
+----(email, verificationCode, password(new password))
+
+10. truy cap http://localhost:8000/user/updateInfo (method put) => sua thong tin ca nhan
+--(email, firstName(new first name), lastName(new last name), (gender), password(new password))
