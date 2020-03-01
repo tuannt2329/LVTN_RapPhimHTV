@@ -55,6 +55,10 @@ const server = {
         type: 'application/x-www-form-urlencoded'
       }
     }
+  },
+  email: {
+    emailAddress: 'tuanhungcenima@gmail.com',
+    password: 'tuanhung123'
   }
 }
 

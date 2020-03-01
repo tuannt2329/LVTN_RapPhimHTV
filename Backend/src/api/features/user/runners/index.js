@@ -1,2 +1,4 @@
 module.exports = [require('./login'),
-                  require('./signup')]
+                  require('./signup'),
+                  require('./verification'),
+                  require('./update-info')]

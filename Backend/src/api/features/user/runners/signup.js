@@ -1,3 +1,5 @@
+const sendEmail = require('../send-email')
+
 const handler = ({ model }, _) => async (req, res) => {
   const {firstName, lastName, gender, email, password } = req.body
   if (!firstName) {
@@ -16,7 +18,14 @@ const handler = ({ model }, _) => async (req, res) => {
         res.send({ error: 'email exist!' })
       } else {
         const result = await model.create(req.body)
-        result && res.send({ result })
+
+        if(result) {
+          const content = 'You have successfully registered an account of HTV cinema'
+          const subject = 'Account registration successful'
+          
+          const a = await sendEmail(email, subject, content)
+          res.send({ content: subject })
+        }
       }
     } catch (error) {
       res.send({ error })
