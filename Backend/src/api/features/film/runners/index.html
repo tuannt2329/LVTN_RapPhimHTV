@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+</head>
+<body>
+   
+ 
+ <!--  SINGLE FILE -->
+ <center>
+  <form action="/film/createfilm" enctype="multipart/form-data" method="POST"> 
+    <label name="a" >TenFilm</label>
+    <input type="text" name="TenFilm" /><br/><br/>
+  
+    <label name="b" >DaoDien</label>
+    <input type="text" name="DaoDien" /><br/><br/>
+  
+    <label name="c" >TenNuocSX</label>
+    <input type="text" name="TenNuocSX" /><br/><br/>
+  
+    <label name="d" >TomTat</label>
+    <input type="text" name="TomTat" /><br/><br/>
+  
+    <label name="e" >TongThu</label>
+    <input type="number" name="TongThu" value="0"/><br/><br/>
+  
+    <label name="h" >TongChi</label>
+    <input type="number" name="TongChi" value="0"/><br/><br/>
+
+    <label name="f" >NgayChieu </label>
+    <input type="date" id='date' name="NgayChieu" value="03/03/2020" required/><br/><br/>
+  
+    <label name="g" >NgayKetThuc </label>
+    <input type="date" id='date' name="NgayKetThuc" value="04/03/2020" required/><br/><br/>
+  
+    <input type="file" name="AnhBia" /><br/><br/>
+    <input type="submit" value="Upload a file"/><br/>
+  </form>
+   
+ </center>
+
+</body>
+</html>
+<!-- 
+<script>
+  n =  new Date();
+  y = n.getFullYear();
+  m = n.getMonth() + 1;
+  d = n.getDate();
+  document.getElementById("date").innerHTML = m + "/" + d + "/" + y;
+</script> -->

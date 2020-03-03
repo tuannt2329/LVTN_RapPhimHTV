@@ -9,9 +9,7 @@
 5. truy cap database: https://account.mongodb.com/account/login?signedOut=true (login with google)
 ++taikhoan: *********
 ++matkhau: *******
---5.1. vào collections
---5.2. vào collections users
---5.3. thêm 1 document: insert Document (thêm dai di)
+==> de xem full database
 
 ***doi voi cac ham "get" dung browser
 6. truy cap localhost:8000/user/find (method get)
@@ -24,10 +22,16 @@
 --(email, password)
 
 9. quen mat khau 
---9.1. truy cap http://localhost:8000/user/verification (method put) => lay ma xac nhan
+--9.1. truy cap http://localhost:8000/user/verification (method post) => lay ma xac nhan
 ----(email)
 --9.2. truy cap http://localhost:8000/user/updateInfo (method put) => lay lai mat khau
 ----(email, verificationCode, password(new password))
 
 10. truy cap http://localhost:8000/user/updateInfo (method put) => sua thong tin ca nhan
 --(email, firstName(new first name), lastName(new last name), (gender), password(new password))
+
+-------------------------------
+
+11. create a new film
+-- truy cap http://localhost:8000/ (method get) (dien day du thong tin -> click button "upload a file" )
+**(TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi, AnhBia(png,jpg))

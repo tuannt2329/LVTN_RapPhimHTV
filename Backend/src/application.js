@@ -54,13 +54,6 @@ class Application {
     })
   }
 
-  registerFeature (feature) {
-    if (feature instanceof Feature) {
-      feature.addConfig(this.appConfig)
-      feature.controller.embedTo(this.express, feature.name)
-    }
-  }
-
   start () {
     this.initGlobal()
     this.initDb()

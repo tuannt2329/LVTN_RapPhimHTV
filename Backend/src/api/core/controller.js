@@ -6,6 +6,11 @@ class Controller extends EventEmitter{
     super()
     this.router = new Router()
 
+    //test create film
+    this.router.get('/',function(req,res){
+      res.sendFile("D:\\LuanVan\\LVTN_RapPhimHTV\\Backend\\src\\api\\features\\film\\runners" + '/index.html');
+     
+    })
     if (model) {
       this.model = model
     }
