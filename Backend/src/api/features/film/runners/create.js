@@ -16,10 +16,21 @@ const handler = ({ model }, _) => (req, res) => {
     if (err) {
       return res.send('error when trying to upload')
     }
-    const {TenFilm, DaoDien, TenNuocSX, TomTat,
-      NgayChieu, NgayKetThuc, TongThu, TongChi} = req.body
+    let TongThu = '0'
+    let TongChi = '0'
+  
+    const {TenFilm, DaoDien, TenNuocSX,
+           TomTat, NgayChieu, NgayKetThuc} = req.body
     const AnhBia = "uploads/" + req.file.path.split('\\')[1]
-    
+
+    if(req.body.TongThu) {
+      TongThu = req.body.TongThu
+    }
+
+    if(req.body.TongChi) {
+      TongChi = req.body.TongChi
+    }
+
     if (!TenFilm) {
     res.send({ error: 'TenFilm is required.' })
     } else if (!DaoDien) {
@@ -34,22 +45,37 @@ const handler = ({ model }, _) => (req, res) => {
     res.send({ error: 'NgayKetThuc is required.' })
     } else if (!AnhBia) {
     res.send({ error: 'AnhBia is required.' })
-    } else if (!TongThu) {
-      TongThu = 0
-    } else if (!TongChi) {
-      TongChi = 0
     } else if (NgayChieu >= NgayKetThuc) {
     res.send({ error: 'NgayChieu must < NgayKetThuc.' })
     } else {
       const data = {
-        TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, AnhBia, TongThu, TongChi
+        TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu,
+        NgayKetThuc, AnhBia, TongThu, TongChi
       }
-
       try {
         const film = await model.findOne({ TenFilm })
 
         if (film) {
-          res.send({ error: 'film exist!' })
+          if (!film.deleted) {
+            return res.send({ error: 'film exist!' })
+          } else {
+            const result = await model.updateMany(
+              { TenFilm: TenFilm },
+              { $set: { 
+                deleted: false,
+                DaoDien: DaoDien,
+                TenNuocSX: TenNuocSX,
+                TomTat: TomTat,
+                TongThu: TongThu,
+                TongChi: TongChi,
+                NgayChieu: NgayChieu,
+                NgayKetThuc: NgayKetThuc,
+                AnhBia: AnhBia
+               }
+              })
+
+            result && res.send({ result })
+          }
         } else {
           const result = await model.create(data)
 
