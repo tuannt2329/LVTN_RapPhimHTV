@@ -2,7 +2,7 @@ const handler = ({ model }, _) => async (req, res) => {
   let TongThu = '0'
   let TongChi = '0'
 
-  const {TenFilm, DaoDien, TenNuocSX,
+  const {TenFilm, DaoDien, TheLoai, TenNuocSX,
           TomTat, NgayChieu, NgayKetThuc} = req.body
 
   if(req.body.TongThu) {
@@ -17,6 +17,8 @@ const handler = ({ model }, _) => async (req, res) => {
   res.send({ error: 'TenFilm is required.' })
   } else if (!DaoDien) {
   res.send({ error: 'DaoDien is required.' })
+  } else if (!TheLoai) {
+    res.send({ error: 'TheLoai is required.' })
   } else if (!TenNuocSX) {
   res.send({ error: 'TenNuocSX is required.' })
   } else if (!TomTat) {
@@ -37,6 +39,7 @@ const handler = ({ model }, _) => async (req, res) => {
           { $set: { 
             deleted: false,
             DaoDien: DaoDien,
+            TheLoai: TheLoai,
             TenNuocSX: TenNuocSX,
             TomTat: TomTat,
             TongThu: TongThu,

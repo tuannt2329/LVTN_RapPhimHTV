@@ -15,7 +15,7 @@ const handler = ({ model }, _) => async (req, res) => {
       if (user) {
         const hashedPassword = user.password
         const result = await bcrypt.compareSync(password, hashedPassword)
-        result && res.send({ result })
+        result && res.send({ user })
       }
     } catch (error) {
       res.send({ error })

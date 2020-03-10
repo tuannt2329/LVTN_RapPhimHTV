@@ -82,5 +82,23 @@ module.exports = new Schema({
   deleted: {
     type: Boolean,
     default: false
+  },
+  LuotLike: {
+    type: Number,
+    default: 0
+  },
+  LuotXem: {
+    type: Number,
+    default: 0
+  },
+  TheLoai: {
+    type: String,
+    validate: {
+      validator: function (TheLoai) {
+        return TheLoai && TheLoai.length > 0
+      },
+      message: props => `Input: ${props.value} is not valid!`
+    },
+    required: [true, 'The loai is required']
   }
 })

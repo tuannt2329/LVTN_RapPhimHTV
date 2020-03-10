@@ -19,7 +19,7 @@ const handler = ({ model }, _) => (req, res) => {
     let TongThu = '0'
     let TongChi = '0'
   
-    const {TenFilm, DaoDien, TenNuocSX,
+    const {TenFilm, DaoDien, TheLoai, TenNuocSX,
            TomTat, NgayChieu, NgayKetThuc} = req.body
     const AnhBia = "uploads/" + req.file.path.split('\\')[1]
 
@@ -35,6 +35,8 @@ const handler = ({ model }, _) => (req, res) => {
     res.send({ error: 'TenFilm is required.' })
     } else if (!DaoDien) {
     res.send({ error: 'DaoDien is required.' })
+    } else if (!TheLoai) {
+      res.send({ error: 'TheLoai is required.' })
     } else if (!TenNuocSX) {
     res.send({ error: 'TenNuocSX is required.' })
     } else if (!TomTat) {
@@ -49,7 +51,7 @@ const handler = ({ model }, _) => (req, res) => {
     res.send({ error: 'NgayChieu must < NgayKetThuc.' })
     } else {
       const data = {
-        TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu,
+        TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu,
         NgayKetThuc, AnhBia, TongThu, TongChi
       }
       try {
@@ -64,6 +66,7 @@ const handler = ({ model }, _) => (req, res) => {
               { $set: { 
                 deleted: false,
                 DaoDien: DaoDien,
+                TheLoai: TheLoai,
                 TenNuocSX: TenNuocSX,
                 TomTat: TomTat,
                 TongThu: TongThu,
