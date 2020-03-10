@@ -39,3 +39,7 @@
 12. delete a film
 ---- truy cap http://localhost:8000/film/deletefilm (method put)
 **((TenFilm)
+
+13. update a film
+-- truy cap http://localhost:8000/film/updatefilm (method put)
+**(TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi)
