@@ -34,7 +34,7 @@
 
 11. create a new film
 -- truy cap http://localhost:8000/ (method get) (dien day du thong tin -> click button "upload a file" )
-**(TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi, AnhBia(png,jpg))
+**(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, LuotLike, LuotXem, TongThu, TongChi, AnhBia(png,jpg))
 
 12. delete a film
 ---- truy cap http://localhost:8000/film/deletefilm (method put)
@@ -42,4 +42,9 @@
 
 13. update a film
 -- truy cap http://localhost:8000/film/updatefilm (method put)
-**(TenFilm, DaoDien, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi)
+**(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi)
+
+14. find film: truy cap http://localhost:8000/film/find (method post)
+--14.1. khong dien gi het => find all film
+--14.2. dien 1 hoac NHIEU parameter
+**(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, LuotLike, LuotXem, TongThu, TongChi)

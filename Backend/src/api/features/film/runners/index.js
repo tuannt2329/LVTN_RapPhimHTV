@@ -1,3 +1,4 @@
-module.exports = [require('./create'),
+module.exports = [require('./find'),
+                  require('./create'),
                   require('./update'),
                   require('./delete')]
