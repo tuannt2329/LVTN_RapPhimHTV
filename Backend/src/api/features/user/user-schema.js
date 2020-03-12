@@ -43,7 +43,7 @@ module.exports = new Schema({
     type: Date,
     default: Date()
   },
-  active: {
+  deleted: {
     type: Boolean,
     default: false
   },
@@ -54,5 +54,10 @@ module.exports = new Schema({
         this.password = bcrypt.hashSync(password, saltRounds)
       }
     }
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'user', 'other'],
+    default: 'user'
   }
 })

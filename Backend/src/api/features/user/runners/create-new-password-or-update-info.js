@@ -17,7 +17,11 @@ const handlerCreateNewPassword = (model, _) => async (req, res) => {
   } else {
     const error = 'Your email is wrong.'
     try {
-      const user = await model.findOne({ email })
+      let listparams = {
+        email: email,
+        deleted: false
+      }
+      const user = await model.findOne(listparams)
 
       if (user) {
         const result = await model.updateMany(
@@ -57,7 +61,11 @@ const handlerUpdateInfo = (model, _) => async (req, res) => {
   } else {
     const error = 'Your email is wrong.'
     try {
-      const user = await model.findOne({ email })
+      let listparams = {
+        email: email,
+        deleted: false
+      }
+      const user = await model.findOne(listparams)
       
       if (user) {
         const result = await model.updateMany(

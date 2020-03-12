@@ -1,4 +1,5 @@
 module.exports = [require('./login'),
                   require('./signup'),
                   require('./verification'),
-                  require('./update-info')]
+                  require('./create-new-password-or-update-info'),
+                  require('./delete')]

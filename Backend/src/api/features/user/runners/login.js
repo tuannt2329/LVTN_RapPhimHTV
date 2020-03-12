@@ -10,8 +10,11 @@ const handler = ({ model }, _) => async (req, res) => {
     const error = 'Your email or password are wrong.'
 
     try {
-      const user = await model.findOne({ email })
-
+      let listparams = {
+        email: email,
+        deleted: false
+      }
+      const user = await model.findOne(listparams)
       if (user) {
         const hashedPassword = user.password
         const result = await bcrypt.compareSync(password, hashedPassword)

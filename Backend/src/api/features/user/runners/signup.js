@@ -12,9 +12,13 @@ const handler = ({ model }, _) => async (req, res) => {
     res.send({ error: 'Password is required.' })
   } else {
     try {
-      const user = await model.findOne({ email })
+      let listparams = {
+        email: email,
+        deleted: false
+      }
+      const user = await model.find(listparams)
 
-      if (user) {
+      if (user.length != 0) {
         res.send({ error: 'email exist!' })
       } else {
         const result = await model.create(req.body)
