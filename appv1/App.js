@@ -15,7 +15,6 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import Tab1 from './src/components/tab/Tab1';
 import Tab2 from './src/components/tab/Tab2';
@@ -23,8 +22,13 @@ import Home from './src/components/screens/Home';
 import Login from './src/components/screens/Login';
 import Screen2 from './src/components/drawer/Screen2';
 import User from './src/components/tab/User';
-import configureStore from './src/redux/store/index';
-const store = configureStore();
+
+// import configureStore from './src/redux/store/index';
+// const store = configureStore();
+
+//persist
+import {store, persistor} from './src/redux/store/index';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const MaterialTopTabs = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -158,12 +162,14 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <SafeAreaProvider>
-          <NavigationContainer>
-            {createHomeStack()}
-            {/*{createTopTabs()}*/}
-          </NavigationContainer>
-        </SafeAreaProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              {createHomeStack()}
+              {/*{createTopTabs()}*/}
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </PersistGate>
       </Provider>
     );
   }

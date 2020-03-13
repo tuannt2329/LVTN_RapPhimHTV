@@ -98,9 +98,9 @@ class Login extends React.Component {
     this.props.navigation.navigate('SignUp');
   };
 
-  componentWillReceiveProps = nextProps => {
+  UNSAFE_componentWillReceiveProps = nextProps => {
     if (nextProps.status == 'OK') {
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('User');
     }
   };
 
@@ -123,7 +123,6 @@ class Login extends React.Component {
     return (
       <View style={styles.container}>
         {this.gradient}
-
         <Image
           source={require('../../assets/imgs/logo.png')}
           style={{width: '70%', height: 100}}
@@ -158,6 +157,7 @@ class Login extends React.Component {
         <TouchableOpacity>
           <Text style={styles.forgot}>Quên mật khẩu</Text>
         </TouchableOpacity>
+        {/* login button */}
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
@@ -165,6 +165,7 @@ class Login extends React.Component {
           }}>
           <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
         </TouchableOpacity>
+        {/*sing up button*/}
         <TouchableOpacity>
           <Text style={styles.loginText} onPress={() => this.doSignUp}>
             ĐĂNG KÝ

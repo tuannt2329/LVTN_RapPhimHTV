@@ -5,7 +5,7 @@ const initialState = {
   isSuccess: false,
   user: null,
 };
-export default function loginIn(state = initialState, action) {
+const loginIn = (state = initialState, action) => {
   switch (action.type) {
     // case types.LOGIN_IN_DOING:
     //   return {
@@ -22,7 +22,6 @@ export default function loginIn(state = initialState, action) {
         isSuccess: true,
         user: action.user,
       };
-      break;
     case types.LOGIN_IN_ERROR:
       return {
         ...state,
@@ -30,9 +29,15 @@ export default function loginIn(state = initialState, action) {
         isSuccess: false,
         user: null,
       };
-      break;
+    case types.LOGOUT:
+      return {
+        status: '',
+        isSuccess: false,
+        user: null,
+      };
     default:
       console.log(state);
       return state;
   }
-}
+};
+export default loginIn;

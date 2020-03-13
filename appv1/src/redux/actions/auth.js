@@ -2,11 +2,11 @@ import * as types from '../../constants/index';
 // import AsyncStorage from '@react-native-community/async-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export function login(email, pass) {
+function login(email, pass) {
   return dispatch => {
     console.log(email, '-', pass);
     // dispatch(isLogining());
-    let result = fetch('http://192.168.1.41:3001/api/login', {
+    let result = fetch('http://192.168.1.41:8000/user/login', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -19,8 +19,8 @@ export function login(email, pass) {
     })
       .then(res => res.json())
       .then(res => {
-        if (res.success == true) {
-          storeData(res.user.username);
+        if (res.error != '') {
+          storeData(res.user.firstName);
           dispatch(loginSuccess(true, res));
         } else {
           dispatch(loginError(false));
@@ -58,3 +58,11 @@ function loginError(isSuccess) {
     type: types.LOGIN_IN_ERROR,
   };
 }
+function logout() {
+  console.log('logout');
+  return {
+    type: types.LOGOUT,
+  };
+}
+
+export {login, logout};
