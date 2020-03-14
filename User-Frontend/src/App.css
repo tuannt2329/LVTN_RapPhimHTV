@@ -36,3 +36,176 @@
     transform: rotate(360deg);
   }
 }
+
+
+@media only screen and (min-width: 1280px)
+{
+.container {
+    width: 1280px;
+}
+}
+a {
+  -webkit-transition-timing-function: ease;
+  transition-timing-function: ease;
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms;
+  color: #a0a3a7;
+  cursor: pointer;
+}
+/* 11/3/2020 */
+.tab-movies-line .nav-tabs li.active > a {
+  border-width: 0;
+  border: none;
+  color: #43464b !important;
+  background: transparent;
+}
+.tab-movies-line .nav-tabs li > a {
+  border: none;
+  color: #a0a3a7;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 10px 0;
+}
+
+/* Carousel */
+.carousel-control span {
+  position: absolute;
+  top: 45%;
+  left: 20px;
+  font-size: 40px;
+}
+.glyphicon {
+  margin-right: 5px;
+}
+.htv-nav nav ul li.sub-nav a:after {
+  font-family: 'FontAwesome';
+  font-weight: 400;
+  line-height: 1;
+  content: '\f107';
+  margin-left: 5px;
+}
+
+/* icon đăng nhập */
+[class^="icon-"], [class*=" icon-"] {
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.secondary-nav-wrapper ul.secondary-nav li a i {
+  margin-right: 5px;
+}
+i {
+  font-style: italic;
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Slide Carousel */
+.carousel-indicators {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  left: 0;
+  z-index: 15;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-left: 0;
+  margin-right: 15%;
+  margin-left: 15%;
+  width: 70%;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 0; 
+  bottom: 0; 
+  left: 0;
+  width: 5%; 
+  font-size: 20px; 
+  color: #fff; 
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, 0);
+  filter: alpha(opacity=50);
+  opacity: .5;
+}
+
+
+/* Footer */
+#footer {
+  position: relative;
+  /* padding-top: 163px; */
+  background: url("/htv/website/images/bg-gridfooter.jpg") top center repeat;
+  color: #fff;
+  font-size: 0px;
+}
+#footer .copyright {
+  border-top: 2px solid #343434;
+  padding: 26px 0px 26px 0px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.btn.primary {
+  display: inline-block;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: #286ffc;
+  padding: 15px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+/* Test Login Header */
+.secondary-nav-wrapper ul.secondary-nav li a {
+  position: relative;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+/* Input Search header */
+.search .search-form .search-box {
+  border: 1px solid #ced0da;
+  font-size: 14px;
+  padding: 6px 25px 6px 10px;
+  transition: width 0.3s;
+  -webkit-transition: width 0.3s;
+  color: #43464b;
+  width: 250px;
+  border-radius: 13px;
+}
+.header-nav-wrapper .logo a img {
+  width: 70%;
+}
+
+.register_gioitinh{
+  padding-top: 14px;
+}
+
