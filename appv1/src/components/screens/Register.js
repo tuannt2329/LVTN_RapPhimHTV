@@ -9,21 +9,27 @@ import {
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import * as LoginAction from '../../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../../constants/index.style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
+import {ButtonGroup} from 'react-native-elements';
+import {signup} from '../../redux/actions/auth';
+
 // import {NavigationActions} from 'react-navigation';
-class Login extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: null,
       pass: null,
-      error: null,
+      firstName: null,
+      lastName: null,
+      gender: 'Female',
+      selectedIndex: 1,
     };
     // this.doSignUp= this.doSignUp.bind(this);
   }
@@ -36,6 +42,18 @@ class Login extends React.Component {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  updateIndex = async selectedIndex => {
+    await this.setState({selectedIndex});
+    console.log(selectedIndex);
+    console.log('Component did update!');
+    if (this.state.selectedIndex === 1) {
+      this.setState({gender: 'female'});
+    } else {
+      this.setState({gender: 'male'});
+    }
+    console.log(this.state.gender);
   };
   deleteUsername = () => {
     AsyncStorage.removeItem('username');
@@ -102,7 +120,7 @@ class Login extends React.Component {
 
   UNSAFE_componentWillReceiveProps = nextProps => {
     console.log('Component receive prop!');
-    if (nextProps.status == 'OK') {
+    if (nextProps.status === 'SIGN_UP_DONE') {
       this.props.navigation.navigate('Home');
     }
     // if (nextProps.status == 'ERROR') {
@@ -110,28 +128,6 @@ class Login extends React.Component {
     // }
   };
 
-  componentDidMount = () => {
-    console.log('Component did mount!');
-    //
-    // this.setState({
-    //   email: null,
-    //   pass: null,
-    //   error: null,
-    // });
-  };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log('Component did update!');
-  //   // console.log(prevProps.status);
-  //   // if(prevProps.status === 'ERROR')
-  //   // {
-  //   //   this.state = {
-  //   //     email: null,
-  //   //     pass: null,
-  //   //     error: '',
-  //   //   };
-  //   // }
-  // }
 
   get gradient() {
     return (
@@ -161,8 +157,14 @@ class Login extends React.Component {
   //     error: null,
   //   });
   // }
+  // componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
+  //   this.props.navigation.pop();
+  // }
+
   render() {
-    const {login} = this.props;
+    const {signup} = this.props;
+    const buttons = ['Nam', 'Nữ'];
+    const {selectedIndex} = this.state;
     return (
       <View style={styles.container}>
         {this.gradient}
@@ -178,12 +180,6 @@ class Login extends React.Component {
           </Text>
         </Text>
         <View style={styles.inputView}>
-          {/*<TextInput*/}
-          {/*  style={styles.inputText}*/}
-          {/*  placeholder="Email..."*/}
-          {/*  placeholderTextColor="#003f5c"*/}
-          {/*  onChangeText={text => this.setState({email: text})}*/}
-          {/*/>*/}
           <Input
             placeholder="Email..."
             style={styles.inputText}
@@ -206,33 +202,54 @@ class Login extends React.Component {
             style={styles.inputText}
             leftIcon={<Icon name="lock" size={24} color="black" />}
             placeholderTextColor="#003f5c"
-            errorStyle={{color: 'red', fontSize: 14}}
-            errorMessage={
-              this.state.error !== null ? 'EMAIL/MẬT KHẨU KHÔNG CHÍNH XÁC' : ''
-            }
             onChangeText={text => this.setState({pass: text})}
           />
         </View>
-        {/*handel wrong*/}
-        <Text>
-          {' '}
-          {this.props.status == null &&
-          this.state.email == null &&
-          this.state.pass == null
-            ? 'ok'
-            : ''}{' '}
-        </Text>
-
-        <TouchableOpacity>
-          <Text style={styles.forgot}>Quên mật khẩu</Text>
-        </TouchableOpacity>
+        <View style={styles.inputView}>
+          <Input
+            placeholder="FirstName..."
+            style={styles.inputText}
+            leftIcon={<Icon name="user" size={24} color="black" />}
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({firstName: text})}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <Input
+            placeholder="LastName..."
+            style={styles.inputText}
+            leftIcon={<Icon name="user" size={24} color="black" />}
+            placeholderTextColor="#003f5c"
+            onChangeText={text => this.setState({lastName: text})}
+          />
+        </View>
+        <View style={styles.buttonGroup}>
+          <ButtonGroup
+            onPress={this.updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={buttons}
+            containerStyle={{
+              height: 30,
+              borderRadius: 25,
+            }}
+          />
+        </View>
+        {/*<TouchableOpacity>*/}
+        {/*  <Text style={styles.forgot}>Quên mật khẩu</Text>*/}
+        {/*</TouchableOpacity>*/}
         {/* login button */}
         <TouchableOpacity
           style={styles.loginBtn}
           onPress={() => {
-            login(this.state.email, this.state.pass);
+            signup(
+              this.state.email,
+              this.state.pass,
+              this.state.firstName,
+              this.state.lastName,
+              this.state.gender,
+            );
           }}>
-          <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+          <Text style={styles.loginText}>ĐĂNG KÝ</Text>
         </TouchableOpacity>
         {/*sing up button*/}
         <TouchableOpacity>
@@ -266,6 +283,15 @@ const styles = StyleSheet.create({
   inputView: {
     width: '80%',
     backgroundColor: 'rgba(250,255,241,0.95)',
+    borderRadius: 25,
+    height: 50,
+    marginBottom: 20,
+    justifyContent: 'center',
+    padding: 20,
+  },
+  buttonGroup: {
+    width: '80%',
+    backgroundColor: '#fde1c7',
     borderRadius: 25,
     height: 50,
     marginBottom: 20,
@@ -312,9 +338,9 @@ export default connect(
   state => ({
     status: state.loginIn.status,
     isSuccess: state.loginIn.isSuccess,
-    user: state.loginIn.user,
   }),
   dispatch => ({
-    login: (email, pass) => dispatch(LoginAction.login(email, pass)),
+    signup: (email, pass, firstname, lastname, gender) =>
+      dispatch(LoginAction.signup(email, pass, firstname, lastname, gender)),
   }),
-)(Login);
+)(Register);

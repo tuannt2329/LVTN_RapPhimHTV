@@ -6,7 +6,7 @@ function login(email, pass) {
   return dispatch => {
     console.log(email, '-', pass);
     // dispatch(isLogining());
-    let result = fetch('http://192.168.1.41:8000/user/login', {
+    let result = fetch('http://192.168.56.1:8000/user/login/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -31,6 +31,40 @@ function login(email, pass) {
       });
   };
 }
+
+function signup(email, pass, firstname, lastname, gender) {
+  return dispatch => {
+    console.log(email, '-', pass);
+    // dispatch(isLogining());
+    let result = fetch('http://192.168.56.1:8000/user/signup/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: pass,
+        firstName: firstname,
+        lastName: lastname,
+        gender: gender,
+
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error !== '') {
+          dispatch(signupSuccess(res));
+        } else {
+          dispatch(signupError(false));
+        }
+      })
+      .catch(e => {
+        dispatch(signupError(false));
+      });
+  };
+}
+
 const storeData = async res => {
   try {
     await AsyncStorage.setItem('username', res);
@@ -45,24 +79,37 @@ function isLogining() {
   };
 }
 function loginSuccess(isSuccess, user) {
-  console.log('success');
+  console.log('login success');
   return {
     type: types.LOGIN_IN_DONE,
     user: user,
   };
 }
-
 function loginError(isSuccess) {
-  console.log('error');
+  console.log('Login error');
   return {
     type: types.LOGIN_IN_ERROR,
   };
 }
+function signupSuccess(user) {
+  console.log('sign success');
+  return {
+    type: types.SIGN_UP_DONE,
+  };
+}
+function signupError(isSuccess) {
+  console.log('sign error');
+  return {
+    types: types.SIGN_UP_ERROR,
+  };
+}
+
 function logout() {
   console.log('logout');
+  AsyncStorage.removeItem('username');
   return {
     type: types.LOGOUT,
   };
 }
 
-export {login, logout};
+export {login, logout, signup};

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../constants/index.style';
+import {StackActions} from '@react-navigation/native';
 
 export default class CustomHeader extends React.Component {
   constructor(props) {
@@ -39,26 +40,28 @@ export default class CustomHeader extends React.Component {
   }
   render() {
     const {navigation, title} = this.props;
+    const popAction = StackActions.pop(1);
+
     return (
       <View
         style={{flexDirection: 'row', height: 50, backgroundColor: '#caffca'}}>
         {this.gradient}
         {this.checkBack() ? (
-          <TouchableOpacity onPress={() => navigation.navigate('Screen2')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <View style={{flex: 2, justifyContent: 'center'}}>
               <Image
                 style={{width: 40, height: 40}}
-                source={require('../assets/imgs/menu.png')}
+                source={require('../assets/imgs/home.png')}
                 resizeMode="contain"
               />
             </View>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <View style={{flex: 2, justifyContent: 'center'}}>
               <Image
                 style={{width: 40, height: 40}}
-                source={require('../assets/imgs/back.png')}
+                source={require('../assets/imgs/home.png')}
                 resizeMode="contain"
               />
             </View>

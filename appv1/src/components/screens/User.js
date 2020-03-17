@@ -6,6 +6,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
 import * as LoginAction from '../../redux/actions/auth';
 import AsyncStorage from '@react-native-community/async-storage';
+import {StackActions} from '@react-navigation/native';
 
 class User extends React.Component {
   constructor(props) {
@@ -31,7 +32,15 @@ class User extends React.Component {
   //   this.setState({username: this.props.user.firstName});
   // }
   //};
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      // do something
+    });
+  }
 
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
   // componentDidMount = () => {
   // this.getUser().then(val => {
   //   this.setState({username: val});
@@ -72,19 +81,20 @@ class User extends React.Component {
               fontSize: 20,
             }}>
             {' '}
-            User name
+            {this.props.user !== null
+              ? this.props.user.user.email
+              : 'Bạn chưa đăng nhập'}
           </Text>
         </View>
 
         {this.props.user !== null ? (
           <View style={{flex: 1}}>
-            <FontAwesome5 name="sign-in-alt" size={30} />
             <Text
               style={{
                 fontWeight: 'bold',
                 fontSize: 20,
               }}>
-              {'      '} {'ĐĂNG NHẬP THANH CONG '}
+              {'      '} {'ĐĂNG NHẬP THANH CONG'}
               <Text>{'\n'}</Text>
             </Text>
             <TouchableOpacity
@@ -123,27 +133,31 @@ class User extends React.Component {
             </TouchableOpacity>
             <Text>{'\n'}</Text>
             <View style={{flexDirection: 'row'}}>
-              <FontAwesome5 name="user-plus" size={30} />
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                }}>
-                {'      '} {'ĐĂNG KÝ'}
-              </Text>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+                <View style={{flexDirection: 'row'}}>
+                  <FontAwesome5 name="user-plus" size={30} />
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 20,
+                    }}>
+                    {'      '} {'ĐĂNG KÝ'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <Text>{'\n'}</Text>
 
-            <View style={{flexDirection: 'row'}}>
-              <FontAwesome5 name="sign-in-alt" size={30} />
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                }}>
-                {'      '} {'Dang Nhap'}
-              </Text>
-            </View>
+            {/*<View style={{flexDirection: 'row'}}>*/}
+            {/*  <FontAwesome5 name="sign-in-alt" size={30} />*/}
+            {/*  <Text*/}
+            {/*    style={{*/}
+            {/*      fontWeight: 'bold',*/}
+            {/*      fontSize: 20,*/}
+            {/*    }}>*/}
+            {/*    {'      '} {'Dang Nhap'}*/}
+            {/*  </Text>*/}
+            {/*</View>*/}
           </View>
         )}
         <View

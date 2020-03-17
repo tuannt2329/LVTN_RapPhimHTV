@@ -8,6 +8,7 @@
 
 import React from 'react';
 import {Platform, Image, Dimensions} from 'react-native';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -21,7 +22,7 @@ import Tab2 from './src/components/tab/Tab2';
 import Home from './src/components/screens/Home';
 import Login from './src/components/screens/Login';
 import Screen2 from './src/components/drawer/Screen2';
-import User from './src/components/tab/User';
+import User from './src/components/screens/User';
 
 // import configureStore from './src/redux/store/index';
 // const store = configureStore();
@@ -29,6 +30,11 @@ import User from './src/components/tab/User';
 //persist
 import {store, persistor} from './src/redux/store/index';
 import {PersistGate} from 'redux-persist/integration/react';
+import AsyncStorage from '@react-native-community/async-storage';
+
+// login authentication flow
+import indexStackTab from './src/components/tab/indexStackTab';
+import Register from './src/components/screens/Register';
 
 const MaterialTopTabs = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -38,23 +44,20 @@ const Tab = createMaterialBottomTabNavigator();
 const showHeader = () => ({
   headerShown: false,
 });
+// get username for authentication flow v5
 
 function createHomeStack() {
   return (
     <Stack.Navigator initialRouteName="HomeStack">
-      {/*<Stack.Screen*/}
-      {/*  name="Home"*/}
-      {/*  children={createDrawer}*/}
-      {/*  options={{showHeader}}*/}
-      {/*/>*/}
-      {/*<Stack.Screen name="Home" component={Home} />*/}
+      {/*  <Stack.Screen name="Loginn" options={showHeader} component={indexStackTab} />*/}
+      <Stack.Screen name="Login" options={showHeader} component={Login} />
       <Stack.Screen
         name="HomeStack"
         options={showHeader}
         component={createBottomTab}
       />
       <Stack.Screen name="User" options={showHeader} component={User} />
-      <Stack.Screen name="Login" options={showHeader} component={Login} />
+      <Stack.Screen name="SignUp" options={showHeader} component={Register} />
     </Stack.Navigator>
   );
 }
@@ -158,13 +161,20 @@ function createTopTabs() {
   );
 }
 
-export default class App extends React.Component {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+    };
+  }
   render() {
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SafeAreaProvider>
             <NavigationContainer>
+              {/*{indexStackTab}*/}
               {createHomeStack()}
               {/*{createTopTabs()}*/}
             </NavigationContainer>
@@ -174,3 +184,4 @@ export default class App extends React.Component {
     );
   }
 }
+export default App;

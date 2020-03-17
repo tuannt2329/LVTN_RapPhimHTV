@@ -17,7 +17,7 @@ class Screen1 extends React.Component {
           navigation={this.props.navigation}
         />
         <View style={{flex: 1, justifyContent: 'center'}}>
-        <Slider/>
+          <Slider />
         </View>
         <View style={{flex: 3}}>
           <Toptab />

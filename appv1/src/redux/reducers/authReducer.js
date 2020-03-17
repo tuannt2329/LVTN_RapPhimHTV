@@ -35,6 +35,18 @@ const loginIn = (state = initialState, action) => {
         isSuccess: false,
         user: null,
       };
+    case types.SIGN_UP_DONE:
+      return {
+        ...state,
+        status: 'SIGN_UP_DONE',
+        isSuccess: true,
+      };
+    case types.SIGN_UP_ERROR:
+      return {
+        ...state,
+        status: 'SIGN_UP_ERROR',
+        isSuccess: false,
+      };
     default:
       console.log(state);
       return state;
