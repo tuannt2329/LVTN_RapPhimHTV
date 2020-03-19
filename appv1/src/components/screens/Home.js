@@ -11,11 +11,11 @@ class Screen1 extends React.Component {
   render() {
     return (
       <SafeAreaView style={{flex: 1}}>
-        <CustomHeader
-          isHome="true"
-          title="Homessssss"
-          navigation={this.props.navigation}
-        />
+        {/*<CustomHeader*/}
+        {/*  isHome="true"*/}
+        {/*  title="Homessssss"*/}
+        {/*  navigation={this.props.navigation}*/}
+        {/*/>*/}
         <View style={{flex: 1, justifyContent: 'center'}}>
           <Slider />
         </View>

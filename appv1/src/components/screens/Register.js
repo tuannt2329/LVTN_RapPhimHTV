@@ -7,6 +7,10 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Dimensions,
+  Keyboard,
+  Animated,
+  KeyboardAvoidingView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {connect} from 'react-redux';
@@ -18,8 +22,13 @@ import {Input} from 'react-native-elements';
 import {CheckBox} from 'react-native-elements';
 import {ButtonGroup} from 'react-native-elements';
 import {signup} from '../../redux/actions/auth';
-
+import SafeAreaView from 'react-native-safe-area-view';
+import CustomHeader from '../CustomHeader';
 // import {NavigationActions} from 'react-navigation';
+const window = Dimensions.get('window');
+
+const IMAGE_HEIGHT = 100;
+const IMAGE_HEIGHT_SMALL = 0;
 class Register extends React.Component {
   constructor(props) {
     super(props);
@@ -28,11 +37,37 @@ class Register extends React.Component {
       pass: null,
       firstName: null,
       lastName: null,
-      gender: 'Female',
+      gender: 'female',
       selectedIndex: 1,
+      error: null,
     };
+    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
+
     // this.doSignUp= this.doSignUp.bind(this);
   }
+
+  UNSAFE_componentWillMount() {
+    console.log('wilmount');
+    this.keyboardWillShowSub = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    );
+    this.keyboardWillHideSub = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    );
+  }
+  keyboardDidShow = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardDidHide = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
   getUsername = async () => {
     try {
       let take = await AsyncStorage.getItem('username');
@@ -114,20 +149,18 @@ class Register extends React.Component {
     // }
   };
 
-  doSignUp = () => {
-    this.props.navigation.navigate('SignUp');
-  };
-
   UNSAFE_componentWillReceiveProps = nextProps => {
     console.log('Component receive prop!');
     if (nextProps.status === 'SIGN_UP_DONE') {
+      this.props.navigation.navigate('Home');
+    }
+    if (nextProps.status === 'OK') {
       this.props.navigation.navigate('Home');
     }
     // if (nextProps.status == 'ERROR') {
     //   this.setState({error: 'error'});
     // }
   };
-
 
   get gradient() {
     return (
@@ -160,104 +193,179 @@ class Register extends React.Component {
   // componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
   //   this.props.navigation.pop();
   // }
+  doSignUp = async (email, pass, firstname, lastname, gender) => {
+    await this.props.signup(email, pass, firstname, lastname, gender);
+    // const {error} = this.props;
+    // console.log(error)
+    if (this.props.status === 'SIGN_UP_DONE') {
+      this.props.navigation.navigate('Home');
+    } else {
+      this.setState({error: this.props.error});
+    }
+  };
+  componentWillUnmount() {
+    this.state = {
+      email: null,
+      pass: null,
+      firstName: null,
+      lastName: null,
+      gender: 'female',
+      selectedIndex: 1,
+      error: null,
+    };
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
 
   render() {
     const {signup} = this.props;
     const buttons = ['Nam', 'Nữ'];
     const {selectedIndex} = this.state;
     return (
-      <View style={styles.container}>
-        {this.gradient}
-        <Image
-          source={require('../../assets/imgs/logo.png')}
-          style={{width: '70%', height: 100}}
+      <SafeAreaView style={{flex: 1}}>
+        <CustomHeader
+          isHome="true"
+          title="ĐĂNG KÝ"
+          navigation={this.props.navigation}
         />
-        <Text style={styles.title}>
-          cinemas
-          <Text
-            style={{color: '#ff7c7c', fontWeight: 'bold', fontStyle: 'italic'}}>
-            HTV
-          </Text>
-        </Text>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="Email..."
-            style={styles.inputText}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({email: text})}
-          />
-        </View>
-        <View style={styles.inputView}>
-          {/*<TextInput*/}
-          {/*  secureTextEntry*/}
-          {/*  style={styles.inputText}*/}
-          {/*  placeholder="Mật khẩu..."*/}
-          {/*  placeholderTextColor="#003f5c"*/}
-          {/*  onChangeText={text => this.setState({pass: text})}*/}
+        <KeyboardAvoidingView style={styles.container} behavior="height">
+          {this.gradient}
+          {/*<Image*/}
+          {/*  source={require('../../assets/imgs/logo.png')}*/}
+          {/*  style={{width: '70%', height: 100}}*/}
           {/*/>*/}
-          <Input
-            placeholder="Mật khẩu..."
-            secureTextEntry
-            style={styles.inputText}
-            leftIcon={<Icon name="lock" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({pass: text})}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="FirstName..."
-            style={styles.inputText}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({firstName: text})}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="LastName..."
-            style={styles.inputText}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({lastName: text})}
-          />
-        </View>
-        <View style={styles.buttonGroup}>
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={buttons}
-            containerStyle={{
-              height: 30,
-              borderRadius: 25,
-            }}
-          />
-        </View>
-        {/*<TouchableOpacity>*/}
-        {/*  <Text style={styles.forgot}>Quên mật khẩu</Text>*/}
-        {/*</TouchableOpacity>*/}
-        {/* login button */}
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => {
-            signup(
-              this.state.email,
-              this.state.pass,
-              this.state.firstName,
-              this.state.lastName,
-              this.state.gender,
-            );
-          }}>
-          <Text style={styles.loginText}>ĐĂNG KÝ</Text>
-        </TouchableOpacity>
-        {/*sing up button*/}
-        <TouchableOpacity>
-          <Text style={styles.loginText} onPress={() => this.doSignUp}>
-            ĐĂNG KÝ
+
+          <Animated.Text
+            style={{
+              color: '#21243d',
+              fontWeight: 'bold',
+              fontSize: 60,
+              marginBottom: 50,
+              height: this.imageHeight,
+            }}>
+            cinemas
+            <Text
+              style={{
+                color: '#ff7c7c',
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+              }}>
+              HTV
+            </Text>
+          </Animated.Text>
+          <View style={styles.inputView}>
+            <Input
+              placeholder="Email..."
+              style={styles.inputText}
+              leftIcon={<Icon name="user" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({email: text})}
+            />
+          </View>
+          <View style={styles.inputView}>
+            {/*<TextInput*/}
+            {/*  secureTextEntry*/}
+            {/*  style={styles.inputText}*/}
+            {/*  placeholder="Mật khẩu..."*/}
+            {/*  placeholderTextColor="#003f5c"*/}
+            {/*  onChangeText={text => this.setState({pass: text})}*/}
+            {/*/>*/}
+            <Input
+              placeholder="Mật khẩu..."
+              secureTextEntry
+              style={styles.inputText}
+              leftIcon={<Icon name="lock" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({pass: text})}
+            />
+          </View>
+          <View style={styles.inputView}>
+            <Input
+              placeholder="FirstName..."
+              style={styles.inputText}
+              leftIcon={<Icon name="user" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({firstName: text})}
+            />
+          </View>
+          <View style={styles.inputView}>
+            <Input
+              placeholder="LastName..."
+              style={styles.inputText}
+              leftIcon={<Icon name="user" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({lastName: text})}
+            />
+          </View>
+          {/*<View style={styles.buttonGroup}>*/}
+          <View>
+            <ButtonGroup
+              onPress={this.updateIndex}
+              selectedIndex={selectedIndex}
+              buttons={buttons}
+              containerStyle={{
+                height: 50,
+                borderRadius: 25,
+                width: '80%',
+                backgroundColor: '#fde0f2',
+              }}
+            />
+          </View>
+          {/*<TouchableOpacity>*/}
+          {/*  <Text style={styles.forgot}>Quên mật khẩu</Text>*/}
+          {/*</TouchableOpacity>*/}
+          {/* login button */}
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+              color: 'red',
+            }}>
+            {this.state.error !== null ? 'Điền đầy đủ các thông tin' : ''}
           </Text>
-        </TouchableOpacity>
-      </View>
+          <View
+            style={[
+              styles.loginBtn,
+              {
+                overflow: 'hidden',
+                borderRadius: 25,
+                width: '80%',
+              },
+            ]}>
+            <LinearGradient
+              // start={{x: 0, y: 0}}
+              // end={{x: 1, y: 1}}
+              startPoint={{x: 1, y: 0}}
+              endPoint={{x: 0, y: 1}}
+              colors={['#0AC4BA', '#2BDA8E']}
+              style={styless.gradient}
+            />
+            <TouchableOpacity
+              // style={styles.loginBtn}
+              onPress={() => {
+                this.doSignUp(
+                  this.state.email,
+                  this.state.pass,
+                  this.state.firstName,
+                  this.state.lastName,
+                  this.state.gender,
+                );
+              }}>
+              <Text style={styles.loginText}>ĐĂNG KÝ</Text>
+            </TouchableOpacity>
+          </View>
+          {/*sing up button*/}
+          <TouchableOpacity>
+            <Text
+              style={styles.loginText}
+              onPress={() => this.props.navigation.navigate('Login')}>
+              ĐĂNG NHẬP
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+        {/*</View>*/}
+      </SafeAreaView>
     );
   }
 }
@@ -336,8 +444,8 @@ const styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    status: state.loginIn.status,
-    isSuccess: state.loginIn.isSuccess,
+    status: state.signupIn.status,
+    error: state.signupIn.error,
   }),
   dispatch => ({
     signup: (email, pass, firstname, lastname, gender) =>

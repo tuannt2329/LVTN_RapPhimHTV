@@ -10,8 +10,8 @@ export const colors = {
   background2Header: '#fdbfba',
   background3Header: '#fde1c7',
   background1Login: '#ffd9b7',
-  background2Login: '#fdbfba',
-  background3Login: '#fde1c7',
+  background2Login: '#C5CCD6',
+  background3Login: '#C5CCD6',
 };
 
 export default StyleSheet.create({

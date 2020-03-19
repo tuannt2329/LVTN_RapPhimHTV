@@ -7,16 +7,27 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Button,
+  Switch,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
+  Keyboard,
+  Dimensions,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import * as LoginAction from '../../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../../constants/index.style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
-// import {NavigationActions} from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
+import CustomHeader from '../CustomHeader';
+const window = Dimensions.get('window');
+
+const IMAGE_HEIGHT = 100;
+const IMAGE_HEIGHT_SMALL = 0;
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -24,9 +35,36 @@ class Login extends React.Component {
       email: null,
       pass: null,
       error: null,
+      isVisible: false,
+      showPassword: true,
     };
-    // this.doSignUp= this.doSignUp.bind(this);
+    this.imageHeight = new Animated.Value(IMAGE_HEIGHT);
   }
+  UNSAFE_componentWillMount() {
+    console.log('wilmount');
+    this.keyboardWillShowSub = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    );
+    this.keyboardWillHideSub = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    );
+  }
+  keyboardDidShow = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT_SMALL,
+    }).start();
+  };
+
+  keyboardDidHide = event => {
+    Animated.timing(this.imageHeight, {
+      toValue: IMAGE_HEIGHT,
+    }).start();
+  };
+  //
+  //
+  //
   getUsername = async () => {
     try {
       let take = await AsyncStorage.getItem('username');
@@ -102,36 +140,23 @@ class Login extends React.Component {
 
   UNSAFE_componentWillReceiveProps = nextProps => {
     console.log('Component receive prop!');
-    if (nextProps.status == 'OK') {
+    if (nextProps.status === 'OK') {
       this.props.navigation.navigate('Home');
     }
-    // if (nextProps.status == 'ERROR') {
-    //   this.setState({error: 'error'});
-    // }
   };
 
-  componentDidMount = () => {
-    console.log('Component did mount!');
-    //
-    // this.setState({
-    //   email: null,
-    //   pass: null,
-    //   error: null,
-    // });
+  // componentDidMount = () => {
+  //   console.log('Component did mount!');
+  //   //
+  //   // this.setState({
+  //   //   email: null,
+  //   //   pass: null,
+  //   //   error: null,
+  //   // });
+  // };
+  toggleModal = () => {
+    this.setState({isVisible: !this.state.isVisible});
   };
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log('Component did update!');
-  //   // console.log(prevProps.status);
-  //   // if(prevProps.status === 'ERROR')
-  //   // {
-  //   //   this.state = {
-  //   //     email: null,
-  //   //     pass: null,
-  //   //     error: '',
-  //   //   };
-  //   // }
-  // }
 
   get gradient() {
     return (
@@ -161,86 +186,168 @@ class Login extends React.Component {
   //     error: null,
   //   });
   // }
+  signIn = async (email, pass) => {
+    console.log('dosignup');
+    await this.props.login(email, pass);
+    if (this.props.status === 'OK') {
+      this.props.navigation.navigate('Home');
+    } else {
+      // handle delay update state from redux maybe react UI render slow
+      // don't fix
+      this._interval = setInterval(() => {
+        this.setState({error: this.props.status});
+      }, 5000);
+    }
+  };
+
+  componentWillUnmount() {
+    console.log('unmount');
+    this.state = {
+      email: null,
+      pass: null,
+      error: null,
+      isVisible: false,
+    };
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+  toggleSwitch = () => {
+    this.setState({showPassword: !this.state.showPassword});
+  };
   render() {
     const {login} = this.props;
     return (
-      <View style={styles.container}>
-        {this.gradient}
-        <Image
-          source={require('../../assets/imgs/logo.png')}
-          style={{width: '70%', height: 100}}
+      <SafeAreaView style={{flex: 1}}>
+        <CustomHeader
+          isHome="true"
+          title="ĐĂNG NHẬP"
+          navigation={this.props.navigation}
         />
-        <Text style={styles.title}>
-          cinemas
+        <View style={styles.container}>
+          {this.gradient}
+          <Animated.Image
+            source={require('../../assets/imgs/logo.png')}
+            style={{width: '70%', height: this.imageHeight}}
+          />
+          <Text style={styles.title}>
+            cinemas
+            <Text
+              style={{
+                color: '#ff7c7c',
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+              }}>
+              HTV
+            </Text>
+          </Text>
+          <View style={styles.inputView}>
+            {/*<TextInput*/}
+            {/*  style={styles.inputText}*/}
+            {/*  placeholder="Email..."*/}
+            {/*  placeholderTextColor="#003f5c"*/}
+            {/*  onChangeText={text => this.setState({email: text})}*/}
+            {/*/>*/}
+            <Input
+              placeholder="Email..."
+              style={styles.inputText}
+              leftIcon={<Icon name="user" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              onChangeText={text => this.setState({email: text})}
+            />
+          </View>
+          <View style={styles.inputView}>
+            {/*<TextInput*/}
+            {/*  secureTextEntry*/}
+            {/*  style={styles.inputText}*/}
+            {/*  placeholder="Mật khẩu..."*/}
+            {/*  placeholderTextColor="#003f5c"*/}
+            {/*  onChangeText={text => this.setState({pass: text})}*/}
+            {/*/>*/}
+            <Input
+              placeholder="Mật khẩu..."
+              // secureTextEntry
+              secureTextEntry={this.state.showPassword}
+              style={styles.inputText}
+              leftIcon={<Icon name="lock" size={24} color="black" />}
+              placeholderTextColor="#003f5c"
+              // errorStyle={{color: 'red', fontSize: 14}}
+              // errorMessage={
+              //   this.state.error !== null
+              //     ? 'EMAIL/MẬT KHẨU KHÔNG CHÍNH XÁC'
+              //     : ''
+              // }
+              onChangeText={text => this.setState({pass: text})}
+              rightIcon={
+                <Switch
+                  onValueChange={this.toggleSwitch}
+                  value={!this.state.showPassword}
+                />
+              }
+            />
+          </View>
+          {/*handel wrong*/}
           <Text
-            style={{color: '#ff7c7c', fontWeight: 'bold', fontStyle: 'italic'}}>
-            HTV
+            style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+              color: 'red',
+            }}>
+            {this.state.error !== null ? 'Thông tin đăng nhập sai' : ''}
           </Text>
-        </Text>
-        <View style={styles.inputView}>
-          {/*<TextInput*/}
-          {/*  style={styles.inputText}*/}
-          {/*  placeholder="Email..."*/}
-          {/*  placeholderTextColor="#003f5c"*/}
-          {/*  onChangeText={text => this.setState({email: text})}*/}
-          {/*/>*/}
-          <Input
-            placeholder="Email..."
-            style={styles.inputText}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({email: text})}
-          />
-        </View>
-        <View style={styles.inputView}>
-          {/*<TextInput*/}
-          {/*  secureTextEntry*/}
-          {/*  style={styles.inputText}*/}
-          {/*  placeholder="Mật khẩu..."*/}
-          {/*  placeholderTextColor="#003f5c"*/}
-          {/*  onChangeText={text => this.setState({pass: text})}*/}
-          {/*/>*/}
-          <Input
-            placeholder="Mật khẩu..."
-            secureTextEntry
-            style={styles.inputText}
-            leftIcon={<Icon name="lock" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            errorStyle={{color: 'red', fontSize: 14}}
-            errorMessage={
-              this.state.error !== null ? 'EMAIL/MẬT KHẨU KHÔNG CHÍNH XÁC' : ''
-            }
-            onChangeText={text => this.setState({pass: text})}
-          />
-        </View>
-        {/*handel wrong*/}
-        <Text>
-          {' '}
-          {this.props.status == null &&
-          this.state.email == null &&
-          this.state.pass == null
-            ? 'ok'
-            : ''}{' '}
-        </Text>
+          {/*<Overlay*/}
+          {/*  isVisible={this.state.isVisible}*/}
+          {/*  windowBackgroundColor="rgba(255, 255, 255, .5)"*/}
+          {/*  overlayBackgroundColor="white"*/}
+          {/*  width="auto"*/}
+          {/*  height="auto"*/}
+          {/*  onBackdropPress={() => this.setState({isVisible: false})}>*/}
+          {/*  <Text style={{fontSize: 15}}>Thông tin đăng nhập sai</Text>*/}
+          {/*  <Button*/}
+          {/*    title="OK"*/}
+          {/*    onPress={() => this.setState({isVisible: false})}*/}
+          {/*  />*/}
+          {/*</Overlay>*/}
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Forgot')}>
+            <Text style={styles.forgot}>Quên mật khẩu</Text>
+          </TouchableOpacity>
+          {/* login button */}
+          <View
+            style={[
+              styles.loginBtn,
+              {
+                overflow: 'hidden',
+                borderRadius: 10,
+                width: '80%',
+              },
+            ]}>
+            <LinearGradient
+              // start={{x: 0, y: 0}}
+              // end={{x: 1, y: 1}}
+              startPoint={{x: 1, y: 0}}
+              endPoint={{x: 0, y: 1}}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              locations={[0.1, 0.9]}
+              colors={['#0AC4BA', '#2BDA8E']}
+              style={styless.gradient}
+            />
+            <TouchableOpacity
+              // style={styles.loginBtn}
+              onPress={() => this.signIn(this.state.email, this.state.pass)}>
+              <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+            </TouchableOpacity>
+          </View>
 
-        <TouchableOpacity>
-          <Text style={styles.forgot}>Quên mật khẩu</Text>
-        </TouchableOpacity>
-        {/* login button */}
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => {
-            login(this.state.email, this.state.pass);
-          }}>
-          <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
-        </TouchableOpacity>
-        {/*sing up button*/}
-        <TouchableOpacity>
-          <Text style={styles.loginText} onPress={() => this.doSignUp}>
-            ĐĂNG KÝ
-          </Text>
-        </TouchableOpacity>
-      </View>
+          {/*sing up button*/}
+          <TouchableOpacity>
+            <Text style={styles.loginText} onPress={this.doSignUp}>
+              ĐĂNG KÝ
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -283,7 +390,7 @@ const styles = StyleSheet.create({
   loginBtn: {
     width: '70%',
     backgroundColor: '#fb5b5a',
-    borderRadius: 25,
+    borderRadius: 50,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',

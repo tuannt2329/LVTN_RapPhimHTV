@@ -23,7 +23,7 @@ import Home from './src/components/screens/Home';
 import Login from './src/components/screens/Login';
 import Screen2 from './src/components/drawer/Screen2';
 import User from './src/components/screens/User';
-
+import ForgetPassword from './src/components/screens/ForgetPassword';
 // import configureStore from './src/redux/store/index';
 // const store = configureStore();
 
@@ -58,6 +58,11 @@ function createHomeStack() {
       />
       <Stack.Screen name="User" options={showHeader} component={User} />
       <Stack.Screen name="SignUp" options={showHeader} component={Register} />
+      <Stack.Screen
+        name="Forgot"
+        options={showHeader}
+        component={ForgetPassword}
+      />
     </Stack.Navigator>
   );
 }

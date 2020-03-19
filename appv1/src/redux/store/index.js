@@ -11,8 +11,9 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['loginIn'], // which reducer want to store
-  stateReconciler: autoMergeLevel2,
+  whitelist: ['loginIn'],
+  blacklist: ['signupIn', 'forgotIn'], // which reducer want to store
+  // stateReconciler: autoMergeLevel2,
 };
 const middlewares = [thunk];
 if (__DEV__) {
