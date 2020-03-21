@@ -2,6 +2,8 @@ import React from 'react';
 import Slide from './Slide/Slide';
 import TabMovie from './TabMovie/TabMovie';
 class Home extends React.Component {
+
+    
     render() {
         return (
             <div>

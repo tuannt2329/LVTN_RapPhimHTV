@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const initMiddlewares = (expressApp, options) => {
   expressApp.set('trust proxy', 1)
 
-  expressApp.use(cors(options.cors))
+  expressApp.use(cors())
   //expressApp.use(helmet(options.helmet))
   //expressApp.use(morgan(options.morgan))
   expressApp.use(express.static(options.static.staticFolder, options.static))
