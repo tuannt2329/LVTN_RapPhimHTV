@@ -209,3 +209,31 @@ i {
   padding-top: 14px;
 }
 
+/* Quên mật khẩu */
+.send-email {
+  float: left;
+  padding-top: 0px;
+  margin-top: 15px;
+  padding-left: 10px;
+ 
+}
+.tab-login-line .tab-login-title {
+  text-align: center;
+}
+.img-send-email{
+   height: 50px;
+}
+
+
+.btn-select-sex select {
+  display: block;
+  left: 0;
+  text-align: left;
+  border: 1px solid #ced0da;
+  right: 35px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 7px;
+  width: 100%;
+  background: transparent;
+}
