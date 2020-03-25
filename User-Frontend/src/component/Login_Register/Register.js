@@ -4,42 +4,44 @@ import { Redirect } from 'react-router-dom';
 class Register extends React.Component {
     constructor(props) {
         super(props)
-        this.onChangeFirstName=this.onChangeFirstName.bind(this)
-        this.onChangeLastName=this.onChangeLastName.bind(this)
-        this.onChangeGender=this.onChangeGender.bind(this)
+        this.onChangefirstName = this.onChangefirstName.bind(this)
+        this.onChangelastName = this.onChangelastName.bind(this)
+        this.onChangeGender = this.onChangeGender.bind(this)
         this.onChangeEmail = this.onChangeEmail.bind(this)
         this.onChangePassword = this.onChangePassword.bind(this)
+        this.onChangePasswordConf = this.onChangePasswordConf.bind(this);
         this.onSubmit = this.onSubmit.bind(this)
         this.onResetForm = this.onResetForm.bind(this)
 
         this.state = {
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             gender: '',
             email: '',
             password: '',
+            passwordConf: '',
             submit: false
         }
     }
 
     // handleChangeField=()=>{
     //     this.setState({
-    //         firstname: this.refs.firstname.value,
-    //         lastname: this.refs.lastname.value,
+    //         firstName: this.refs.firstName.value,
+    //         lastName: this.refs.lastName.value,
     //         gender: this.refs.gender.value,
     //         email: this.refs.email.value,
     //         password: this.refs.password.value,
 
     //     })
     // }
-    onChangeFirstName = (fName) => {
+    onChangefirstName = (fName) => {
         this.setState({
-            firstname: fName.target.value
+            firstName: fName.target.value
         })
     }
-    onChangeLastName = (lName) => {
+    onChangelastName = (lName) => {
         this.setState({
-            lastname: lName.target.value
+            lastName: lName.target.value
         })
     }
     onChangeGender = (g) => {
@@ -58,15 +60,20 @@ class Register extends React.Component {
             password: password.target.value
         })
     }
-
+    onChangePasswordConf = (passwordConf) => {
+        this.setState({
+            passwordConf: passwordConf.target.value
+        });
+    }
     onResetForm = () => {
         this.setState({
             ...this.state,
-            firstname: '',
-            lastname: '',
+            firstName: '',
+            lastName: '',
             gender: '',
             email: '',
             password: '',
+            passwordConf: '',
             submit: false
         })
     }
@@ -75,40 +82,51 @@ class Register extends React.Component {
         e.preventDefault();
 
         const account = {
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
             gender: this.state.gender,
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
+            passwordConf: this.state.passwordConf
         }
 
-        let { email, password, firstname, lastname } = this.state;
-        if (!email || !password || !firstname || !lastname) {
-            this.setState({
-                message: "Vui lòng nhập đầy đủ thông tin"
-            })
-        }
-        else {
-            console.log("abc")
-            axios.post('localhost:8000/user/signup', account)
+        // let { email, password, firstName, lastName } = this.state;
+        // if (!email || !password || !firstName || !lastName) {
+        //     this.setState({
+        //         message: "Vui lòng nhập đầy đủ thông tin"
+        //     })
+        // }
+        // else {
+
+        let {password, passwordConf} = this.state;
+        if (password === passwordConf) {
+            axios.post('http://localhost:8000/user/signup', account)
                 .then((res) => {
-                    if (res.data.error) {
+                    console.log(account)
+                    if (!res.data.error) {
                         this.setState({ submit: true });
                         return window.location.reload()
                     } else {
                         window.alert(res.data.error)
                     }
                 });
-
-            this.setState({
-                firstname: '',
-                lastname: '',
-                gender: '',
-                email: '',
-                password: ''
-
-            });
         }
+        else{
+            this.setState({
+                message:("Mật khẩu không khớp. Vui lòng nhập lại!"),
+            })
+        }
+
+
+        this.setState({
+            firstName: '',
+            lastName: '',
+            gender: '',
+            email: '',
+            password: '',
+            passwordConf: '',
+        });
+        // }
 
     }
 
@@ -120,45 +138,47 @@ class Register extends React.Component {
                         <form onSubmit={this.onSubmit}>
                             <div className="row city">
                                 <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                    <input type="text" placeholder="Họ"
-                                        className="login" required="required"
-                                        value={this.state.firstname}
-                                        onChange={this.onChangeFirstName}
+                                    <input type="email" placeholder="Email" required="required"
+                                        className="login register-input remove-mb"
+                                        value={this.state.email}
+                                        onChange={this.onChangeEmail}
                                     />
                                 </div>
                                 <div className="col-md-6 col-sm-6 col-xs-6 second-col">
-                                    <input type="text" placeholder="Tên"
+                                    <input type="text" placeholder="Họ"
                                         className="login" required="required"
-                                        value={this.state.lastname}
-                                        onChange={this.onChangeLastName}
+                                        value={this.state.lastName}
+                                        onChange={this.onChangelastName}
                                     />
                                 </div>
                             </div>
 
                             <div className="row city">
                                 <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                    <input type="email" placeholder="Email" required="required"
-                                        className="login register-input remove-mb" 
-                                        value={this.state.email}
-                                        onChange={this.onChangeEmail}
-                                    />
-                                </div>
-                                <div className="col-md-6 col-sm-6 col-xs-6 second-col">
                                     <input type="password" placeholder="Mật khẩu" required="required"
                                         className="login"
                                         value={this.state.password}
                                         onChange={this.onChangePassword}
                                     />
                                 </div>
-
+                                <div className="col-md-6 col-sm-6 col-xs-6 second-col">
+                                    <input type="text" placeholder="Tên"
+                                        className="login" required="required"
+                                        value={this.state.firstName}
+                                        onChange={this.onChangefirstName}
+                                    />
+                                </div>
                             </div>
                             <div className="row city">
                                 <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                <htv-select >
-                                    <input type="password" placeholder="Xác nhận mật khẩu"
-                                        required="required" className="login " />
-                                </htv-select>
-                            </div>
+                                    <htv-select >
+                                        <input type="password" placeholder="Xác nhận mật khẩu"
+                                            required="required" className="login "
+                                            value={this.state.passwordConf}
+                                            onChange={this.onChangePasswordConf}
+                                        />
+                                    </htv-select>
+                                </div>
                                 <div className="col-md-6 col-sm-6 col-xs-6 second-col register_gioitinh">
                                     <htv-select>
                                         <div className="btn-select-sex login location">
@@ -166,9 +186,9 @@ class Register extends React.Component {
                                                 value={this.state.gender}
                                                 onChange={this.onChangeGender}>
                                                 <option value="" disabled selected>Chọn giới tính</option>
-                                                <option value="number:0">Nam</option>
-                                                <option value="Nữ">Nữ</option>
-                                                <option value="Khác">Khác</option>
+                                                <option value="male">Nam</option>
+                                                <option value="female">Nữ</option>
+                                                <option value="other">Khác</option>
                                             </select>
                                         </div>
                                     </htv-select>
@@ -214,7 +234,7 @@ class Register extends React.Component {
 
 
             ) : (
-                    <Redirect to={{ pathname: "/login", state: { from: "/register" } }} />
+                    <Redirect to={{ pathname: "/", state: { from: "/register" } }} />
                 )
 
         );
