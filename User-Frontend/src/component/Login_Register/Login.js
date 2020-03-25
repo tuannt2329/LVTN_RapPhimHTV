@@ -2,7 +2,8 @@ import React from 'react';
 import axios from "axios";
 import { Redirect } from 'react-router-dom';
 import ForgotPassword from './ForgotPassword';
-class Login_Register extends React.Component {
+import Register from './Register';
+class Login extends React.Component {
   constructor(props) {
     super(props)
 
@@ -174,59 +175,9 @@ class Login_Register extends React.Component {
 
                             {/* Đăng ký */}
                             <div id="tab_login_2" className="tab-pane">
-                              <div className="login-tab-wrapper">
-                                <div className="login-form">
-                                  <form>
-                                    <div className="row city">
-                                      <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                        <input type="text" placeholder="Họ" required="required"
-                                          className="login" />
-                                      </div>
-                                      <div className="col-md-6 col-sm-6 col-xs-6 second-col">
-                                        <input type="text" placeholder="Tên"
-                                          required="required" className="login" /></div>
-                                    </div>
+                              
+                              <Register/>
 
-                                    <div className="row city">
-                                      <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                        <input type="email" placeholder="Email" required="required"
-                                          className="login register-input remove-mb" />
-                                      </div>
-                                      <div className="col-md-6 col-sm-6 col-xs-6 second-col">
-                                        <input type="password" placeholder="Mật khẩu" required="required"
-                                          className="login" />
-                                      </div>
-
-                                    </div>
-                                    <div className="row city">
-                                      <div className="col-md-6 col-sm-6 col-xs-6 first-col">
-                                        <htv-select >
-                                          <input type="password" placeholder="Xác nhận mật khẩu"
-                                            required="required" className="login " />
-                                        </htv-select>
-                                      </div>
-                                      <div className="col-md-6 col-sm-6 col-xs-6 second-col register_gioitinh">
-                                        <htv-select>
-                                          <div className="btn-select-sex login location">
-                                            <select id="sex">
-                                              <option value="" disabled selected>Chọn giới tính</option>
-                                              <option value="number:0">Nam</option>
-                                              <option value="Nữ">Nữ</option>
-                                              <option value="Khác">Khác</option>
-                                            </select>
-                                          </div>
-                                        </htv-select>
-                                      </div>
-                                    </div>
-
-                                    <p className="text-confirm-signup">Tôi đã đọc và đồng ý với&nbsp;
-                                            <b>Điều khoản&nbsp;</b>
-                                          của chương trình.&nbsp;</p><br />
-                                    <button className="btn primary input">
-                                      <i className="fa fa-pulse fa-spinner" />Đăng ký</button>
-                                  </form>
-                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
@@ -276,10 +227,10 @@ class Login_Register extends React.Component {
         <div className="modal fade" id="myModalForgetPassword" tabIndex={-1} role="dialog"
           aria-labelledby="myModalLabel" aria-hidden="true">
           <ForgotPassword />
-        </div>
+        </div>  
         
       </div>
     );
   }
 }
-export default Login_Register;
+export default Login;

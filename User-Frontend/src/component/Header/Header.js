@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginRegister from '../Login_Register/Login_Register';
+import LoginRegister from '../Login_Register/Login';
 import DateTime from './DateTime/DateTime';
 import NavbarHTV from './Navbar/Navbar';
 class Header extends React.Component {
