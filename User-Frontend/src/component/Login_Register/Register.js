@@ -112,9 +112,7 @@ class Register extends React.Component {
                 });
         }
         else{
-            this.setState({
-                message:("Mật khẩu không khớp. Vui lòng nhập lại!"),
-            })
+            window.alert("Mật khẩu không khớp. Vui lòng nhập lại!")
         }
 
 
@@ -142,6 +140,7 @@ class Register extends React.Component {
                                         className="login register-input remove-mb"
                                         value={this.state.email}
                                         onChange={this.onChangeEmail}
+                                        tabIndex="1"
                                     />
                                 </div>
                                 <div className="col-md-6 col-sm-6 col-xs-6 second-col">
@@ -149,6 +148,7 @@ class Register extends React.Component {
                                         className="login" required="required"
                                         value={this.state.lastName}
                                         onChange={this.onChangelastName}
+                                        tabIndex="4"
                                     />
                                 </div>
                             </div>
@@ -159,6 +159,7 @@ class Register extends React.Component {
                                         className="login"
                                         value={this.state.password}
                                         onChange={this.onChangePassword}
+                                        tabIndex="2"
                                     />
                                 </div>
                                 <div className="col-md-6 col-sm-6 col-xs-6 second-col">
@@ -166,6 +167,7 @@ class Register extends React.Component {
                                         className="login" required="required"
                                         value={this.state.firstName}
                                         onChange={this.onChangefirstName}
+                                        tabIndex="5"
                                     />
                                 </div>
                             </div>
@@ -176,6 +178,7 @@ class Register extends React.Component {
                                             required="required" className="login "
                                             value={this.state.passwordConf}
                                             onChange={this.onChangePasswordConf}
+                                            tabIndex="3"
                                         />
                                     </htv-select>
                                 </div>
@@ -185,7 +188,7 @@ class Register extends React.Component {
                                             <select id="sex"
                                                 value={this.state.gender}
                                                 onChange={this.onChangeGender}>
-                                                <option value="" disabled selected>Chọn giới tính</option>
+                                                <option value="" disabled selected  tabIndex="6">Chọn giới tính</option>
                                                 <option value="male">Nam</option>
                                                 <option value="female">Nữ</option>
                                                 <option value="other">Khác</option>
