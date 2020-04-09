@@ -8,13 +8,41 @@ import styless, {colors} from '../../constants/index.style';
 import SliderEntry from '../SliderEntry';
 import SafeAreaView from 'react-native-safe-area-view';
 import LinearGradient from 'react-native-linear-gradient';
+import * as types from '../../constants';
+import {CommonActions} from '@react-navigation/native';
 
 class Tab1 extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      list: null,
+    };
   }
   _renderItem({item, index}) {
     return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
+  }
+  async componentDidMount(): void {
+    await this.getListFilm();
+    console.log(this.state.list);
+  }
+  getListFilm() {
+    let result = fetch(`${types.API}film/find/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(res => res.json())
+      .then(res => {
+        // console.log(res.film[1].TomTat);
+        this.setState({list: res.film});
+      })
+      .catch(e => {
+        console.log('catch sign up');
+      });
+    return result;
   }
 
   get gradient() {
@@ -33,7 +61,7 @@ class Tab1 extends React.Component {
         <Text style={styless.title}>{`Example ${number}`}</Text>
         <Text style={styless.subtitle}>{title}</Text>
         <Carousel
-          data={ENTRIES2}
+          data={this.state.list}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -53,32 +81,38 @@ class Tab1 extends React.Component {
     );
   }
   render() {
-    const example2 = this.momentumExample(
-      2,
-      'Momentum | Left-aligned | Active animation',
-    );
+    if (this.state.list !== null) {
+      const example2 = this.momentumExample(
+        2,
+        'Momentum | Left-aligned | Active animation',
+      );
 
-    return (
-      <View style={styles.center}>
-        {/*<Text style={styles.title}>Tab 1</Text>*/}
-        <SafeAreaView style={styles.safeArea}>
-          <View style={styles.container}>
-            {/*<StatusBar*/}
-            {/*  translucent={true}*/}
-            {/*  backgroundColor={'rgba(0, 0, 0, 0.3)'}*/}
-            {/*  barStyle={'light-content'}*/}
-            {/*/>*/}
-            {this.gradient}
-            <ScrollView
-              style={styless.scrollview}
-              scrollEventThrottle={200}
-              directionalLockEnabled={true}>
-              {example2}
-            </ScrollView>
-          </View>
-        </SafeAreaView>
-      </View>
-    );
+      return (
+        <View style={styles.center}>
+          {/*<Text style={styles.title}>Tab 1</Text>*/}
+          <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+              {/*<StatusBar*/}
+              {/*  translucent={true}*/}
+              {/*  backgroundColor={'rgba(0, 0, 0, 0.3)'}*/}
+              {/*  barStyle={'light-content'}*/}
+              {/*/>*/}
+              {this.gradient}
+              <ScrollView
+                style={styless.scrollview}
+                scrollEventThrottle={200}
+                directionalLockEnabled={true}>
+                {example2}
+              </ScrollView>
+            </View>
+          </SafeAreaView>
+        </View>
+      );
+    } else {
+      {
+        return null;
+      }
+    }
   }
 }
 const styles = StyleSheet.create({

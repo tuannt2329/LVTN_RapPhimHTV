@@ -14,7 +14,7 @@ export default class SliderEntry extends Component {
 
   get image() {
     const {
-      data: {illustration},
+      data: {AnhBia},
       parallax,
       parallaxProps,
       even,
@@ -22,7 +22,7 @@ export default class SliderEntry extends Component {
 
     return parallax ? (
       <ParallaxImage
-        source={{uri: illustration}}
+        source={{uri: AnhBia}}
         containerStyle={[
           styles.imageContainer,
           even ? styles.imageContainerEven : {},
@@ -34,21 +34,21 @@ export default class SliderEntry extends Component {
         {...parallaxProps}
       />
     ) : (
-      <Image source={{uri: illustration}} style={styles.image} />
+      <Image source={{uri: AnhBia}} style={styles.image} />
     );
   }
 
   render() {
     const {
-      data: {title, subtitle},
+      data: {TenFilm, LuotXem},
       even,
     } = this.props;
 
-    const uppercaseTitle = title ? (
+    const uppercaseTitle = TenFilm ? (
       <Text
         style={[styles.title, even ? styles.titleEven : {}]}
         numberOfLines={2}>
-        {title.toUpperCase()}
+        {TenFilm.toUpperCase()}
       </Text>
     ) : (
       false
@@ -59,7 +59,7 @@ export default class SliderEntry extends Component {
         activeOpacity={1}
         style={styles.slideInnerContainer}
         onPress={() => {
-          alert(`You've clicked '${title}'`);
+          alert(`You've clicked '${TenFilm}'`);
         }}>
         <View style={styles.shadow} />
         <View
@@ -78,7 +78,7 @@ export default class SliderEntry extends Component {
           <Text
             style={[styles.subtitle, even ? styles.subtitleEven : {}]}
             numberOfLines={2}>
-            {subtitle}
+            {LuotXem}
           </Text>
         </View>
       </TouchableOpacity>

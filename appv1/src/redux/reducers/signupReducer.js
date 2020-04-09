@@ -25,6 +25,11 @@ const signupIn = (state = initialState, action) => {
         status: 'SIGN_UP_ERROR',
         error: action.error,
       };
+    case types.RESET_REGISTER:
+      return {
+        status: '',
+        error: null,
+      };
     default:
       console.log(state);
       return state;

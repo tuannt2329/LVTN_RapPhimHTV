@@ -5,3 +5,5 @@ export const LOGOUT = 'LOGOUT';
 export const SIGN_UP_DONE = 'SIGN_UP_DONE';
 export const SIGN_UP_ERROR = 'SIGN_UP_ERROR';
 export const FORGOT = 'FORGOT';
+export const RESET_REGISTER = 'RESET_REGISTER';
+export const API = 'http://192.168.56.1:8000/';

@@ -35,6 +35,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 // login authentication flow
 import indexStackTab from './src/components/tab/indexStackTab';
 import Register from './src/components/screens/Register';
+import LoginHook from './src/components/screens/LoginHook';
+import {SignUpHook} from './src/components/screens/SignUpHook';
 
 const MaterialTopTabs = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -50,14 +52,14 @@ function createHomeStack() {
   return (
     <Stack.Navigator initialRouteName="HomeStack">
       {/*  <Stack.Screen name="Loginn" options={showHeader} component={indexStackTab} />*/}
-      <Stack.Screen name="Login" options={showHeader} component={Login} />
+      <Stack.Screen name="Login" options={showHeader} component={LoginHook} />
       <Stack.Screen
         name="HomeStack"
         options={showHeader}
         component={createBottomTab}
       />
       <Stack.Screen name="User" options={showHeader} component={User} />
-      <Stack.Screen name="SignUp" options={showHeader} component={Register} />
+      <Stack.Screen name="SignUp" options={showHeader} component={SignUpHook} />
       <Stack.Screen
         name="Forgot"
         options={showHeader}

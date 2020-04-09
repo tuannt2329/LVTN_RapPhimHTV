@@ -2,7 +2,6 @@ import * as types from '../../constants/index';
 
 const initialState = {
   status: '',
-  isSuccess: false,
   user: null,
 };
 const loginIn = (state = initialState, action) => {
@@ -19,20 +18,17 @@ const loginIn = (state = initialState, action) => {
       return {
         ...state,
         status: 'OK',
-        isSuccess: true,
         user: action.user,
       };
     case types.LOGIN_IN_ERROR:
       return {
         ...state,
         status: 'ERROR',
-        isSuccess: false,
         user: null,
       };
     case types.LOGOUT:
       return {
         status: '',
-        isSuccess: false,
         user: null,
       };
 
