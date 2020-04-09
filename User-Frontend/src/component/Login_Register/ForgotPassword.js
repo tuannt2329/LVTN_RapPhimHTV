@@ -22,7 +22,7 @@ class ForgotPassword extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.password, " : ", this.state.passwordConf)
+
     if(this.state.password === this.state.passwordConf) {
       const account = {
         email: this.state.email,

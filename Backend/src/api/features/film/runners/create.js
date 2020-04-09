@@ -2,7 +2,7 @@ const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: 'uploads',
+    destination: '../User-Frontend/public/htv/website/images',
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
     }
@@ -21,7 +21,7 @@ const handler = ({ model }, _) => (req, res) => {
   
     const {TenFilm, DaoDien, TheLoai, TenNuocSX,
            TomTat, NgayChieu, NgayKetThuc} = req.body
-    const AnhBia = "uploads/" + req.file.path.split('\\')[1]
+    const AnhBia = "htv/website/images/" + req.file.path.split('\\')[6]
 
     if(req.body.TongThu) {
       TongThu = req.body.TongThu
