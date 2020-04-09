@@ -38,18 +38,18 @@ class Slide extends React.Component {
             (Date.parse(item["NgayChieu"]) <= Date.parse(Date())) ?
               (index === 0) ?
                 <a href="/" className="item active">
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 500 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 500 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-md hidden-lg" />
                 </a>
               :
                 <a href="/" className="item">
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 500 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 500 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-md hidden-lg" />
                 </a>
             :
