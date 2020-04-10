@@ -2,7 +2,26 @@ import React from 'react';
 import LoginRegister from '../Login_Register/Login';
 import DateTime from './DateTime/DateTime';
 import NavbarHTV from './Navbar/Navbar';
+import axios from "axios";
 class Header extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            films: []
+        }
+    }
+
+    UNSAFE_componentWillMount() {
+        axios.post("http://localhost:8000/film/find")
+            .then((res) => {
+                this.setStateFilms(res.data)
+            })
+    }
+
+    setStateFilms = (data) => {
+        this.setState({ films: data.film })
+    }
     render() {
         return (
             <div>
@@ -44,15 +63,15 @@ class Header extends React.Component {
                         </div>
                     </div>
 
-                    
+
 
                 </div>
 
                 {/* Icon navicon reponsive mobile */}
                 <div className="navicon fixed-mobile"><a href="#" className="nav-toggle"><span /></a></div>
-                
 
-                <NavbarHTV/>
+
+                <NavbarHTV films={this.state.films}/>
 
 
             </div>

@@ -41,7 +41,7 @@ class TabMovie extends React.Component {
                         (Date.parse(item["NgayChieu"]) <= Date.parse(Date())) ?
                           <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
                             <div className="article-movie-home">
-                              <img style={{ width: 400, height: 300 }}
+                              <img style={{ height: 264 }}
                                 key={index} src={item.AnhBia}
                                 className="lazy loaded" />
                               <a href="/">
@@ -77,7 +77,7 @@ class TabMovie extends React.Component {
                         (Date.parse(item["NgayChieu"]) > Date.parse(Date())) ?
                           <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
                             <div className="article-movie-home">
-                              <img style={{ width: 400, height: 300 }}
+                              <img style={{ height:264 }}
                                 key={index} src={item.AnhBia}
                                 className="lazy loaded" />
                               <a href="/">

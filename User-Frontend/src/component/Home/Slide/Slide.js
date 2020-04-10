@@ -27,7 +27,7 @@ class Slide extends React.Component {
             (index === 0) ?
               <li data-target="#main-carousel" data-slide-to={0} className="active" />
             :
-              <li data-target="#main-carousel" data-slide-to={index + 1} />
+              <li data-target="#main-carousel" data-slide-to={index} />
           :
             null
         )}
@@ -41,7 +41,7 @@ class Slide extends React.Component {
                   <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 400, height: 200 }}
                     className="lazy hidden-md hidden-lg" />
                 </a>
               :
@@ -49,7 +49,7 @@ class Slide extends React.Component {
                   <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
-                  <img key={index} src={item.AnhBia} style={{ width: 1688, height: 505 }}
+                  <img key={index} src={item.AnhBia} style={{ width: 400, height: 200 }}
                     className="lazy hidden-md hidden-lg" />
                 </a>
             :
