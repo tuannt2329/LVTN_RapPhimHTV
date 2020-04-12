@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 class FilmNowShowing extends React.Component {
     constructor(props) {
         super(props)
@@ -14,6 +13,7 @@ class FilmNowShowing extends React.Component {
         console.log(data)
         this.setState({ films: data, counter: 1 })
     }
+
     render() {
         if (this.props.films[0] && this.state.counter === 0) {
             this.setStateFilms(this.props.films)
@@ -22,11 +22,12 @@ class FilmNowShowing extends React.Component {
             <div>
                 <div className="row movies-group">
                     {this.state.films.map((item, index) =>
-                        (Date.parse(item["NgayChieu"]) <= Date.parse(Date())) ?
+                        ((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))) ?
                             <div className="col-md-10 col-sm-10 col-xs-10 pull-right">
                                 <div className="article-movie-home">
                                     <img style={{ height: 200 }}
-                                        key={index} src={item.AnhBia}
+                                        key={index}
+                                        src={"http://localhost:8000/images/" + item.AnhBia}
                                         className="lazy loaded" />
                                     <a href="/">
                                         <div className="decription-hover overlay">
@@ -47,17 +48,14 @@ class FilmNowShowing extends React.Component {
 
                     )}
                     <div className="row">
-
-                        <div className="col-md-12 col-sm-12 col-xs-12 pull-right">
+                        <div className="col-md-10 col-sm-10 col-xs-10 pull-right">
                             <a href="/"
-                                className="btn secondary fl-right">
+                                className="btn secondary fl-right btn-xemthem-detailfilm">
                                 Xem thêm
-                      </a>
+                            </a>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         );
     }

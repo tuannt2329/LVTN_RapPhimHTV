@@ -13,10 +13,10 @@ class TabMovie extends React.Component {
   setStateFilms = (data) => {
     console.log(data)
     this.setState({ films: data, counter: 1 })
-  } 
+  }
 
   render() {
-    if(this.props.films[0] && this.state.counter === 0) {
+    if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
     }
     return (
@@ -37,31 +37,32 @@ class TabMovie extends React.Component {
                   <div className="tab-content">
                     <div id="tab_default_1" className="tab-pane active">
                       <div className="row movies-group animated fadeInUp">
-                      {this.state.films.map((item, index) =>
-                        (Date.parse(item["NgayChieu"]) <= Date.parse(Date())) ?
-                          <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
-                            <div className="article-movie-home">
-                              <img style={{ height: 264 }}
-                                key={index} src={item.AnhBia}
-                                className="lazy loaded" />
-                              <a href="/">
-                                <div className="decription-hover overlay">
-                                  <div className="movies-content">
-                                    <div className="group">
-                                      <div className="btn secondary-white">mua vé</div>
+                        {this.state.films.map((item, index) =>
+                          ((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))) ?
+                            <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
+                              <div className="article-movie-home">
+                                <img style={{ height: 264 }}
+                                  key={index}
+                                  src={"http://localhost:8000/images/" + item.AnhBia}
+                                  className="lazy loaded" />
+                                <a href="/">
+                                  <div className="decription-hover overlay">
+                                    <div className="movies-content">
+                                      <div className="group">
+                                        <div className="btn secondary-white">mua vé</div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </a>
+                                </a>
+                              </div>
+                              <div className="title-movie">
+                                <h4 className="upper-text">{item.TenFilm}</h4>
+                              </div>
                             </div>
-                            <div className="title-movie">
-                              <h4 className="upper-text">{item.TenFilm}</h4>
-                            </div>
-                          </div>
-                        :
-                          null
-                        
-                      )}
+                            :
+                            null
+
+                        )}
                       </div>
                       <div className="row">
                         <div className="col-md-12 col-sm-12 col-xs-12 pull-right">
@@ -73,30 +74,31 @@ class TabMovie extends React.Component {
                     {/* Phim sắp chiếu */}
                     <div id="tab_default_2" className="tab-pane">
                       <div className="row movies-group animated fadeInUp">
-                      {this.state.films.map((item, index) =>
-                        (Date.parse(item["NgayChieu"]) > Date.parse(Date())) ?
-                          <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
-                            <div className="article-movie-home">
-                              <img style={{ height:264 }}
-                                key={index} src={item.AnhBia}
-                                className="lazy loaded" />
-                              <a href="/">
-                                <div className="decription-hover overlay">
-                                  <div className="movies-content">
-                                    <div className="group">
-                                      <div className="btn secondary-white">mua vé</div>
+                        {this.state.films.map((item, index) =>
+                          (Date.parse(item["NgayChieu"]) > Date.parse(Date())) ?
+                            <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
+                              <div className="article-movie-home">
+                                <img style={{ height: 264 }}
+                                  key={index}
+                                  src={"http://localhost:8000/images/" + item.AnhBia}
+                                  className="lazy loaded" />
+                                <a href="/">
+                                  <div className="decription-hover overlay">
+                                    <div className="movies-content">
+                                      <div className="group">
+                                        <div className="btn secondary-white">mua vé</div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </a>
+                                </a>
+                              </div>
+                              <div className="title-movie">
+                                <h4 className="upper-text">{item.TenFilm}</h4>
+                              </div>
                             </div>
-                            <div className="title-movie">
-                              <h4 className="upper-text">{item.TenFilm}</h4>
-                            </div>
-                          </div>
-                        :
-                          null
-                      )}
+                            :
+                            null
+                        )}
                       </div>
                       <div className="row">
                         <div className="col-md-12 col-sm-12 col-xs-12 pull-right">

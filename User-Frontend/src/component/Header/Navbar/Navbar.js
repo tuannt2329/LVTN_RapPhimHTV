@@ -50,11 +50,12 @@ class Navbar extends React.Component {
                                         </div>
                                         <div className="row movies-group-header">
                                             {this.state.films.map((item, index) =>
-                                                (Date.parse(item["NgayChieu"]) <= Date.parse(Date())) ?
+                                                ((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))) ?
                                                     <div className="col-sm-3">
                                                         <article className="article-movie-header">
                                                             <img style={{ width: '100%', height: '100%' }}
-                                                                key={index} src={item.AnhBia} />
+                                                                key={index}
+                                                                src={"http://localhost:8000/images/" + item.AnhBia} />
                                                             <a href="" style={{ width: '100%' }}>
                                                                 <figure>
                                                                     <figcaption className="overlay">
@@ -89,8 +90,9 @@ class Navbar extends React.Component {
                                                 (Date.parse(item["NgayChieu"]) > Date.parse(Date())) ?
                                                     <div className="col-sm-3">
                                                         <article className="article-movie-header">
-                                                            <img style={{ width: 100, height: '100%' }}
-                                                                key={index} src={item.AnhBia} />
+                                                            <img style={{ width: '100%', height: '100%' }}
+                                                                key={index}
+                                                                src={"http://localhost:8000/images/" + item.AnhBia} />
                                                             <a href="/" style={{ width: '100%' }}>
                                                                 <figure>
                                                                     <figcaption className="overlay">
@@ -115,7 +117,7 @@ class Navbar extends React.Component {
                                     </div>
                                 </div>
                             </li>
-                            
+
                             <li className="sub-nav">
                                 <a href="/">Thể loại phim</a>
                                 <div id="sub-menu">

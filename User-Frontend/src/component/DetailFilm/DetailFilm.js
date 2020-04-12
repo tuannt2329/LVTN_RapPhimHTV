@@ -47,8 +47,8 @@ class DetailFilm extends React.Component {
                     <div className="row">
                       <div className="col-md-4 col-sm-4 col-xs-8 col-xs-offset-2 col-md-offset-0">
                         <div className="detail-feat-img">
-                          <img
-                            src="htv/website/images//detail-film-VoDienSatNhan.jpg"
+                          <img style={{height:'auto'}}
+                            src="htv/website/images/detail-film-VoDienSatNhan.jpg"
                             className="loading"
                             data-was-processed="true" />
                         </div>
