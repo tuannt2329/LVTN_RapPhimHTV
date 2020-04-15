@@ -2,12 +2,12 @@ const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: './public/images',
+  destination: './public/images',
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
+        //cb(null, file.originalname)
     }
 })
-
 const upload = multer({ storage: storage }).single('AnhBia')
 
 
@@ -21,7 +21,10 @@ const handler = ({ model }, _) => (req, res) => {
   
     const {TenFilm, DaoDien, TheLoai, TenNuocSX,
            TomTat, NgayChieu, NgayKetThuc} = req.body
-    const AnhBia = "http://192.168.56.1:8000/images/" + req.file.originalname;
+           
+    //const AnhBia = "htv/website/images/" + req.file.path.split('\\')[6]
+    //const AnhBia = "http://192.168.1.8:8000/images/" + req.file.filename;
+    const AnhBia =  req.file.filename;
     if(req.body.TongThu) {
       TongThu = req.body.TongThu
     }

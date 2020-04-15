@@ -1,7 +1,8 @@
 const handler = ({ model }, _) => async (req, res) => {
   let listparams = req.body
   if (!listparams) {
-    const film = await model.find()
+    listparams['deleted'] = false
+    const film = await model.find(listparams)
     return res.send({ film })
   } else {
     listparams['deleted'] = false
