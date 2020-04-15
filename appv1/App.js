@@ -17,13 +17,13 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 
-import Tab1 from './src/components/tab/Tab1';
-import Tab2 from './src/components/tab/Tab2';
-import Home from './src/components/screens/Home';
-import Login from './src/components/screens/Login';
-import Screen2 from './src/components/drawer/Screen2';
-import User from './src/components/screens/User';
-import ForgetPassword from './src/components/screens/ForgetPassword';
+import Tab1 from './src/tab/Tab1';
+import Tab2 from './src/tab/Tab2';
+import Home from './src/screens/Home';
+import Login from './src/screens/Login';
+import Screen2 from './src/drawer/Screen2';
+import User from './src/screens/User';
+import ForgetPassword from './src/screens/ForgetPassword';
 // import configureStore from './src/redux/store/index';
 // const store = configureStore();
 
@@ -33,10 +33,12 @@ import {PersistGate} from 'redux-persist/integration/react';
 import AsyncStorage from '@react-native-community/async-storage';
 
 // login authentication flow
-import indexStackTab from './src/components/tab/indexStackTab';
-import Register from './src/components/screens/Register';
-import LoginHook from './src/components/screens/LoginHook';
-import {SignUpHook} from './src/components/screens/SignUpHook';
+import indexStackTab from './src/tab/indexStackTab';
+import Register from './src/screens/Register';
+import LoginHook from './src/screens/LoginHook';
+import {SignUpHook} from './src/screens/SignUpHook';
+import DetailFilm from './src/screens/DetailFilm';
+import SliderEntry from './src/components/SliderEntry';
 
 const MaterialTopTabs = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -65,6 +67,8 @@ function createHomeStack() {
         options={showHeader}
         component={ForgetPassword}
       />
+      <Stack.Screen name="DetailFilm" component={DetailFilm} />
+      {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
     </Stack.Navigator>
   );
 }

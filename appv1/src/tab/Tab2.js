@@ -1,32 +1,31 @@
 import React from 'react';
-import {View, Text, StyleSheet, StatusBar, ScrollView} from 'react-native';
-import CustomHeader from '../CustomHeader';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import * as types from '../constants';
 import Carousel from 'react-native-snap-carousel';
-import {ENTRIES1, ENTRIES2} from '../../constants/entries';
-import {sliderWidth, itemWidth} from '../../constants/SliderEntry.style';
-import styless, {colors} from '../../constants/index.style';
-import SliderEntry from '../SliderEntry';
-import SafeAreaView from 'react-native-safe-area-view';
 import LinearGradient from 'react-native-linear-gradient';
-import * as types from '../../constants';
-import {CommonActions} from '@react-navigation/native';
-
-class Tab1 extends React.Component {
+import styless, {colors} from '../constants/index.style';
+import {itemWidth, sliderWidth} from '../constants/SliderEntry.style';
+import SafeAreaView from 'react-native-safe-area-view';
+import SliderEntry from '../components/SliderEntry';
+class Tab2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       list: null,
     };
   }
-  _renderItem({item, index}) {
-    return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
-  }
+
   async componentDidMount(): void {
-    await this.getListFilm();
-    console.log(this.state.list);
+    await this.getListNewFilm();
+    console.log('Tab 2');
+    console.log(
+      this.state.list.filter(
+        item => Date.parse(item.NgayChieu) > Date.parse(Date()),
+      ),
+    );
   }
-  getListFilm() {
-    let result = fetch(`${types.API}film/find/`, {
+  getListNewFilm() {
+    return fetch(`${types.API}film/find/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -36,13 +35,11 @@ class Tab1 extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        // console.log(res.film[1].TomTat);
         this.setState({list: res.film});
       })
       .catch(e => {
         console.log('catch sign up');
       });
-    return result;
   }
 
   get gradient() {
@@ -55,13 +52,16 @@ class Tab1 extends React.Component {
       />
     );
   }
+
   momentumExample(number, title) {
     return (
       <View style={styless.exampleContainer}>
-        <Text style={styless.title}>{`Example ${number}`}</Text>
-        <Text style={styless.subtitle}>{title}</Text>
+        <Text style={styless.title}>{`Phim sắp ra mắt`}</Text>
+        <Text style={styless.subtitle}>{`Cùng theo dõi thông tin bộ phim bạn yêu thích`}</Text>
         <Carousel
-          data={this.state.list}
+          data={this.state.list.filter(
+            item => Date.parse(item.NgayChieu) > Date.parse(Date()),
+          )}
           renderItem={this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}
@@ -79,6 +79,9 @@ class Tab1 extends React.Component {
         />
       </View>
     );
+  }
+  _renderItem({item, index}) {
+    return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
   }
   render() {
     if (this.state.list !== null) {
@@ -130,4 +133,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-export default Tab1;
+export default Tab2;

@@ -3,8 +3,8 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 import {ParallaxImage} from 'react-native-snap-carousel';
 import styles from '../constants/SliderEntry.style';
-
-export default class SliderEntry extends Component {
+import {withNavigation} from '@react-navigation/compat';
+class SliderEntry extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     even: PropTypes.bool,
@@ -19,7 +19,6 @@ export default class SliderEntry extends Component {
       parallaxProps,
       even,
     } = this.props;
-
     return parallax ? (
       <ParallaxImage
         source={{uri: AnhBia}}
@@ -43,7 +42,8 @@ export default class SliderEntry extends Component {
       data: {TenFilm, LuotXem},
       even,
     } = this.props;
-
+    const film = this.props.data;
+    const {navigation} = this.props;
     const uppercaseTitle = TenFilm ? (
       <Text
         style={[styles.title, even ? styles.titleEven : {}]}
@@ -59,7 +59,8 @@ export default class SliderEntry extends Component {
         activeOpacity={1}
         style={styles.slideInnerContainer}
         onPress={() => {
-          alert(`You've clicked '${TenFilm}'`);
+          // alert(`You've clicked '${TenFilm}'`);
+          navigation.navigate('DetailFilm', {TenFilm: TenFilm});
         }}>
         <View style={styles.shadow} />
         <View
@@ -85,3 +86,4 @@ export default class SliderEntry extends Component {
     );
   }
 }
+export default withNavigation(SliderEntry);

@@ -12,7 +12,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['loginIn'],
-  blacklist: ['signupIn', 'forgotIn'], // which reducer want to store
+  blacklist: ['forgotIn'], // which reducer want to store
   // stateReconciler: autoMergeLevel2,
 };
 const middlewares = [thunk];

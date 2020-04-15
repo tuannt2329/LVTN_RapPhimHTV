@@ -18,13 +18,13 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
-import * as LoginAction from '../../redux/actions/auth';
+import * as LoginAction from '../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
-import styless, {colors} from '../../constants/index.style';
+import styless, {colors} from '../constants/index.style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../CustomHeader';
+import CustomHeader from '../components/CustomHeader';
 import {CommonActions} from '@react-navigation/native';
 
 const window = Dimensions.get('window');
@@ -107,7 +107,7 @@ function LoginHook({navigation}) {
         />
 
         <Animated.Image
-          source={require('../../assets/imgs/logo.png')}
+          source={require('../assets/imgs/logo.png')}
           style={{width: '70%', height: imageHeight}}
         />
         <Text style={styles.title}>

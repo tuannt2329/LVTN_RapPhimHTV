@@ -32,39 +32,39 @@ function login(email, pass) {
   };
 }
 
-function signup(email, pass, firstname, lastname, gender) {
-  return dispatch => {
-    console.log(email, '-', pass, '-', firstname, '-', lastname, '-', gender);
-    // dispatch(isLogining());
-    let result = fetch('http://192.168.56.1:8000/user/signup/', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: pass,
-        firstName: firstname,
-        lastName: lastname,
-        gender: gender,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.content === 'Account registration successful') {
-          console.log(res.content);
-          dispatch(signupSuccess(res));
-        } else {
-          dispatch(signupError(res.error));
-        }
-      })
-      .catch(e => {
-        console.log('catch sign up');
-        dispatch(signupError(false));
-      });
-  };
-}
+// function signup(email, pass, firstname, lastname, gender) {
+//   return dispatch => {
+//     console.log(email, '-', pass, '-', firstname, '-', lastname, '-', gender);
+//     // dispatch(isLogining());
+//     let result = fetch('http://192.168.56.1:8000/user/signup/', {
+//       method: 'POST',
+//       headers: {
+//         Accept: 'application/json',
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         email: email,
+//         password: pass,
+//         firstName: firstname,
+//         lastName: lastname,
+//         gender: gender,
+//       }),
+//     })
+//       .then(res => res.json())
+//       .then(res => {
+//         if (res.content === 'Account registration successful') {
+//           console.log(res.content);
+//           dispatch(signupSuccess(res));
+//         } else {
+//           dispatch(signupError(res.error));
+//         }
+//       })
+//       .catch(e => {
+//         console.log('catch sign up');
+//         dispatch(signupError(false));
+//       });
+//   };
+// }
 function forgotPassword(email) {
   return dispatch => {
     console.log('forgot', email);
@@ -116,19 +116,19 @@ function loginError(isSuccess) {
     type: types.LOGIN_IN_ERROR,
   };
 }
-function signupSuccess(user) {
-  console.log('sign success');
-  return {
-    type: types.SIGN_UP_DONE,
-  };
-}
-function signupError(error) {
-  console.log('sign error');
-  return {
-    type: types.SIGN_UP_ERROR,
-    error: error,
-  };
-}
+// function signupSuccess(user) {
+//   console.log('sign success');
+//   return {
+//     type: types.SIGN_UP_DONE,
+//   };
+// }
+// function signupError(error) {
+//   console.log('sign error');
+//   return {
+//     type: types.SIGN_UP_ERROR,
+//     error: error,
+//   };
+// }
 
 function forgot(ress) {
   console.log('forgot');
@@ -145,4 +145,4 @@ function logout() {
   };
 }
 
-export {login, logout, signup, forgotPassword};
+export {login, logout, forgotPassword};

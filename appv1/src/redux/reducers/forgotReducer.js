@@ -7,6 +7,7 @@ const initialState = {
 const forgotIn = (state = initialState, action) => {
   if (action.type === types.FORGOT) {
     return {
+      ...state,
       status: 'FORGOT',
       error: action.error,
       info: action.info,

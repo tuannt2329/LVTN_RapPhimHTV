@@ -8,7 +8,7 @@ class Controller extends EventEmitter{
 
     //test create film
     this.router.get('/',function(req,res){
-      res.sendFile("D:\\LuanVan\\LVTN_RapPhimHTV\\Backend\\src\\api\\features\\film\\runners" + '/index.html');
+      res.sendFile("D:\\LVTN_RapPhimHTV\\Backend\\src\\api\\features\\film\\runners" + '/index.html');
      
     })
     if (model) {

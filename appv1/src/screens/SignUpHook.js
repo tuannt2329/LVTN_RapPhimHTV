@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../CustomHeader';
+import CustomHeader from '../components/CustomHeader';
 import {
   Animated,
   Dimensions,
@@ -14,11 +14,11 @@ import {
 import {ButtonGroup, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
-import styless, {colors} from '../../constants/index.style';
+import styless, {colors} from '../constants/index.style';
 import {useDispatch, useSelector} from 'react-redux';
-import * as LoginAction from '../../redux/actions/auth';
+import * as LoginAction from '../redux/actions/auth';
 import {CommonActions} from '@react-navigation/native';
-import * as types from '../../constants';
+import * as types from '../constants';
 
 const window = Dimensions.get('window');
 
@@ -35,8 +35,7 @@ function SignUpHook({navigation}) {
   const [error, setError] = useState('');
   const buttons = ['Nam', 'Nữ'];
   // dùng thay cho connect state redux hook
-  const statuss = useSelector(state => state.signupIn.status);
-  const errors = useSelector(state => state.signupIn.error);
+
   const dispatch = useDispatch();
 
   const IMAGE_HEIGHT = 100;
@@ -108,7 +107,7 @@ function SignUpHook({navigation}) {
   // });
 
   function doSignUp() {
-    console.log('stt button ', statuss, errors, email, lastName);
+    console.log('stt button ', email, lastName);
     console.log(gender);
     if (
       email === '' ||

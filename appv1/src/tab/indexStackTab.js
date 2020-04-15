@@ -46,13 +46,13 @@ function createBottomTab() {
           tabBarIcon: ({focused, tintColor}) =>
             focused ? (
               <Image
-                source={require('../../assets/imgs//home.png')}
+                source={require('../assets/imgs/home.png')}
                 resizeMode="contain"
                 style={[{width: 30, height: 25}, {tintColor: tintColor}]}
               />
             ) : (
               <Image
-                source={require('../../assets/imgs/home-run.png')}
+                source={require('../assets/imgs/home-run.png')}
                 resizeMode="contain"
                 style={[{width: 30, height: 25}, {tintColor: tintColor}]}
               />
@@ -70,13 +70,13 @@ function createBottomTab() {
           tabBarIcon: ({focused, tintColor}) =>
             focused ? (
               <Image
-                source={require('../../assets/imgs/user.png')}
+                source={require('../assets/imgs/user.png')}
                 resizeMode="contain"
                 style={[{width: 30, height: 25}, {tintColor: tintColor}]}
               />
             ) : (
               <Image
-                source={require('../../assets/imgs//user-run.png')}
+                source={require('../assets/imgs/user-run.png')}
                 resizeMode="contain"
                 style={[{width: 30, height: 25}, {tintColor: tintColor}]}
               />
@@ -88,15 +88,17 @@ function createBottomTab() {
   );
 }
 
-
-
 class indexStackTab extends React.Component {
   render() {
     return (
       <Stack.Navigator initialRouteName="HomeStack">
         {this.props.user !== null ? (
           <>
-            <Stack.Screen name="HomeStack" options={showHeader} component={createBottomTab} />
+            <Stack.Screen
+              name="HomeStack"
+              options={showHeader}
+              component={createBottomTab}
+            />
             <Stack.Screen name="User" options={showHeader} component={User} />
           </>
         ) : (

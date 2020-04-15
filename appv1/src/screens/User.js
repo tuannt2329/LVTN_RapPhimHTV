@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import CustomHeader from '../CustomHeader';
+import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {connect} from 'react-redux';
-import * as LoginAction from '../../redux/actions/auth';
+import * as LoginAction from '../redux/actions/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {StackActions} from '@react-navigation/native';
 
@@ -133,7 +133,8 @@ class User extends React.Component {
             </TouchableOpacity>
             <Text>{'\n'}</Text>
             <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUp')}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('SignUp')}>
                 <View style={{flexDirection: 'row'}}>
                   <FontAwesome5 name="user-plus" size={30} />
                   <Text
@@ -158,6 +159,8 @@ class User extends React.Component {
             {/*    {'      '} {'Dang Nhap'}*/}
             {/*  </Text>*/}
             {/*</View>*/}
+
+
           </View>
         )}
         <View

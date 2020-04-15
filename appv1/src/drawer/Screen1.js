@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import CustomHeader from '../CustomHeader';
+import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
 import Toptab from '../tab/indexTopTab';
 class Screen1 extends React.Component {
@@ -19,7 +19,7 @@ class Screen1 extends React.Component {
           <Image
             // style={{width: 40, height: 40, marginLeft}}
             style={{marginLeft: '12%'}}
-            source={require('../../assets/imgs/logo.png')}
+            source={require('../assets/imgs/logo.png')}
             resizeMode="contain"
           />
         </View>

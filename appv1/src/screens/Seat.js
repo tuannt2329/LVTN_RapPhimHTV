@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, FlatList, View, StyleSheet, Dimensions} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../CustomHeader';
+import CustomHeader from '../components/CustomHeader';
 import {ListItemProps, ListItem} from 'react-native-elements';
 export default class Seat extends React.Component {
   constructor(props) {

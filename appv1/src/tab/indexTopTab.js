@@ -8,10 +8,14 @@ export default class createTopTabs extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount(): void {
+    console.log('From index TopTab');
+  }
+
   render() {
     return (
       <MaterialTopTabs.Navigator
-        initialRouteName="Tab2"
+        initialRouteName="Tab1"
         tabBarOptions={{
           labelStyle: {fontSize: 15, fontWeight: 'bold'},
           style: {backgroundColor: '#cfffe4'},
@@ -19,11 +23,15 @@ export default class createTopTabs extends React.Component {
           showIcon: true,
         }}>
         <MaterialTopTabs.Screen
-          name="Tab2"
+          name="Tab1"
           component={Tab1}
           options={{tabBarLabel: 'Now'}}
         />
-        <MaterialTopTabs.Screen name="Tab3" component={Tab2}     options={{tabBarLabel: 'Comming soon'}}/>
+        <MaterialTopTabs.Screen
+          name="Tab2"
+          component={Tab2}
+          options={{tabBarLabel: 'Coming soon'}}
+        />
       </MaterialTopTabs.Navigator>
     );
   }

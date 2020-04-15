@@ -2,7 +2,7 @@ const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: 'uploads',
+    destination: './public/images',
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname)
     }
@@ -21,8 +21,7 @@ const handler = ({ model }, _) => (req, res) => {
   
     const {TenFilm, DaoDien, TheLoai, TenNuocSX,
            TomTat, NgayChieu, NgayKetThuc} = req.body
-    const AnhBia = "uploads/" + req.file.path.split('\\')[1]
-
+    const AnhBia = "http://192.168.56.1:8000/images/" + req.file.originalname;
     if(req.body.TongThu) {
       TongThu = req.body.TongThu
     }

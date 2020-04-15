@@ -17,15 +17,15 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {connect} from 'react-redux';
-import * as LoginAction from '../../redux/actions/auth';
+import * as LoginAction from '../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
-import styless, {colors} from '../../constants/index.style';
+import styless, {colors} from '../constants/index.style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../CustomHeader';
-import Block from '../block';
-import TextComponent from '../text';
+import CustomHeader from '../components/CustomHeader';
+import Block from '../components/block';
+import TextComponent from '../components/text';
 class ForgetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -172,7 +172,7 @@ class ForgetPassword extends React.Component {
             <Block center style={{marginBottom: 10, marginTop: 30}}>
               <Block top center style={{marginBottom: 10, marginTop: 30}}>
                 <TextComponent
-                  color="black3"
+                  color="black"
                   h2
                   style={{marginTop: 30, marginBottom: 6, fontWeight: 'bold'}}>
                   Nhập Địa Chỉ Mail Để Lấy Lại Mật Khẩu
@@ -263,6 +263,7 @@ class ForgetPassword extends React.Component {
                   }}
                   placeholder={this.state.email}
                   style={styles.inputText}
+                  editable={false}
                   leftIcon={<Icon name="user" size={24} color="black" />}
                   placeholderTextColor="#003f5c"
                   onChangeText={text => this.setState({email: text})}
