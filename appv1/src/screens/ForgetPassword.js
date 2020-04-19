@@ -36,11 +36,10 @@ class ForgetPassword extends React.Component {
       info: null,
       code: null,
       showError: false,
+      loading: false,
+      timerID: null,
     };
   }
-  //
-  //
-  //
 
   doSignUp = () => {
     this.props.navigation.navigate('SignUp');
@@ -95,7 +94,11 @@ class ForgetPassword extends React.Component {
       info: null,
       code: null,
       showError: false,
+      loading: false,
     };
+    // clearTimeout(this.timeoutID);
+    // console.log(this.timer());
+    // console.log('id', this.timeoutID);
   }
 
   doForgot = email => {
@@ -127,8 +130,11 @@ class ForgetPassword extends React.Component {
         console.log('catch forgot');
       });
   };
+
+  // xử lý đổi mật khẩu khi mã gửi thành công
   changePass = (email, code, pass) => {
     console.log('forgot', email);
+    this.setState({loading: true});
     const t = fetch('http://192.168.56.1:8000/user/updateInfo/', {
       method: 'PUT',
       headers: {
@@ -145,11 +151,18 @@ class ForgetPassword extends React.Component {
       .then(res => {
         if (res.hasOwnProperty('content')) {
           console.log(res);
-          this.props.navigation.navigate('Home');
+          // gọi timeout để delay kết quẩ, xử lý giao diện
+          setTimeout(() => {
+            // return the timeoutID
+            this.setState({
+              loading: false,
+            });
+            this.props.navigation.navigate('Home');
+          }, 500);
         }
         if (!res.hasOwnProperty('content')) {
           // Alert.alert('Thông tin không đúng!', 'Sai Thông Tin.');
-          this.setState({showError: true});
+          this.setState({showError: true, loading: false});
         }
       })
       .catch(e => {
@@ -249,7 +262,26 @@ class ForgetPassword extends React.Component {
               <Block center bottom />
             </Block>
           ) : (
-            <Block center top style={{marginBottom: 10, marginTop: 30}}>
+            <Block center middle style={{marginBottom: 10, marginTop: 30}}>
+              {this.state.loading !== true ? (
+                <TextComponent
+                  color="black"
+                  h2
+                  style={{
+                    marginTop: 30,
+                    marginBottom: 6,
+                    fontWeight: 'bold',
+                  }}>
+                  Nhập mã được gửi về mail và mật khẩu mới
+                </TextComponent>
+              ) : (
+                <TextComponent
+                  paragraph
+                  h3
+                  style={{marginBottom: 6, fontWeight: 'bold'}}>
+                  Đang xử lý, đổi thành công sẽ về trang chủ
+                </TextComponent>
+              )}
               <View>
                 <Input
                   inputContainerStyle={{

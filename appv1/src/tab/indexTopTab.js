@@ -13,6 +13,8 @@ export default class createTopTabs extends React.Component {
   }
 
   render() {
+    // Nhận list film từ props Home
+    const {film} = this.props;
     return (
       <MaterialTopTabs.Navigator
         initialRouteName="Tab1"
@@ -24,14 +26,21 @@ export default class createTopTabs extends React.Component {
         }}>
         <MaterialTopTabs.Screen
           name="Tab1"
-          component={Tab1}
-          options={{tabBarLabel: 'Now'}}
-        />
+          // component={Tab1}
+          options={{tabBarLabel: 'Đang Chiếu'}}>
+          {/*
+
+           Sử dụng cách đưới để truyền props được khi khởi tạo stack
+            Dừng component không truyền được props đi
+           */}
+          {props => <Tab1 film={film} />}
+        </MaterialTopTabs.Screen>
         <MaterialTopTabs.Screen
           name="Tab2"
-          component={Tab2}
-          options={{tabBarLabel: 'Coming soon'}}
-        />
+          // component={Tab2}
+          options={{tabBarLabel: 'Sắp ra mắt'}}>
+          {props => <Tab2 film={film} />}
+        </MaterialTopTabs.Screen>
       </MaterialTopTabs.Navigator>
     );
   }

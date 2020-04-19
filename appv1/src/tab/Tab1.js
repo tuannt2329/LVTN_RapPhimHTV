@@ -15,28 +15,24 @@ class Tab1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: null,
+      // nhận luôn props film từ indexTopTab
+      list: this.props.film,
     };
   }
   _renderItem({item, index}) {
-    return (
-      <SliderEntry
-        data={item}
-        even={(index + 1) % 2 === 0}
-      />
-    );
+    return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
   }
-  async componentDidMount(): void {
-    await this.getListFilm();
-    console.log('Tab1');
-    console.log(
-      this.state.list.filter(
-        item =>
-          Date.parse(item.NgayChieu) <= Date.parse(Date()) &&
-          Date.parse(Date()) < Date.parse(item.NgayKetThuc),
-      ),
-    );
-  }
+  // async componentDidMount(): void {
+  //   await this.getListFilm();
+  //   console.log('Tab1');
+  //   console.log(
+  //     this.state.list.filter(
+  //       item =>
+  //         Date.parse(item.NgayChieu) <= Date.parse(Date()) &&
+  //         Date.parse(Date()) < Date.parse(item.NgayKetThuc),
+  //     ),
+  //   );
+  // }
   getListFilm() {
     let result = fetch(`${types.API}film/find/`, {
       method: 'POST',
@@ -51,7 +47,7 @@ class Tab1 extends React.Component {
         this.setState({list: res.film});
       })
       .catch(e => {
-        console.log('catch sign up');
+        console.log('catch Get list Film from tab1');
       });
     return result;
   }
@@ -104,7 +100,6 @@ class Tab1 extends React.Component {
         2,
         'Momentum | Left-aligned | Active animation',
       );
-
       return (
         <View style={styles.center}>
           {/*<Text style={styles.title}>Tab 1</Text>*/}

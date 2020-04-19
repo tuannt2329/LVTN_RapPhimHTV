@@ -39,7 +39,7 @@ import LoginHook from './src/screens/LoginHook';
 import {SignUpHook} from './src/screens/SignUpHook';
 import DetailFilm from './src/screens/DetailFilm';
 import SliderEntry from './src/components/SliderEntry';
-
+import {theme} from './src/components/theme';
 const MaterialTopTabs = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -47,6 +47,27 @@ const Tab = createMaterialBottomTabNavigator();
 
 const showHeader = () => ({
   headerShown: false,
+});
+const backButton = () => ({
+  headerStyle: {
+    height: theme.sizes.base * 4,
+    backgroundColor: theme.colors.white, // or 'white
+    borderBottomColor: 'transparent',
+    elevation: 0, // for android only
+  },
+  headerBackImage: () => (
+    <Image source={require('./src/assets/imgs/back1.png')} />
+  ),
+  headerBackTitle: null,
+  headerLeftContainerStyle: {
+    alignItems: 'flex-start',
+    marginLeft: theme.sizes.base, //for iOS multiply the value by 2
+    paddingRight: theme.sizes.base,
+  },
+  // headerRightContainerStyle: {
+  //   alignItems: 'center',
+  //   paddingRight: theme.sizes.base,
+  // },
 });
 // get username for authentication flow v5
 
@@ -67,7 +88,7 @@ function createHomeStack() {
         options={showHeader}
         component={ForgetPassword}
       />
-      <Stack.Screen name="DetailFilm" component={DetailFilm} />
+      <Stack.Screen name="DetailFilm" component={DetailFilm} options={backButton} />
       {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
     </Stack.Navigator>
   );

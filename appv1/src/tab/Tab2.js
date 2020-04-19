@@ -10,20 +10,21 @@ import SliderEntry from '../components/SliderEntry';
 class Tab2 extends React.Component {
   constructor(props) {
     super(props);
+    //nhận trực tiếp list từ props của indexTopTab
     this.state = {
-      list: null,
+      list: this.props.film,
     };
   }
 
-  async componentDidMount(): void {
-    await this.getListNewFilm();
-    console.log('Tab 2');
-    console.log(
-      this.state.list.filter(
-        item => Date.parse(item.NgayChieu) > Date.parse(Date()),
-      ),
-    );
-  }
+  // async componentDidMount(): void {
+  //   await this.getListNewFilm();
+  //   console.log('Tab 2');
+  //   console.log(
+  //     this.state.list.filter(
+  //       item => Date.parse(item.NgayChieu) > Date.parse(Date()),
+  //     ),
+  //   );
+  // }
   getListNewFilm() {
     return fetch(`${types.API}film/find/`, {
       method: 'POST',
@@ -38,7 +39,7 @@ class Tab2 extends React.Component {
         this.setState({list: res.film});
       })
       .catch(e => {
-        console.log('catch sign up');
+        console.log('catch get list film from tab2');
       });
   }
 

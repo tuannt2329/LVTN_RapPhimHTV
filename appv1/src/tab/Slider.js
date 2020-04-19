@@ -33,7 +33,7 @@ export default class Slider extends React.Component {
             : styless.exampleContainerLight,
         ]}>
         <Carousel
-          data={isTinder ? ENTRIES2 : ENTRIES1}
+          // data={isTinder ? ENTRIES2 : ENTRIES1}
           renderItem={isTinder ? this._renderLightItem : this._renderItem}
           sliderWidth={sliderWidth}
           itemWidth={itemWidth}

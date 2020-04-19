@@ -34,8 +34,10 @@ class Button extends Component {
           <LinearGradient
             start={start}
             end={end}
+            /* tắt cái location này đi đeẻ thực hiện gradient 3 màu */
             locations={locations}
             style={buttonStyles}
+            /* gradient 3 màu, thêm 1 endColor vào đầu*/
             colors={[startColor, endColor]}>
             {children}
           </LinearGradient>

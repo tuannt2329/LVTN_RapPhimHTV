@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {ParallaxImage} from 'react-native-snap-carousel';
 import styles from '../constants/SliderEntry.style';
 import {withNavigation} from '@react-navigation/compat';
+import * as Constant from '../constants/index';
 class SliderEntry extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
@@ -33,7 +34,10 @@ class SliderEntry extends Component {
         {...parallaxProps}
       />
     ) : (
-      <Image source={{uri: AnhBia}} style={styles.image} />
+      <Image
+        source={{uri: `${Constant.API}/images/${AnhBia}`}}
+        style={styles.image}
+      />
     );
   }
 
@@ -60,7 +64,7 @@ class SliderEntry extends Component {
         style={styles.slideInnerContainer}
         onPress={() => {
           // alert(`You've clicked '${TenFilm}'`);
-          navigation.navigate('DetailFilm', {TenFilm: TenFilm});
+          navigation.navigate('DetailFilm', {film: film});
         }}>
         <View style={styles.shadow} />
         <View

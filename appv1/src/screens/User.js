@@ -38,7 +38,7 @@ class User extends React.Component {
     });
   }
 
-  componentWillUnmount() {
+  UNSAFE_componentWillUnmount() {
     this._unsubscribe();
   }
   // componentDidMount = () => {

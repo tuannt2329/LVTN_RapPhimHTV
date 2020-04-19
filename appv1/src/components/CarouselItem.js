@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-
+import * as Constant from '../constants/index';
 const {width, height} = Dimensions.get('window');
 
 const CarouselItem = ({item}) => {
@@ -17,7 +17,10 @@ const CarouselItem = ({item}) => {
       onPress={() => {
         alert(`You've clicked '${item.TenFilm}'`);
       }}>
-      <Image style={styles.image} source={{uri: item.url}} />
+      <Image
+        style={styles.image}
+        source={{uri: `${Constant.API}/images/${item.AnhBia}`}}
+      />
       <View style={styles.textView}>
         <Text style={styles.itemTitle}> {item.TenFilm}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   itemTitle: {
-    color: 'black',
+    color: 'white',
     fontSize: 22,
     shadowColor: '#000',
     shadowOffset: {width: 0.8, height: 0.8},

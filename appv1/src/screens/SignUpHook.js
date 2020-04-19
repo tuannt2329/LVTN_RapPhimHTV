@@ -19,6 +19,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as LoginAction from '../redux/actions/auth';
 import {CommonActions} from '@react-navigation/native';
 import * as types from '../constants';
+import DotIndicator from '../components/indicator/DotIndicator';
+import {theme} from '../components/theme';
 
 const window = Dimensions.get('window');
 
@@ -33,6 +35,9 @@ function SignUpHook({navigation}) {
   const [lastName, setLastName] = useState(null);
   const [gender, setGender] = useState(null);
   const [error, setError] = useState('');
+  // loading sử dụng cho indicator
+  const [loading, setLoading] = useState(false);
+  const [textSuccess, setTextSuccess] = useState(false);
   const buttons = ['Nam', 'Nữ'];
   // dùng thay cho connect state redux hook
 
@@ -122,40 +127,51 @@ function SignUpHook({navigation}) {
       setError('Nhập hết các thông tin');
     } else {
       // dispatch(LoginAction.signup(email, pass, firstName, lastName, gender));
+      setLoading(true);
+      setTimeout(() => {
+        result();
+      }, 500);
 
-      // khong su dung redux
-      let result = fetch(`${types.API}user/signup/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: pass,
-          firstName: firstName,
-          lastName: lastName,
-          gender: gender,
-        }),
-      })
-        .then(res => res.json())
-        .then(res => {
-          console.log(res.error);
-          if (res.error) {
-            console.log('a');
-            setError('Email đã đăng ký');
-          } else {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 1,
-                routes: [{name: 'HomeStack'}],
-              }),
-            );
-          }
+      // Fetch trực tiếp
+      let result = () =>
+        fetch(`${types.API}user/signup/`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            password: pass,
+            firstName: firstName,
+            lastName: lastName,
+            gender: gender,
+          }),
         })
-        .catch(e => {
-          console.log('catch sign up');
-        });
+          .then(res => res.json())
+          .then(res => {
+            console.log(res.error);
+            if (res.error) {
+              console.log('a');
+              setError('Email đã đăng ký');
+              setLoading(false);
+            } else {
+              setLoading(false);
+              setTextSuccess(true);
+              setTimeout(() => {
+                setTextSuccess(false);
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 1,
+                    routes: [{name: 'HomeStack'}],
+                  }),
+                );
+              }, 500);
+            }
+          })
+          .catch(e => {
+            console.log('catch sign up');
+          });
     }
   }
 
@@ -164,6 +180,16 @@ function SignUpHook({navigation}) {
       <CustomHeader isHome="false" title="ĐĂNG KÝ" navigation={navigation} />
       <KeyboardAvoidingView style={styles.container} behavior="height">
         {/*{this.gradient}*/}
+        <LinearGradient
+          colors={[
+            colors.background1Login,
+            colors.background2Login,
+            colors.background3Login,
+          ]}
+          startPoint={{x: 1, y: 0}}
+          endPoint={{x: 0, y: 1}}
+          style={styless.gradient}
+        />
         <Animated.Text
           style={{
             color: '#21243d',
@@ -182,7 +208,7 @@ function SignUpHook({navigation}) {
             HTV
           </Text>
         </Animated.Text>
-        <View style={styles.inputView}>
+        <View style={{...styles.inputView}}>
           <Input
             placeholder="Email..."
             style={styles.inputText}
@@ -262,7 +288,24 @@ function SignUpHook({navigation}) {
           <TouchableOpacity
             // style={styles.loginBtn}
             onPress={() => doSignUp()}>
-            <Text style={styles.loginText}>ĐĂNG KÝ</Text>
+            {loading ? (
+              <View>
+                <DotIndicator
+                  color={theme.colors.white}
+                  count={4}
+                  size={theme.sizes.base * 0.5}
+                />
+                <Text style={styles.loginText}>Đang xác thực</Text>
+              </View>
+            ) : // xử lý timeout lúc đăng ký thành công
+            // đã nhận kết quả từ server, chỉ chờ timeout để hiện thông báo
+            textSuccess !== false ? (
+              <Text style={styles.loginText}>
+                Đăng ký thành công về trang chủ sau 1s
+              </Text>
+            ) : (
+              <Text style={styles.loginText}>ĐĂNG KÝ</Text>
+            )}
           </TouchableOpacity>
         </View>
         {/*sing up button*/}

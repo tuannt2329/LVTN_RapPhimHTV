@@ -8,6 +8,7 @@ import * as types from '../constants';
 import Carousell from '../components/Carousel';
 function Home({navigation}) {
   const [film, setFilm] = useState(null);
+  // biến count để ngăn chặn rerender vì hàm không dùng unmount
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -23,10 +24,10 @@ function Home({navigation}) {
         .then(res => res.json())
         .then(res => {
           setFilm(res.film);
-          console.log(film);
+          console.log('list film from home', film);
         })
         .catch(e => {
-          console.log('catch sign up');
+          console.log('catch get list film from home');
         });
     };
     getList();
@@ -57,7 +58,10 @@ function Home({navigation}) {
         ) : null}
       </View>
       <View style={{flex: 3}}>
-        <Toptab />
+        {/*  */}
+        {/*  Truyền thẳng list film vào indexTopTab */}
+        {/* */}
+        {film !== null ? <Toptab film={film} /> : null}
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text> from home screen</Text>

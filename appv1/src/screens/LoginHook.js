@@ -26,6 +26,8 @@ import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import CustomHeader from '../components/CustomHeader';
 import {CommonActions} from '@react-navigation/native';
+import DotIndicator from '../components/indicator/DotIndicator';
+import {theme} from '../components/theme';
 
 const window = Dimensions.get('window');
 
@@ -50,25 +52,41 @@ function LoginHook({navigation}) {
   const [pass, setPass] = useState(null);
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
+  const [loading, setLoading] = useState(false);
   const status = useSelector(state => state.loginIn.status);
   const user = useSelector(state => state.loginIn.user);
+  // const timeoutRef = React.useRef();
 
+  // biến để reset lại status của reducer khi login error (status =ERROR)
+  // ---> back --> vào lại(status = ERROR)
+  // const [defaultStatus, setDefaultStatus] = useState('');
+  //
   function toggleSwitch() {
-    setShowPassword(!{showPassword});
+    setShowPassword(!showPassword);
   }
 
   function login(email, pass) {
+    setLoading(true);
     if (email && pass) {
-      dispatch(LoginAction.login(email, pass));
+      setTimeout(() => {
+        console.log('timeout login');
+        setLoading(false);
+        Keyboard.dismiss();
+        dispatch(LoginAction.login(email, pass));
+      }, 700);
     } else {
+      setLoading(false);
       setError(true);
     }
   }
+
   useEffect(() => {
     console.log('Handle api');
+    console.log(status);
     if (status === 'OK') {
       navigation.navigate('Home');
-    } else if (status === 'ERROR') {
+    }
+    if (status === 'ERROR') {
       setError(true);
     }
   }, [navigation, error, status]);
@@ -88,6 +106,11 @@ function LoginHook({navigation}) {
       console.log('unmount');
       keyboardWillShowSub.remove();
       keyboardWillHideSub.remove();
+      if (status === 'ERROR') {
+        dispatch(LoginAction.logout());
+      }
+      // clearTimeout(timeoutRef.current);
+      // console.log(timeoutRef);
     };
   }, []);
   return (
@@ -201,7 +224,18 @@ function LoginHook({navigation}) {
           <TouchableOpacity
             // style={styles.loginBtn}
             onPress={() => login(email, pass)}>
-            <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+            {loading ? (
+              <View>
+                <DotIndicator
+                  color={theme.colors.white}
+                  count={4}
+                  size={theme.sizes.base * 0.5}
+                />
+                <Text style={styles.loginText}>Đang xác thực</Text>
+              </View>
+            ) : (
+              <Text style={styles.loginText}>ĐĂNG NHẬP</Text>
+            )}
           </TouchableOpacity>
         </View>
 
