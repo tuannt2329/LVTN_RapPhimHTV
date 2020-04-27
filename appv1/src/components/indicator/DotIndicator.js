@@ -6,7 +6,7 @@ import Indicator from './Indicator';
 class DotIndicator extends PureComponent {
   static defaultProps = {
     animationEasing: Easing.inOut(Easing.ease),
-    color: 'rgb(0, 0, 0)',
+    color: 'rgb(234,35,35)',
     count: 4,
     size: 16,
   };

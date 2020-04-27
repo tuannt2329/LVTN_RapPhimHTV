@@ -1,11 +1,13 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
 import Toptab from '../tab/indexTopTab';
 import Slider from '../tab/Slider';
 import * as types from '../constants';
 import Carousell from '../components/Carousel';
+import Button from '../components/button';
+import DotIndicator from '../components/indicator/DotIndicator';
+
 function Home({navigation}) {
   const [film, setFilm] = useState(null);
   // biến count để ngăn chặn rerender vì hàm không dùng unmount
@@ -28,6 +30,7 @@ function Home({navigation}) {
         })
         .catch(e => {
           console.log('catch get list film from home');
+          console.log(e);
         });
     };
     getList();
@@ -41,7 +44,7 @@ function Home({navigation}) {
       {/*/>*/}
       <View
         style={{
-          flex: 1.5,
+          flex: 2,
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
@@ -55,16 +58,24 @@ function Home({navigation}) {
                 Date.parse(Date()) < Date.parse(item.NgayKetThuc),
             )}
           />
-        ) : null}
+        ) : (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <DotIndicator />
+          </View>
+        )}
       </View>
-      <View style={{flex: 3}}>
+      <View style={{flex: 4}}>
         {/*  */}
         {/*  Truyền thẳng list film vào indexTopTab */}
         {/* */}
-        {film !== null ? <Toptab film={film} /> : null}
+        {film !== null ? <Toptab film={film} /> : <DotIndicator />}
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text> from home screen</Text>
+        <Text> </Text>
+        <DotIndicator />
+        <Button gradient onPress={() => navigation.navigate('ListFilm')}>
+          <Text style={styles.textListFilm}> Các Bộ Phim Đang Chiếu </Text>
+        </Button>
       </View>
     </SafeAreaView>
   );
@@ -82,6 +93,11 @@ const styles = StyleSheet.create({
   androidButtonText: {
     color: 'blue',
     fontSize: 20,
+  },
+  textListFilm: {
+    color: 'black',
+    fontSize: 17,
+    fontWeight: 'bold',
   },
 });
 export default Home;

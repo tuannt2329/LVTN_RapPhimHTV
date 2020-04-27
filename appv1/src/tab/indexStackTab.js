@@ -6,7 +6,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Tab1 from './Tab1';
 import Tab2 from './Tab2';
 import Home from '../screens/Home';
-import Login from '../screens/Login';
 import Screen2 from '../drawer/Screen2';
 import User from '../screens/User';
 import {NavigationContainer} from '@react-navigation/native';
@@ -103,7 +102,7 @@ class indexStackTab extends React.Component {
           </>
         ) : (
           <>
-            <Stack.Screen name="Login" options={showHeader} component={Login} />
+            <Stack.Screen name="Login" options={showHeader} />
           </>
         )}
       </Stack.Navigator>

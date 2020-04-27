@@ -23,7 +23,7 @@ const CarouselItem = ({item}) => {
       />
       <View style={styles.textView}>
         <Text style={styles.itemTitle}> {item.TenFilm}</Text>
-        <Text style={styles.itemDescription}>{item.description}</Text>
+        <Text style={styles.itemDescription}>{` `}</Text>
       </View>
     </TouchableOpacity>
   );

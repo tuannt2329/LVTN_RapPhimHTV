@@ -6,7 +6,7 @@ function login(email, pass) {
   return dispatch => {
     console.log(email, '-', pass);
     // dispatch(isLogining());
-    let result = fetch('http://192.168.56.1:8000/user/login/', {
+    let result = fetch(`${types.API}user/login/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -27,6 +27,7 @@ function login(email, pass) {
         }
       })
       .catch(e => {
+        console.log(e);
         dispatch(loginError(false));
       });
   };
@@ -69,7 +70,7 @@ function forgotPassword(email) {
   return dispatch => {
     console.log('forgot', email);
     // dispatch(isLogining());
-    let result = fetch('http://192.168.56.1:8000/user/verification/', {
+    let result = fetch(`${types.API}user/verification/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

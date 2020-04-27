@@ -26,6 +26,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import CustomHeader from '../components/CustomHeader';
 import Block from '../components/block';
 import TextComponent from '../components/text';
+import {CommonActions} from '@react-navigation/native';
 class ForgetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -39,19 +40,30 @@ class ForgetPassword extends React.Component {
       loading: false,
       timerID: null,
     };
+    this.props.navigation.setOptions({
+      title: 'Quên Mật Khẩu',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={async () =>
+            await this.props.navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{name: 'HomeStack'}],
+              }),
+            )
+          }>
+          <Image
+            source={require('../assets/imgs/home.png')}
+            style={{height: 30, width: 50}}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      ),
+    });
   }
-
-  doSignUp = () => {
-    this.props.navigation.navigate('SignUp');
-  };
-
-  // UNSAFE_componentWillReceiveProps = nextProps => {
-  //   console.log('Component receive prop!');
-  //   if (nextProps.status === 'OK') {
-  //     this.props.navigation.navigate('Home');
-  //   }
-  // };
-
   toggleModal = () => {
     this.setState({isVisible: !this.state.isVisible});
   };
@@ -70,20 +82,6 @@ class ForgetPassword extends React.Component {
       />
     );
   }
-  // static getDerivedStateFromProps() {
-  //   this.state = {
-  //     email: null,
-  //     pass: null,
-  //     error: null,
-  //   };
-  // }
-  // shouldComponentUpdate() {
-  //   this.setState({
-  //     email: null,
-  //     pass: null,
-  //     error: null,
-  //   });
-  // }
 
   componentWillUnmount() {
     console.log('unmount');
@@ -174,11 +172,11 @@ class ForgetPassword extends React.Component {
     const {forgot} = this.props;
     return (
       <SafeAreaView style={{flex: 1}}>
-        <CustomHeader
-          isHome="true"
-          title="QUÊN MẬT KHẨU"
-          navigation={this.props.navigation}
-        />
+        {/*<CustomHeader*/}
+        {/*  isHome="true"*/}
+        {/*  title="Quên Mật Khẩu"*/}
+        {/*  navigation={this.props.navigation}*/}
+        {/*/>*/}
         <View style={styles.container}>
           {this.gradient}
           {this.state.info === null ? (

@@ -1,3 +1,5 @@
+// chỉ dùng để render dữ liệu film từ đetailfilm
+//
 import React, {Component} from 'react';
 import {
   StyleSheet,

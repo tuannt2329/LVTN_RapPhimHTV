@@ -28,7 +28,6 @@ import CustomHeader from '../components/CustomHeader';
 import {CommonActions} from '@react-navigation/native';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
-
 const window = Dimensions.get('window');
 
 const IMAGE_HEIGHT = 100;
@@ -56,11 +55,29 @@ function LoginHook({navigation}) {
   const status = useSelector(state => state.loginIn.status);
   const user = useSelector(state => state.loginIn.user);
   // const timeoutRef = React.useRef();
-
-  // biến để reset lại status của reducer khi login error (status =ERROR)
-  // ---> back --> vào lại(status = ERROR)
-  // const [defaultStatus, setDefaultStatus] = useState('');
-  //
+  navigation.setOptions({
+    title: 'Đăng Nhập',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={async () =>
+          await navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'HomeStack'}],
+            }),
+          )
+        }>
+        <Image
+          source={require('../assets/imgs/home.png')}
+          style={{height: 30, width: 50}}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    ),
+  });
   function toggleSwitch() {
     setShowPassword(!showPassword);
   }
@@ -115,7 +132,7 @@ function LoginHook({navigation}) {
   }, []);
   return (
     <SafeAreaView style={{flex: 1}}>
-      <CustomHeader isHome="true" title="ĐĂNG NHẬP" navigation={navigation} />
+      {/*<CustomHeader isHome="true" title="Đăng Nhập" navigation={navigation} />*/}
       <View style={styles.container}>
         {/*{this.gradient}*/}
         <LinearGradient
@@ -184,19 +201,6 @@ function LoginHook({navigation}) {
           }}>
           {error ? 'Thông tin đăng nhập sai' : ''}
         </Text>
-        {/*<Overlay*/}
-        {/*  isVisible={this.state.isVisible}*/}
-        {/*  windowBackgroundColor="rgba(255, 255, 255, .5)"*/}
-        {/*  overlayBackgroundColor="white"*/}
-        {/*  width="auto"*/}
-        {/*  height="auto"*/}
-        {/*  onBackdropPress={() => this.setState({isVisible: false})}>*/}
-        {/*  <Text style={{fontSize: 15}}>Thông tin đăng nhập sai</Text>*/}
-        {/*  <Button*/}
-        {/*    title="OK"*/}
-        {/*    onPress={() => this.setState({isVisible: false})}*/}
-        {/*  />*/}
-        {/*</Overlay>*/}
         <TouchableOpacity onPress={() => navigation.navigate('Forgot')}>
           <Text style={styles.forgot}>Quên mật khẩu</Text>
         </TouchableOpacity>
@@ -284,7 +288,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   forgot: {
+    textDecorationLine: 'underline',
     color: 'black',
+    fontStyle: 'italic',
     fontSize: 16,
   },
   loginBtn: {

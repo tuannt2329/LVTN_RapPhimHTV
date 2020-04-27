@@ -22,17 +22,7 @@ class Tab1 extends React.Component {
   _renderItem({item, index}) {
     return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
   }
-  // async componentDidMount(): void {
-  //   await this.getListFilm();
-  //   console.log('Tab1');
-  //   console.log(
-  //     this.state.list.filter(
-  //       item =>
-  //         Date.parse(item.NgayChieu) <= Date.parse(Date()) &&
-  //         Date.parse(Date()) < Date.parse(item.NgayKetThuc),
-  //     ),
-  //   );
-  // }
+
   getListFilm() {
     let result = fetch(`${types.API}film/find/`, {
       method: 'POST',

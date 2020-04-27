@@ -20,6 +20,7 @@ import Button from '../components/button';
 import Item from '../components/detailScrollView/Item';
 import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
+import {CommonActions} from '@react-navigation/native';
 const {width} = Dimensions.get('window');
 
 const MIN_HEIGHT = 100;
@@ -28,6 +29,30 @@ const MAX_HEIGHT = 250;
 // Detail of the movie with data is passing from carousel through route
 function DetailFilm({route, navigation}) {
   const {film} = route.params;
+
+  navigation.setOptions({
+    title: 'Nội Dung Phim',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={async () =>
+          await navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'HomeStack'}],
+            }),
+          )
+        }>
+        <Image
+          source={require('../assets/imgs/home.png')}
+          style={{height: 30, width: 50}}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    ),
+  });
   return (
     // <ScrollView showsVerticalScrollIndicator={false}>
     //   <Block style={styles.product}>

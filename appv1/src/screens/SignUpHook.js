@@ -4,6 +4,7 @@ import CustomHeader from '../components/CustomHeader';
 import {
   Animated,
   Dimensions,
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   StyleSheet,
@@ -39,9 +40,32 @@ function SignUpHook({navigation}) {
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
   const buttons = ['Nam', 'Nữ'];
-  // dùng thay cho connect state redux hook
 
   const dispatch = useDispatch();
+
+  navigation.setOptions({
+    title: 'Đăng Ký',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={async () =>
+          await navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'HomeStack'}],
+            }),
+          )
+        }>
+        <Image
+          source={require('../assets/imgs/home.png')}
+          style={{height: 30, width: 50}}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    ),
+  });
 
   const IMAGE_HEIGHT = 100;
   const IMAGE_HEIGHT_SMALL = 0;
@@ -177,7 +201,7 @@ function SignUpHook({navigation}) {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <CustomHeader isHome="false" title="ĐĂNG KÝ" navigation={navigation} />
+      {/*<CustomHeader isHome="false" title="Đăng Ký" navigation={navigation} />*/}
       <KeyboardAvoidingView style={styles.container} behavior="height">
         {/*{this.gradient}*/}
         <LinearGradient

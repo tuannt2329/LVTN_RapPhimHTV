@@ -44,35 +44,50 @@ export default class CustomHeader extends React.Component {
 
     return (
       <View
-        style={{flexDirection: 'row', height: 50, backgroundColor: '#caffca'}}>
+        style={{
+          // flex: 1,
+          flexDirection: 'row',
+          height: 50,
+          backgroundColor: '#caffca',
+        }}>
         {this.gradient}
-        {this.checkBack() ? (
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <View style={{flex: 2, justifyContent: 'center'}}>
-              <Image
-                style={{width: 40, height: 40}}
-                source={require('../assets/imgs/home.png')}
-                resizeMode="contain"
-              />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <View style={{flex: 2, justifyContent: 'center'}}>
-              <Image
-                style={{width: 40, height: 40}}
-                source={require('../assets/imgs/home.png')}
-                resizeMode="contain"
-              />
-            </View>
-          </TouchableOpacity>
-        )}
-        <View style={{flex: 3.5, justifyContent: 'center'}}>
-          <Text style={{textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>
+        <View style={{flex: 2, justifyContent: 'center'}}>
+          {this.checkBack() ? (
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <View style={{justifyContent: 'center'}}>
+                <Image
+                  style={{width: 40, height: 40}}
+                  source={require('../assets/imgs/home.png')}
+                  resizeMode="contain"
+                />
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <View style={{justifyContent: 'center'}}>
+                <Image
+                  style={{width: 40, height: 40}}
+                  source={require('../assets/imgs/home.png')}
+                  resizeMode="contain"
+                />
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={{flex: 3, justifyContent: 'center'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              justifyContent: 'center',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}>
             {title}
           </Text>
         </View>
-        <View style={{flex: 1}}>
+        <View
+          style={{flex: 2, justifyContent: 'center', alignItems: 'flex-end'}}>
           <Image
             style={{width: 100, height: 60}}
             // style={{marginLeft: '12%'}}

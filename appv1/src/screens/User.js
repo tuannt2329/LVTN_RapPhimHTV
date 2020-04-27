@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -62,11 +62,11 @@ class User extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <CustomHeader
-          isHome="false"
-          title="USER"
-          navigation={this.props.navigation}
-        />
+        {/*<CustomHeader*/}
+        {/*  isHome="false"*/}
+        {/*  title="Tài Khoản"*/}
+        {/*  navigation={this.props.navigation}*/}
+        {/*/>*/}
         <View
           style={{
             flex: 1,
@@ -159,8 +159,6 @@ class User extends React.Component {
             {/*    {'      '} {'Dang Nhap'}*/}
             {/*  </Text>*/}
             {/*</View>*/}
-
-
           </View>
         )}
         <View
@@ -177,6 +175,7 @@ class User extends React.Component {
   }
 }
 const styles = StyleSheet.create({
+
   center: {
     flex: 2,
     justifyContent: 'center',

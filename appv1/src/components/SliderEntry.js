@@ -83,7 +83,7 @@ class SliderEntry extends Component {
           <Text
             style={[styles.subtitle, even ? styles.subtitleEven : {}]}
             numberOfLines={2}>
-            {LuotXem}
+            Lượt Xem {LuotXem}
           </Text>
         </View>
       </TouchableOpacity>

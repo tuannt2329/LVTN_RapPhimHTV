@@ -1,6 +1,5 @@
 import React from 'react';
 import Carousel from 'react-native-snap-carousel';
-import {ENTRIES1, ENTRIES2} from '../constants/entries';
 import {colors} from '../constants/index.style';
 import SliderEntry from '../components/SliderEntry';
 import SafeAreaView from 'react-native-safe-area-view';
