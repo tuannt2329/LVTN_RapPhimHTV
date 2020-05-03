@@ -13,7 +13,7 @@ const handler = ({ model }, _) => async (req, res) => {
     try {
       let listparams = {
         email: email,
-        deleted: false
+        deleted: false 
       }
       const user = await model.findOne(listparams)
 
