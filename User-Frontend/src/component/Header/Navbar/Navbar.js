@@ -1,5 +1,4 @@
 import React from 'react';
-
 class Navbar extends React.Component {
     constructor(props) {
         super(props)
@@ -13,6 +12,10 @@ class Navbar extends React.Component {
     setStateFilms = (data) => {
         console.log(data)
         this.setState({ films: data, counter: 1 })
+    }
+
+    handleOnclickFilm = (tenphim) => {
+        sessionStorage.setItem("tenphim", tenphim);
     }
 
     render() {
@@ -33,10 +36,10 @@ class Navbar extends React.Component {
                                 <div id="sub-menu">
                                     <ul className="undefined">
                                         <li>
-                                            <a href="phim-dang-chieu">Phim đang chiếu</a>
+                                            <a href="/">Phim đang chiếu</a>
                                         </li>
                                         <li>
-                                            <a href="phim-sap-chieu">Phim sắp chiếu</a>
+                                            <a href="/">Phim sắp chiếu</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -46,6 +49,7 @@ class Navbar extends React.Component {
                                         <div className="row submenu-title">
                                             <div className="col-sm-12">
                                                 <h3><a href="phim-dang-chieu">Phim đang chiếu</a></h3>
+                                                {/* <h3><Link to ={'/allfilm', <TabMovie films={this.state.films}/>}>Phim đang chiếu</Link></h3> */}
                                             </div>
                                         </div>
                                         <div className="row movies-group-header">
@@ -56,7 +60,10 @@ class Navbar extends React.Component {
                                                             <img style={{ width: '100%', height: '100%' }}
                                                                 key={index}
                                                                 src={"http://localhost:8000/images/" + item.AnhBia} />
-                                                            <a href="" style={{ width: '100%' }}>
+
+                                                            <a style={{ width: '100%' }}
+                                                                href="/detailfilm"
+                                                                onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                 <figure>
                                                                     <figcaption className="overlay">
                                                                         <div className="movies-content-header">
@@ -81,7 +88,7 @@ class Navbar extends React.Component {
                                         <div className="row submenu-title">
                                             <div className="col-sm-12">
                                                 <h3>
-                                                    <a href="phim-sap-chieu">Phim sắp chiếu</a>
+                                                    <a href="/">Phim sắp chiếu</a>
                                                 </h3>
                                             </div>
                                         </div>
@@ -93,7 +100,9 @@ class Navbar extends React.Component {
                                                             <img style={{ width: '100%', height: '100%' }}
                                                                 key={index}
                                                                 src={"http://localhost:8000/images/" + item.AnhBia} />
-                                                            <a href="/" style={{ width: '100%' }}>
+                                                            <a style={{ width: '100%' }}
+                                                                href="/detailfilm"
+                                                                onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                 <figure>
                                                                     <figcaption className="overlay">
                                                                         <div className="movies-content-header">

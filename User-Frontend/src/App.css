@@ -357,3 +357,26 @@ i {
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+
+
+/* fix quên mật khẩu */
+/* html,
+body{
+  padding: 0 !important;
+} */
+
+/* nav-page-detailfilm */
+  .breadcrumb > .active {
+    color: #43464b;
+}
+.font-nav-detailfilm{
+  font-family: "Roboto", sans-serif;
+}
+.breadcrumb > li + li:before {
+  padding: 0 5px;
+  color: #a0a3a7;
+  font-family: 'FontAwesome';
+  font-weight: 400;
+  line-height: 1;
+  content: '\f105';
+}
