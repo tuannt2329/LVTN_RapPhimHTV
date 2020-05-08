@@ -28,6 +28,7 @@ import CustomHeader from '../components/CustomHeader';
 import {CommonActions} from '@react-navigation/native';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 const window = Dimensions.get('window');
 
 const IMAGE_HEIGHT = 100;
@@ -45,7 +46,7 @@ const keyboardDidHide = event => {
     toValue: IMAGE_HEIGHT,
   }).start();
 };
-function LoginHook({navigation}) {
+function LoginHook({navigation, route}) {
   const dispatch = useDispatch();
   const [email, setEmail] = useState(null);
   const [pass, setPass] = useState(null);
@@ -66,7 +67,7 @@ function LoginHook({navigation}) {
           await navigation.dispatch(
             CommonActions.reset({
               index: 1,
-              routes: [{name: 'HomeStack'}],
+              routes: [{name: 'Home'}],
             }),
           )
         }>
@@ -100,8 +101,17 @@ function LoginHook({navigation}) {
   useEffect(() => {
     console.log('Handle api');
     console.log(status);
+    if (route.params) {
+      var {continueBooking} = route.params;
+      console.log(continueBooking);
+    }
     if (status === 'OK') {
-      navigation.navigate('Home');
+      if (continueBooking === true) {
+        console.log('back hihi');
+        navigation.goBack();
+      } else {
+        navigation.navigate('Home');
+      }
     }
     if (status === 'ERROR') {
       setError(true);
@@ -209,9 +219,23 @@ function LoginHook({navigation}) {
           style={[
             styles.loginBtn,
             {
+              borderColor: '#ddd',
+              borderBottomWidth: 0,
+
+              shadowColor: '#000',
+              shadowOffset: {width: 0, height: 2},
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 3,
+
+              borderRadius: 20,
+              marginRight: 40,
+              marginLeft: 40,
+              marginTop: 10,
+              paddingTop: 5,
+              paddingBottom: 10,
+              borderWidth: 1,
               overflow: 'hidden',
-              borderRadius: 10,
-              width: '80%',
             },
           ]}>
           <LinearGradient
@@ -222,7 +246,8 @@ function LoginHook({navigation}) {
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
             locations={[0.1, 0.9]}
-            colors={['#0AC4BA', '#2BDA8E']}
+            // colors={['#0AC4BA', '#2BDA8E']}
+            colors={['#d53369', '#cbad6d']}
             style={styless.gradient}
           />
           <TouchableOpacity
@@ -246,7 +271,15 @@ function LoginHook({navigation}) {
         {/*sing up button*/}
         <TouchableOpacity>
           <Text
-            style={styles.loginText}
+            style={[
+              styles.loginText,
+              {
+                textDecorationLine: 'underline',
+                fontStyle: 'italic',
+                fontSize: 17,
+                color: 'black',
+              },
+            ]}
             onPress={() => navigation.navigate('SignUp')}>
             ĐĂNG KÝ
           </Text>
@@ -302,10 +335,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
     marginBottom: 10,
+
+    borderColor: '#ddd',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 3,
   },
   loginText: {
-    color: 'black',
-    fontSize: 17,
+    color: 'white',
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Image,
+  ScrollView,
+} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import SafeAreaView from 'react-native-safe-area-view';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -7,6 +15,11 @@ import {connect} from 'react-redux';
 import * as LoginAction from '../redux/actions/auth';
 import AsyncStorage from '@react-native-community/async-storage';
 import {StackActions} from '@react-navigation/native';
+import Button from 'react-native-paper/src/components/Button';
+import Block from '../components/block';
+import {theme} from '../components/theme';
+import Card from '../components/card';
+import Badge from '../components/badge';
 
 class User extends React.Component {
   constructor(props) {
@@ -41,23 +54,6 @@ class User extends React.Component {
   UNSAFE_componentWillUnmount() {
     this._unsubscribe();
   }
-  // componentDidMount = () => {
-  // this.getUser().then(val => {
-  //   this.setState({username: val});
-  //   console.log('get user', val);
-  //   console.log('state', this.state.username);
-  // });
-  //   AsyncStorage.getItem('user').then(token => {
-  //     this.setState({
-  //       user: token,
-  //     });
-  //   });
-  // };
-  // static getDerivedStateFromProps = (props, state) => {
-  //   this.getUser().then(val => {
-  //     console.log('get user', val);
-  //   });
-  // };
 
   render() {
     return (
@@ -82,21 +78,35 @@ class User extends React.Component {
             }}>
             {' '}
             {this.props.user !== null
-              ? this.props.user.user.email
+              ? `${this.props.user.user.email}`
               : 'Bạn chưa đăng nhập'}
           </Text>
         </View>
 
         {this.props.user !== null ? (
-          <View style={{flex: 1}}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 20,
-              }}>
-              {'      '} {'ĐĂNG NHẬP THANH CONG'}
-              <Text>{'\n'}</Text>
-            </Text>
+          //
+          // View khi dang nhap thanh cong
+          <View
+            style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Block>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{paddingVertial: theme.sizes.base * 2}}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Explore')}>
+                  <Card center middle shadow>
+                    <Badge>
+                      <Image source={require('../assets/imgs/user-run.png')} />
+                    </Badge>
+                    <Text>Plants</Text>
+                    <Text gray caption>
+                      123 products
+                    </Text>
+                  </Card>
+                </TouchableOpacity>
+              </ScrollView>
+            </Block>
+
             <TouchableOpacity
               onPress={() => {
                 this.props.logout();
@@ -106,7 +116,7 @@ class User extends React.Component {
                   fontWeight: 'bold',
                   fontSize: 20,
                 }}>
-                {'      '} {'LOG OUT'}
+                {'LOG OUT'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -175,7 +185,6 @@ class User extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-
   center: {
     flex: 2,
     justifyContent: 'center',

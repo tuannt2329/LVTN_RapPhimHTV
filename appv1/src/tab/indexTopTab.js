@@ -20,8 +20,8 @@ export default class createTopTabs extends React.Component {
         initialRouteName="Tab1"
         tabBarOptions={{
           labelStyle: {fontSize: 15, fontWeight: 'bold'},
-          style: {backgroundColor: '#cfffe4'},
-          activeTintColor: '#ff704b',
+          style: {backgroundColor: '#e7d6da'},
+          activeTintColor: 'black',
           showIcon: true,
         }}>
         <MaterialTopTabs.Screen
@@ -31,7 +31,8 @@ export default class createTopTabs extends React.Component {
           {/*
 
            Sử dụng cách đưới để truyền props được khi khởi tạo stack
-            Dừng component không truyền được props đi
+            Dung component={} không truyền được props đi
+
            */}
           {props => <Tab1 film={film} />}
         </MaterialTopTabs.Screen>

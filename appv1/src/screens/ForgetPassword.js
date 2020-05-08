@@ -183,15 +183,23 @@ class ForgetPassword extends React.Component {
             <Block center style={{marginBottom: 10, marginTop: 30}}>
               <Block top center style={{marginBottom: 10, marginTop: 30}}>
                 <TextComponent
-                  color="black"
-                  h2
-                  style={{marginTop: 30, marginBottom: 6, fontWeight: 'bold'}}>
+                  color="white"
+                  style={{
+                    marginTop: 30,
+                    marginBottom: 6,
+                    fontSize: 21,
+                    fontWeight: 'bold',
+                  }}>
                   Nhập Địa Chỉ Mail Để Lấy Lại Mật Khẩu
                 </TextComponent>
                 <TextComponent
                   paragraph
                   h3
-                  style={{marginBottom: 6, fontWeight: 'bold'}}>
+                  style={{
+                    marginBottom: 6,
+                    fontWeight: 'bold',
+                    fontStyle: 'italic',
+                  }}>
                   Miễn Phí, Mã Được Gửi Vào Email
                 </TextComponent>
               </Block>
@@ -229,13 +237,25 @@ class ForgetPassword extends React.Component {
                   style={[
                     // styles.inputText,
                     {
+                      borderColor: '#ddd',
+                      borderBottomWidth: 0,
+
+                      shadowColor: '#000',
+                      shadowOffset: {width: 0, height: 2},
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 3,
+
+                      borderRadius: 20,
+                      marginRight: 40,
+                      marginLeft: 40,
+                      marginTop: 10,
+                      paddingTop: 5,
+                      paddingBottom: 10,
+                      paddingRight: 20,
+                      paddingLeft: 20,
+                      borderWidth: 1,
                       overflow: 'hidden',
-                      borderRadius: 15,
-                      width: '80%',
-                      height: 50,
-                      marginBottom: 20,
-                      justifyContent: 'center',
-                      padding: 20,
                     },
                   ]}>
                   <LinearGradient
@@ -246,7 +266,8 @@ class ForgetPassword extends React.Component {
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 1}}
                     locations={[0.1, 0.9]}
-                    colors={['#0AC4BA', '#2BDA8E']}
+                    colors={['#d53369', '#cbad6d']}
+                    // colors={['#0AC4BA', '#2BDA8E']}
                     style={styless.gradient}
                   />
                   <TouchableOpacity
@@ -263,12 +284,12 @@ class ForgetPassword extends React.Component {
             <Block center middle style={{marginBottom: 10, marginTop: 30}}>
               {this.state.loading !== true ? (
                 <TextComponent
-                  color="black"
-                  h2
+                  color="white"
                   style={{
                     marginTop: 30,
                     marginBottom: 6,
                     fontWeight: 'bold',
+                    fontSize: 18,
                   }}>
                   Nhập mã được gửi về mail và mật khẩu mới
                 </TextComponent>
@@ -290,6 +311,14 @@ class ForgetPassword extends React.Component {
                     marginBottom: 20,
                     justifyContent: 'center',
                     padding: 20,
+
+                    borderColor: '#ddd',
+                    borderBottomWidth: 0,
+                    shadowColor: '#000',
+                    shadowOffset: {width: 0, height: 2},
+                    shadowOpacity: 0.8,
+                    shadowRadius: 2,
+                    elevation: 3,
                   }}
                   placeholder={this.state.email}
                   style={styles.inputText}
@@ -350,13 +379,25 @@ class ForgetPassword extends React.Component {
                 style={[
                   // styles.inputText,
                   {
+                    borderColor: '#ddd',
+                    borderBottomWidth: 0,
+
+                    shadowColor: '#000',
+                    shadowOffset: {width: 0, height: 2},
+                    shadowOpacity: 0.8,
+                    shadowRadius: 2,
+                    elevation: 3,
+
+                    borderRadius: 20,
+                    marginRight: 40,
+                    marginLeft: 40,
+                    marginTop: 10,
+                    paddingTop: 5,
+                    paddingBottom: 10,
+                    paddingRight: 10,
+                    paddingLeft: 10,
+                    borderWidth: 1,
                     overflow: 'hidden',
-                    borderRadius: 15,
-                    width: '80%',
-                    height: 50,
-                    marginBottom: 20,
-                    justifyContent: 'center',
-                    padding: 20,
                   },
                 ]}>
                 <LinearGradient
@@ -367,7 +408,7 @@ class ForgetPassword extends React.Component {
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 1}}
                   locations={[0.1, 0.9]}
-                  colors={['#0AC4BA', '#2BDA8E']}
+                  colors={['#d53369', '#cbad6d']}
                   style={styless.gradient}
                 />
                 <TouchableOpacity
@@ -482,8 +523,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   loginText: {
-    color: 'black',
-    fontSize: 17,
+    color: 'white',
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

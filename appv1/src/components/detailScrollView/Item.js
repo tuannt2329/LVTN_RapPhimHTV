@@ -39,13 +39,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#cccccc',
     backgroundColor: 'white',
+
+    borderWidth: 1,
+    borderColor: '#29a0c8',
+    // shadowColor: '#000',
+    // shadowColor: '#29a0c8',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
   },
   sectionContent: {
-    fontSize: 16,
+    fontSize: 17,
     textAlign: 'justify',
   },
   keywords: {
@@ -55,10 +64,19 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   keywordContainer: {
-    backgroundColor: '#999999',
+    backgroundColor: 'transparent',
     borderRadius: 10,
     margin: 10,
     padding: 10,
+    borderWidth: 1,
+
+    borderColor: '#ddd',
+    borderBottomWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 4,
   },
   keyword: {
     fontSize: 16,
@@ -145,8 +163,8 @@ class Item extends Component {
             {/*  style={styless.gradient}*/}
             {/*/>*/}
             <Text style={styles.title}>
-              <Text style={styles.name}>{film.TenFilm}</Text>, (Ngày chiếu{' '}
-              {date})
+              <Text style={styles.name}>{film.TenFilm}</Text> (Ngày chiếu {date}
+              )
             </Text>
           </TriggeringView>
           <View style={styles.section}>
@@ -166,17 +184,47 @@ class Item extends Component {
           <View style={[styles.section, styles.sectionLarge]}>
             <Text style={styles.sectionTitle}>Thông Tin </Text>
             <View style={styles.keywords}>
-              <View style={styles.keywordContainer}>
-                <Text style={styles.keyword}>Lượt Xem: {film.LuotXem}</Text>
+              <View>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}
+                  // colors={['#4c669f', '#29a0c8', '#192f6a']}
+                >
+                  <Text style={styles.keyword}>Lượt Xem: {film.LuotXem}</Text>
+                </LinearGradient>
               </View>
-              <View style={styles.keywordContainer}>
-                <Text style={styles.keyword}>Đạo diễn: {film.DaoDien}</Text>
+              <View>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  <Text style={styles.keyword}>Đạo diễn: {film.DaoDien}</Text>
+                </LinearGradient>
               </View>
-              <View style={styles.keywordContainer}>
-                <Text style={styles.keyword}>{film.TheLoai}</Text>
+              <View>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  <Text style={styles.keyword}>{film.TheLoai}</Text>
+                </LinearGradient>
               </View>
-              <View style={styles.keywordContainer}>
-                <Text style={styles.keyword}>{film.TenNuocSX}</Text>
+              <View>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  <Text style={styles.keyword}>{film.TenNuocSX}</Text>
+                </LinearGradient>
               </View>
             </View>
           </View>

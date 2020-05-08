@@ -40,7 +40,7 @@ const Carousel = ({data}) => {
   //   infiniteScroll(dataList);
   // });
 
-  if (data && data.length ) {
+  if (data && data.length) {
     return (
       <View>
         <FlatList

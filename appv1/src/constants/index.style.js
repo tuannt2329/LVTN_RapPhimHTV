@@ -3,15 +3,26 @@ import {StyleSheet} from 'react-native';
 export const colors = {
   black: '#1a1917',
   gray: '#888888',
-  background1: '#B721FF',
-  background2: '#fd6956',
-  background3: '#fdda5f',
-  background1Header: '#ffd9b7',
-  background2Header: '#fdbfba',
-  background3Header: '#fde1c7',
-  background1Login: '#ffd9b7',
-  background2Login: '#C5CCD6',
-  background3Login: '#C5CCD6',
+
+  background1: '#e3b0bd',
+  background2: '#6b6b83',
+  background3: '#98c6cd',
+  // ['#e3b0bd', '#6b6b83', '#98c6cd']
+  // background1Header: '#8f8796',
+  // background2Header: '#6b6b83',
+  // background3Header: '#4389A2',
+  //
+  background1Header: '#839ea9',
+  background2Header: '#839ea9',
+  background3Header: '#839ea9',
+
+  // background1Login: '#e3b0bd',
+  // background2Login: '#6b6b83',
+  // background3Login: '#98c6cd',
+
+  background1Login: '#98c6cd',
+  background2Login: '#6b6b83',
+  background3Login: '#e3b0bd',
 };
 
 export default StyleSheet.create({
@@ -41,7 +52,7 @@ export default StyleSheet.create({
   title: {
     paddingHorizontal: 30,
     backgroundColor: 'transparent',
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: 'black',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -53,8 +64,8 @@ export default StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 30,
     backgroundColor: 'transparent',
-    color: 'rgba(255, 255, 255, 0.75)',
-    fontSize: 13,
+    color: 'red',
+    fontSize: 15,
     fontStyle: 'italic',
     textAlign: 'center',
   },

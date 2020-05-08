@@ -73,7 +73,7 @@ function Home({navigation}) {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text> </Text>
         <DotIndicator />
-        <Button gradient onPress={() => navigation.navigate('ListFilm')}>
+        <Button gradient onPress={() => navigation.navigate('Seat')}>
           <Text style={styles.textListFilm}> Các Bộ Phim Đang Chiếu </Text>
         </Button>
       </View>
