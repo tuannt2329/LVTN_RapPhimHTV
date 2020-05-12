@@ -17,9 +17,9 @@ class UpdateFilm extends Component {
 
     UNSAFE_componentWillMount() {
         var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-        axios.post("http://localhost:3001/film/getFilmByName", TenFilm)
+        axios.post("http://localhost:8000/film/find", TenFilm)
             .then((res) => {
-                this.setStateFilms(res.data[0]);
+                this.setStateFilms(res.data.film[0]);
             });
     }
 
@@ -79,11 +79,13 @@ class UpdateFilm extends Component {
         e.preventDefault();
 
         const film = this.state.Film;
-        axios.put('http://localhost:3001/film/update', film)
+        axios.put('http://localhost:8000/film/updatefilm', film)
         .then((res) => {
-            if(res.data["message"] === "update film success!") {
-                window.alert("update film success!");
-                return window.location.reload();
+            if (!res.data.error) {
+                window.alert("update film success!")
+                return window.location.reload()
+            } else {
+                return window.alert(res.data.error)
             }
         });
     }
