@@ -77,17 +77,21 @@ class UpdateFilm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-
+        
         const film = this.state.Film;
-        axios.put('http://localhost:8000/film/updatefilm', film)
-        .then((res) => {
-            if (!res.data.error) {
-                window.alert("update film success!")
-                return window.location.reload()
-            } else {
-                return window.alert(res.data.error)
-            }
-        });
+        if(film.NgayChieu <= film.NgayKetThuc) {
+            axios.put('http://localhost:8000/film/updatefilm', film)
+            .then((res) => {
+                if (!res.data.error) {
+                    window.alert("update film success!")
+                    return window.location.reload()
+                } else {
+                    return window.alert(res.data.error)
+                }
+            });
+        } else {
+            return window.alert("Ngay chieu must <= ngay ket thuc")
+        }
     }
 
     render() {

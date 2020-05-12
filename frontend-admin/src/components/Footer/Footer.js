@@ -10,7 +10,7 @@ class Footer extends Component {
                     <div className="float-right d-none d-sm-block">
                         <b>Version</b> Final
                     </div>
-                    <strong>Tuấn Hưng Movie <a href>Admin</a>.</strong>
+                    <strong>HTV Movie <a href>Admin</a>.</strong>
                 </footer>
             </div>
         );
