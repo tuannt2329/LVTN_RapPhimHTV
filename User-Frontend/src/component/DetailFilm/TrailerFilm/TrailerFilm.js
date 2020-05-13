@@ -42,7 +42,7 @@ class TrailerFilm extends React.Component {
                 <button type="button" data-dismiss="modal" aria-hidden="true" className="close">×</button>
                 <h4 className="modal-title">Spring - Blender Open Movie</h4>
               </div>
-              <div id="galaxyVideo" className="modal-body">
+              <div className="modal-body">
                 <ReactPlayer className="video-trailer" style={styleVideo} url={this.state.url} controls={true} />
               </div>
             </div>
