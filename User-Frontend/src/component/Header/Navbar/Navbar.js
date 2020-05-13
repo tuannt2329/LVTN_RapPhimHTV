@@ -159,7 +159,7 @@ class Navbar extends React.Component {
                                     </ul>
                                 </div>
                             </li>
-                            <li className="sub-nav">
+                            {/* <li className="sub-nav">
                                 <a href="/">Hệ thống rạp</a>
                                 <div id="sub-menu">
                                     <ul>
@@ -169,7 +169,7 @@ class Navbar extends React.Component {
                                         <li><a href="/">HTV Nguyễn Huệ</a></li>
                                     </ul>
                                 </div>
-                            </li>
+                            </li> */}
                             <li><a href="/">Giá vé</a></li>
                             <li><a href="/">Thành viên</a></li>
                         </ul>
