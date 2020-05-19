@@ -14,7 +14,7 @@ export const colors = {
   //
   background1Header: '#839ea9',
   background2Header: '#839ea9',
-  background3Header: '#839ea9',
+  background3Header: '#e3b0bd',
 
   // background1Login: '#e3b0bd',
   // background2Login: '#6b6b83',

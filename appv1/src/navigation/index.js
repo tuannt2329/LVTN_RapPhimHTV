@@ -15,6 +15,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  View,
 } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -64,7 +65,9 @@ import Animatedd from 'react-native-reanimated';
 import Block from '../components/block';
 import Text from '../components/text';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import DetailAccount from '../screens/DetailAccount';
+
 const showHeader = () => ({
   headerShown: false,
 });
@@ -166,6 +169,13 @@ const Screens = ({navigation, style}) => {
           component={Home}
           options={{
             // headerShown: true,
+            title: 'HTV Cinemas',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: 'white',
+              backgroundColor: 'transparent',
+            },
+            headerTintColor: '#fff',
             cardStyleInterpolator: forFade,
             headerRight: () => (
               <TouchableOpacity onPress={() => navigation.openDrawer()}>
@@ -226,6 +236,14 @@ const Screens = ({navigation, style}) => {
           }}>
           {props => <Seat {...props} />}
         </Stack.Screen>
+        <Stack.Screen
+          name="DetailAccount"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}>
+          {props => <DetailAccount {...props} />}
+        </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
     </Animatedd.View>
@@ -242,7 +260,7 @@ const DrawerContent = props => {
       scrollEnabled={false}
       contentContainerStyle={{flex: 1}}>
       <Block top center>
-        <Block flex={0.4} margin={20} bottom>
+        <Block flex={0.4} margin={0.1} white center bottom>
           <FontAwesome5
             name={'user'}
             size={90}
@@ -252,16 +270,39 @@ const DrawerContent = props => {
           />
           {user === null ? (
             <Text center align={'center'} white>
-              React UI Kit
+              Bạn chưa đăng nhập
             </Text>
           ) : (
-            <Text center title white>
-              {user.user.email}
-            </Text>
+            <>
+              <Text center align={'center'} title white>
+                {user.user.email}
+              </Text>
+              <DrawerItem
+                label="Tài Khoản"
+                labelStyle={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  marginLeft: -16,
+                  fontSize: 20,
+                }}
+                style={styles.drawerItem}
+                onPress={() => props.navigation.navigate('DetailAccount')}
+                icon={() => (
+                  <MaterialCommunityIcons name={'account-details'} size={30} />
+                )}
+              />
+            </>
           )}
         </Block>
         {user === null ? (
           <Block>
+            <DrawerItem
+              label=""
+              // labelStyle={styles.drawerLabel}
+              style={{width: '0%'}}
+              onPress={() => {}}
+              // icon={() => <FontAwesome5 name={'sign-in-alt'} size={30} />}
+            />
             <DrawerItem
               label="Đăng Nhập"
               labelStyle={styles.drawerLabel}

@@ -15,17 +15,13 @@ import * as Animatable from 'react-native-animatable';
 import Block from '../components/block';
 import Textt from '../components/text';
 import {theme} from '../components/theme';
-import * as Constant from '../constants';
-import Badge from '../components/badge';
-import Card from '../components/card';
-import Button from '../components/button';
+
 import Item from '../components/detailScrollView/Item';
-import CustomHeader from '../components/CustomHeader';
-import SafeAreaView from 'react-native-safe-area-view';
 import {CommonActions} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import styless from '../constants/index.style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 const {width} = Dimensions.get('window');
 import {useSelector} from 'react-redux';
@@ -109,7 +105,7 @@ function DetailFilm({route, navigation}) {
           await navigation.dispatch(
             CommonActions.reset({
               index: 1,
-              routes: [{name: 'HomeStack'}],
+              routes: [{name: 'Home'}],
             }),
           )
         }>
@@ -134,7 +130,7 @@ function DetailFilm({route, navigation}) {
                   modal
             */}
             <Modal
-              animationType={'fade'}
+              animationType={'slide'}
               transparent={true}
               visible={modal}
               backdropOpacity={0.9}
@@ -168,11 +164,12 @@ function DetailFilm({route, navigation}) {
                 justifyContent: 'center',
               }}>
               {/*
-                  View for transparent top's modal
+                  View cho phần modal bị transparent 50% phía trên
               */}
               <View style={{flex: 1}} />
               {/*
                   view cho phần modal không transparent
+                    50 % phía dưới
               */}
               <View
                 style={{
@@ -193,11 +190,14 @@ function DetailFilm({route, navigation}) {
                     width: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: '#00000000',
+                    backgroundColor: '#fff',
+                    borderColor: 'red',
+                    borderTopWidth: 6,
+                    borderBottomWidth: 1,
                   }}>
-                  <FontAwesome5Icon
-                    name="times"
-                    size={40}
+                  <AntDesign
+                    name="closecircle"
+                    size={39}
                     color="red"
                     style={styless.btnCloseModal}
                     onPress={() => {

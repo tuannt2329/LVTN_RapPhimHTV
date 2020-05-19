@@ -71,11 +71,23 @@ function Home({navigation}) {
         {film !== null ? <Toptab film={film} /> : <DotIndicator />}
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text> </Text>
-        <DotIndicator />
-        <Button gradient onPress={() => navigation.navigate('Seat')}>
-          <Text style={styles.textListFilm}> Các Bộ Phim Đang Chiếu </Text>
-        </Button>
+        {/*<Text> </Text>*/}
+        {film !== null ? (
+          <Button
+            gradient
+            onPress={() =>
+              navigation.navigate('ListFilm', {
+                data: film,
+              })
+            }>
+            <Text style={styles.textListFilm}>
+              {' '}
+              Danh Sách Các Phim Hiện Có{' '}
+            </Text>
+          </Button>
+        ) : (
+          <DotIndicator />
+        )}
       </View>
     </SafeAreaView>
   );

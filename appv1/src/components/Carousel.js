@@ -90,7 +90,7 @@ const Carousel = ({data}) => {
     );
   }
 
-  console.log('Please provide Images');
+  console.log('Plz upload an Images');
   return null;
 };
 

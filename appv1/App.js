@@ -26,6 +26,7 @@ import Home from './src/screens/Home';
 import Screen2 from './src/drawer/Screen2';
 import User from './src/screens/User';
 import ForgetPassword from './src/screens/ForgetPassword';
+import DetailAccount from './src/screens/DetailAccount';
 // login authentication flow
 import indexStackTab from './src/tab/indexStackTab';
 import LoginHook from './src/screens/LoginHook';
@@ -400,6 +401,18 @@ const forFadeHeader = ({current, next}) => {
 //   );
 // }
 
+// function AccountDetail() {
+//   return (
+//     <Stack.Navigator>
+//       <Stack.Screen
+//         name="DetailAccount"
+//         options={showHeader}
+//         component={DetailAccount}
+//       />
+//     </Stack.Navigator>
+//   );
+// }
+
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
@@ -412,6 +425,7 @@ const App = () => {
             {/*{indexStackTab}*/}
             {/*{createHomeStack()}*/}
             <Index />
+            {/*{AccountDetail()}*/}
             {/*{createTopTabs()}*/}
           </NavigationContainer>
         </SafeAreaProvider>

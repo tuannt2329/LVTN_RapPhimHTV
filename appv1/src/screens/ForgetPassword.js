@@ -51,7 +51,7 @@ class ForgetPassword extends React.Component {
             await this.props.navigation.dispatch(
               CommonActions.reset({
                 index: 1,
-                routes: [{name: 'HomeStack'}],
+                routes: [{name: 'Home'}],
               }),
             )
           }>

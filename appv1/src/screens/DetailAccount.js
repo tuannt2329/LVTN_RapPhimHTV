@@ -27,24 +27,27 @@ const window = Dimensions.get('window');
 
 const IMAGE_HEIGHT = 100;
 const IMAGE_HEIGHT_SMALL = 0;
-
-function SignUpHook({navigation}) {
+function DetailAccount({navigation}) {
+  const user = useSelector(state => state.loginIn.user);
   const [selectedIndex, setSelectedIndex] = useState(1);
-  const [email, setEmail] = useState(null);
+
+  const [email, setEmail] = useState(user.user.email);
   const [pass, setPass] = useState(null);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
+  const [firstName, setFirstName] = useState(user.user.firstName);
+  const [lastName, setLastName] = useState(user.user.lastName);
   const [gender, setGender] = useState(null);
   const [error, setError] = useState('');
+
+  // const [fromGender, setFromGender] = useState(user.user.gender);
+
   // loading sử dụng cho indicator
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
   const buttons = ['Nam', 'Nữ'];
 
   const dispatch = useDispatch();
-
   navigation.setOptions({
-    title: 'Đăng Ký',
+    title: 'Cập nhật thông tin',
     headerTitleStyle: {
       fontWeight: 'bold',
     },
@@ -81,23 +84,18 @@ function SignUpHook({navigation}) {
       toValue: IMAGE_HEIGHT,
     }).start();
   };
-  // handle req
-  // nếu signup thành công chuyển về trang chủ, gọi reset store
-  // useEffect(() => {
-  //   console.log('errrrrrrrrrrrorrr effect', statuss);
-  //   if (statuss === 'SIGN_UP_ERROR') {
-  //     setError('Email đã được sử dụng');
-  //   }
-  //   if (statuss === 'SIGN_UP_DONE') {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 1,
-  //         routes: [{name: 'HomeStack'}],
-  //       }),
-  //     );
-  //     dispatch(LoginAction.resetRegister());
-  //   }
-  // }, [navigation, statuss, errors, dispatch]);
+
+  // cập nhật gender dựa trên selecteđIndex
+  useEffect(() => {
+    if (selectedIndex === 1) {
+      setGender('female');
+      console.log(gender);
+    }
+    if (selectedIndex === 0) {
+      setGender('male');
+      console.log(gender);
+    }
+  }, [selectedIndex, gender]);
 
   // keyboard event
   useEffect(() => {
@@ -116,89 +114,73 @@ function SignUpHook({navigation}) {
     };
   });
 
-  // cập nhật gender dựa trên selecteđIndex
   useEffect(() => {
-    if (selectedIndex === 1) {
-      setGender('female');
-      console.log(gender);
+    console.log('mount');
+    if (user.user.gender === 'male') {
+      setSelectedIndex(0);
     }
-    if (selectedIndex === 0) {
-      setGender('male');
-      console.log(gender);
+    if (user.user.gender === 'female') {
+      console.log('female');
+      setSelectedIndex(1);
     }
-  }, [selectedIndex, gender]);
+    setEmail(user.user.email);
+  }, []);
 
-  // sử dụng để ngăn không cho render lại cảnh báo email đã được sử dụng ở STATUS trên
-  // gọi reset store
-  // useEffect(() => {
-  //   console.log('unmount');
-  //   return () => dispatch(LoginAction.resetRegister());
-  // });
-
-  function doSignUp() {
-    console.log('stt button ', email, lastName);
-    console.log(gender);
-    if (
-      email === '' ||
-      pass === '' ||
-      firstName === '' ||
-      lastName === '' ||
-      lastName === null ||
-      email === null ||
-      pass === null ||
-      firstName === null
-    ) {
-      setError('Nhập hết các thông tin');
-    } else {
-      // dispatch(LoginAction.signup(email, pass, firstName, lastName, gender));
-      setLoading(true);
-      setTimeout(() => {
-        result();
-      }, 500);
-
-      // Fetch trực tiếp
-      let result = () =>
-        fetch(`${types.API}user/signup/`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            password: pass,
-            firstName: firstName,
-            lastName: lastName,
-            gender: gender,
-          }),
-        })
-          .then(res => res.json())
-          .then(res => {
+  // func update info
+  function doUpdate() {
+    fetch(`${types.API}user/updateInfo/`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: pass,
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          console.log(res.error);
+          if (res.error === 'Password is required.') {
+            setError('Vui lòng nhập Mật Khẩu');
+          }
+          if (res.error === 'first name is required.') {
             console.log(res.error);
-            if (res.error) {
-              console.log('a');
-              setError('Email đã đăng ký');
-              setLoading(false);
-            } else {
-              setLoading(false);
-              setTextSuccess(true);
-              setTimeout(() => {
-                setTextSuccess(false);
-                navigation.dispatch(
-                  CommonActions.reset({
-                    index: 1,
-                    routes: [{name: 'Home'}],
-                  }),
-                );
-              }, 500);
-            }
-          })
-          .catch(e => {
-            console.log('catch sign up');
-          });
-    }
+            setError('Vui lòng nhập Họ');
+          }
+          if (res.error === 'last name is required.') {
+            console.log(res.error);
+            setError('Vui Lòng nhập Tên');
+          }
+          // setError('Email đã đăng ký');s
+          // setLoading(false);
+        } else {
+          console.log(res.content);
+          if (res.content === 'Changed personal details') {
+            setError('Cập Nhật Thành Công');
+          }
+          // setLoading(false);
+          // setTextSuccess(true);
+          // setTimeout(() => {
+          //   setTextSuccess(false);
+          //   navigation.dispatch(
+          //     CommonActions.reset({
+          //       index: 1,
+          //       routes: [{name: 'HomeStack'}],
+          //     }),
+          //   );
+          // }, 500);
+        }
+      })
+      .catch(e => {
+        console.log('catch sign up');
+      });
   }
-
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*<CustomHeader isHome="false" title="Đăng Ký" navigation={navigation} />*/}
@@ -236,6 +218,9 @@ function SignUpHook({navigation}) {
           <Input
             placeholder="Email..."
             style={styles.inputText}
+            value={email}
+            editable={false}
+            selectTextOnFocus={false}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
             onChangeText={text => setEmail(text)}
@@ -255,6 +240,7 @@ function SignUpHook({navigation}) {
           <Input
             placeholder="Họ..."
             style={styles.inputText}
+            value={firstName}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
             onChangeText={text => setFirstName(text)}
@@ -264,6 +250,7 @@ function SignUpHook({navigation}) {
           <Input
             placeholder="Tên..."
             style={styles.inputText}
+            value={lastName}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
             onChangeText={text => setLastName(text)}
@@ -310,7 +297,7 @@ function SignUpHook({navigation}) {
               marginLeft: 40,
               marginTop: 10,
               paddingTop: 5,
-              paddingBottom:10,
+              paddingBottom: 10,
               borderWidth: 1,
               overflow: 'hidden',
             },
@@ -326,43 +313,43 @@ function SignUpHook({navigation}) {
           />
           <TouchableOpacity
             // style={styles.loginBtn}
-            onPress={() => doSignUp()}>
-            {loading ? (
-              <View>
-                <DotIndicator
-                  color={theme.colors.white}
-                  count={4}
-                  size={theme.sizes.base * 0.5}
-                />
-                <Text style={styles.loginText}>Đang xác thực</Text>
-              </View>
-            ) : // xử lý timeout lúc đăng ký thành công
-            // đã nhận kết quả từ server, chỉ chờ timeout để hiện thông báo
-            textSuccess !== false ? (
-              <Text style={styles.loginText}>
-                Đăng ký thành công về trang chủ sau 1s
-              </Text>
-            ) : (
-              <Text style={styles.loginText}>ĐĂNG KÝ</Text>
-            )}
+            onPress={() => doUpdate()}>
+            {/*  <View>*/}
+            {/*    <DotIndicator*/}
+            {/*      color={theme.colors.white}*/}
+            {/*      count={4}*/}
+            {/*      size={theme.sizes.base * 0.5}*/}
+            {/*    />*/}
+            {/*    <Text style={styles.loginText}>Đang xác thực</Text>*/}
+            {/*  </View>*/}
+            {/*) : // xử lý timeout lúc đăng ký thành công*/}
+            {/*// đã nhận kết quả từ server, chỉ chờ timeout để hiện thông báo*/}
+            {/*textSuccess !== false ? (*/}
+            {/*  <Text style={styles.loginText}>*/}
+            {/*    Đăng ký thành công về trang chủ sau 1s*/}
+            {/*  </Text>*/}
+            {/*) : (*/}
+            {/*  <Text style={styles.loginText}>CẬP NHẬT</Text>*/}
+            {/*)}*/}
+            <Text style={styles.loginText}>CẬP NHẬT</Text>
           </TouchableOpacity>
         </View>
         {/*sing up button*/}
-        <TouchableOpacity>
-          <Text
-            style={[
-              styles.loginText,
-              {
-                textDecorationLine: 'underline',
-                fontStyle: 'italic',
-                fontSize: 17,
-                color: 'black',
-              },
-            ]}
-            onPress={() => navigation.navigate('Login')}>
-            ĐĂNG NHẬP
-          </Text>
-        </TouchableOpacity>
+        {/*<TouchableOpacity>*/}
+        {/*  <Text*/}
+        {/*    style={[*/}
+        {/*      styles.loginText,*/}
+        {/*      {*/}
+        {/*        textDecorationLine: 'underline',*/}
+        {/*        fontStyle: 'italic',*/}
+        {/*        fontSize: 17,*/}
+        {/*        color: 'black',*/}
+        {/*      },*/}
+        {/*    ]}*/}
+        {/*    onPress={() => navigation.navigate('Login')}>*/}
+        {/*    ĐĂNG NHẬP*/}
+        {/*  </Text>*/}
+        {/*</TouchableOpacity>*/}
       </KeyboardAvoidingView>
       {/*</View>*/}
     </SafeAreaView>
@@ -438,4 +425,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export {SignUpHook};
+
+export default DetailAccount;
