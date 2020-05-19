@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 class TabMovie extends React.Component {
   constructor(props) {
@@ -13,6 +19,10 @@ class TabMovie extends React.Component {
   setStateFilms = (data) => {
     console.log(data)
     this.setState({ films: data, counter: 1 })
+  }
+  
+  handleOnclickFilm = (tenphim) => {
+    sessionStorage.setItem("tenphim", tenphim);
   }
 
   render() {
@@ -45,7 +55,7 @@ class TabMovie extends React.Component {
                                   key={index}
                                   src={"http://localhost:8000/images/" + item.AnhBia}
                                   className="lazy loaded" />
-                                <a href="/">
+                                <Link to ="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                   <div className="decription-hover overlay">
                                     <div className="movies-content">
                                       <div className="group">
@@ -53,7 +63,7 @@ class TabMovie extends React.Component {
                                       </div>
                                     </div>
                                   </div>
-                                </a>
+                                </Link>
                               </div>
                               <div className="title-movie">
                                 <h4 className="upper-text">{item.TenFilm}</h4>
@@ -82,7 +92,7 @@ class TabMovie extends React.Component {
                                   key={index}
                                   src={"http://localhost:8000/images/" + item.AnhBia}
                                   className="lazy loaded" />
-                                <a href="/">
+                                <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                   <div className="decription-hover overlay">
                                     <div className="movies-content">
                                       <div className="group">
@@ -90,7 +100,7 @@ class TabMovie extends React.Component {
                                       </div>
                                     </div>
                                   </div>
-                                </a>
+                                </Link>
                               </div>
                               <div className="title-movie">
                                 <h4 className="upper-text">{item.TenFilm}</h4>

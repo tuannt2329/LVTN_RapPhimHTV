@@ -25,8 +25,8 @@ class Menu extends Component {
 
     isLocalStorage = () => {
         if (JSON.parse(sessionStorage.getItem('user')) != null) {
-            var username = JSON.parse(sessionStorage.getItem('user'))["username"] ?
-                JSON.parse(sessionStorage.getItem('user'))["username"] : null;
+            var username = JSON.parse(sessionStorage.getItem('user'))["firstName"] ?
+                JSON.parse(sessionStorage.getItem('user'))["firstName"] : null;
         }
         this.setState({ usrname: username });
         if(!username)
@@ -40,7 +40,6 @@ class Menu extends Component {
                 <aside className="main-sidebar sidebar-dark-primary elevation-4 ">
                     {/* Brand Logo */}
                     <a href="/menu" className="brand-link">
-                        <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
                         <span className="brand-text font-weight-light">Admin Manage</span>
                     </a>
                     {/* Sidebar */}

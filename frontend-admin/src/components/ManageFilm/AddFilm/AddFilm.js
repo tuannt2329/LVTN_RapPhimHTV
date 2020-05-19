@@ -8,6 +8,7 @@ class AddFilm extends Component {
             Film: {
                 TenFilm: null,
                 DaoDien: null,
+                TheLoai: null,
                 TenNuocSX: null,
                 TomTat: null,
                 NgayChieu: null,
@@ -17,6 +18,7 @@ class AddFilm extends Component {
             }
         }
         this.onChangeTenFilm = this.onChangeTenFilm.bind(this);
+        this.onChangeTheLoai = this.onChangeTheLoai.bind(this);
         this.onChangeDaoDien = this.onChangeDaoDien.bind(this);
         this.onChangeNuocSX = this.onChangeNuocSX.bind(this);
         this.onChangeTomTat = this.onChangeTomTat.bind(this);
@@ -29,6 +31,14 @@ class AddFilm extends Component {
     onChangeTenFilm = (e) => {
         var film = this.state.Film;
         film["TenFilm"] = e.target.value;
+        this.setState({
+            Film: film
+        });
+    }
+
+    onChangeTheLoai = (e) => {
+        var film = this.state.Film;
+        film["TheLoai"] = e.target.value;
         this.setState({
             Film: film
         });
@@ -96,6 +106,7 @@ class AddFilm extends Component {
         const fd = new FormData();
         fd.append('AnhBia', this.state.Film.AnhBia);
         fd.append('TenFilm', this.state.Film.TenFilm);
+        fd.append('TheLoai', this.state.Film.TheLoai);
         fd.append('DaoDien', this.state.Film.DaoDien);
         fd.append('TenNuocSX', this.state.Film.TenNuocSX);
         fd.append('TomTat', this.state.Film.TomTat);
@@ -103,13 +114,19 @@ class AddFilm extends Component {
         fd.append('NgayKetThuc', this.state.Film.NgayKetThuc);
         fd.append('TongChi', this.state.Film.TongChi);
         const film = this.state.Film;
-        axios.post('http://localhost:3001/film/upload', fd)
-        .then((res) => {
-            if(res.data["message"] === "New film created!") {
-                window.alert("New film created!");
-                return window.location.reload();
-            }
-        });
+        if(film.NgayChieu <= film.NgayKetThuc) {
+            axios.post('http://localhost:8000/film/createfilm', fd)
+            .then((res) => {
+                if (!res.data.error) {
+                    window.alert("create film success!")
+                    return window.location.reload()
+                } else {
+                    return window.alert(res.data.error)
+                }
+            });
+        } else {
+            return window.alert("Ngay chieu must <= ngay ket thuc")
+        }
     }
 
     render() {
@@ -156,6 +173,14 @@ class AddFilm extends Component {
                                                                 <input type="text" className="form-control" id="inputFilmName" placeholder="Tên phim" onChange={this.onChangeTenFilm}/>
                                                             </div>
                                                         </div>
+
+                                                        <div className="form-group row">
+                                                            <label htmlFor="inputName" className="col-sm-2 col-form-label">Thể loại</label>
+                                                            <div className="col-sm-10">
+                                                                <input type="text" className="form-control" id="inputTL" placeholder="Thể loại" onChange={this.onChangeTheLoai}/>
+                                                            </div>
+                                                        </div>
+
                                                         <div className="form-group row">
                                                             <label htmlFor="inputName" className="col-sm-2 col-form-label">Đạo diễn</label>
                                                             <div className="col-sm-10">

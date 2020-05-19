@@ -7,15 +7,17 @@ class UpdateUser extends Component {
         this.state = {
             User: null
         }
-        this.onChangeusername = this.onChangeusername.bind(this);
+        this.onChangeFirstName = this.onChangeFirstName.bind(this);
+        this.onChangeLastName = this.onChangeLastName.bind(this);
+        this.onChangegender = this.onChangegender.bind(this);
         this.onChangerole = this.onChangerole.bind(this);
     }
 
     UNSAFE_componentWillMount() {
         var email = {email: sessionStorage.getItem('email')};
-        axios.post("http://localhost:3001/user/getUserByEmail", email)
+        axios.post("http://localhost:8000/user/find", email)
             .then((res) => {
-                this.setStateUsers(res.data[0]);
+                this.setStateUsers(res.data.user[0]);
             });
     }
 
@@ -23,9 +25,25 @@ class UpdateUser extends Component {
         this.setState({ User });
     }
 
-    onChangeusername = (e) => {
+    onChangeFirstName = (e) => {
         var User = this.state.User;
-        User["username"] = e.target.value;
+        User["firstName"] = e.target.value;
+        this.setState({
+            User: User
+        });
+    }
+
+    onChangeLastName = (e) => {
+        var User = this.state.User;
+        User["lastName"] = e.target.value;
+        this.setState({
+            User: User
+        });
+    }
+
+    onChangegender = (e) => {
+        var User = this.state.User;
+        User["gender"] = e.target.value;
         this.setState({
             User: User
         });
@@ -44,11 +62,13 @@ class UpdateUser extends Component {
         e.preventDefault();
 
         const User = this.state.User;
-        axios.put('http://localhost:3001/user/update', User)
+        axios.put('http://localhost:8000/user/updateInfo', User)
         .then((res) => {
-            if(res.data["message"] === "update user success!") {
-                window.alert("update user success!");
-                return window.location.reload();
+            if (!res.data.error) {
+                window.alert("update film success!")
+                return window.location.reload()
+            } else {
+                return window.alert(res.data.error)
             }
         });
     }
@@ -98,9 +118,23 @@ class UpdateUser extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="form-group row">
-                                                                <label htmlFor="inputName" className="col-sm-2 col-form-label">User name</label>
+                                                                <label htmlFor="inputName" className="col-sm-2 col-form-label">first name</label>
                                                                 <div className="col-sm-10">
-                                                                    <input type="text" className="form-control" id="inputName" placeholder="username" defaultValue={this.state.User["username"]} onChange={this.onChangeusername}/>
+                                                                    <input type="text" className="form-control" id="inputName" placeholder="firstname" defaultValue={this.state.User["firstName"]} onChange={this.onChangeFirstName}/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="form-group row">
+                                                                <label htmlFor="inputName" className="col-sm-2 col-form-label">last name</label>
+                                                                <div className="col-sm-10">
+                                                                    <input type="text" className="form-control" id="inputName" placeholder="lastname" defaultValue={this.state.User["lastName"]} onChange={this.onChangeLastName}/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="form-group row">
+                                                                <label htmlFor="inputName" className="col-sm-2 col-form-label">gender</label>
+                                                                <div className="col-sm-10">
+                                                                    <input type="text" className="form-control" id="inputName" placeholder="gender" defaultValue={this.state.User["gender"]} onChange={this.onChangegender}/>
                                                                 </div>
                                                             </div>
 

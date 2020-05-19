@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 class FilmNowShowing extends React.Component {
     constructor(props) {
         super(props)
@@ -12,6 +13,21 @@ class FilmNowShowing extends React.Component {
     setStateFilms = (data) => {
         console.log(data)
         this.setState({ films: data, counter: 1 })
+    }
+
+    UNSAFE_componentWillMount() {
+            
+            axios.post("http://localhost:8000/film/find")
+              .then((res) => {
+                console.log(res.data);
+                this.setStateFilms(res.data.film);
+              })
+          
+
+    }
+
+    handleOnclickFilm = (tenphim) => {
+        sessionStorage.setItem("tenphim", tenphim);
     }
 
     render() {
@@ -29,7 +45,7 @@ class FilmNowShowing extends React.Component {
                                         key={index}
                                         src={"http://localhost:8000/images/" + item.AnhBia}
                                         className="lazy loaded" />
-                                    <a href="/">
+                                    <a href ="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                         <div className="decription-hover overlay">
                                             <div className="movies-content">
                                                 <div className="group">
