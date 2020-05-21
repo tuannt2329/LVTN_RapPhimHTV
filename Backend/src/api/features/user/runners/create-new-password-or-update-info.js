@@ -49,7 +49,7 @@ const handlerCreateNewPassword = (model, _) => async (req, res) => {
 const handlerUpdateInfo = (model, _) => async (req, res) => {
   const modeInstance = model(req.body)
   modeInstance.validateSync()
-  const {firstName, lastName, gender, email, password } = modeInstance
+  const {firstName, lastName, gender, email, password, role } = modeInstance
   if (!firstName) {
     res.send({ error: 'first name is required.' })
   } else if (!lastName) {
@@ -74,7 +74,8 @@ const handlerUpdateInfo = (model, _) => async (req, res) => {
               firstName: firstName,
               lastName: lastName,
               gender: gender,
-              password: password
+              password: password,
+              role: role
             }
           })
 

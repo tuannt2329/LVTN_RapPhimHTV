@@ -1,5 +1,6 @@
 module.exports = [
   require('./user'),
   require('./film'),
-  require('./static')
+  require('./static'),
+  require('./ticket')
 ]
