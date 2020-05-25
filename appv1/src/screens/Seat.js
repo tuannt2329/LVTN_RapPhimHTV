@@ -114,10 +114,11 @@ function Seat({route, navigation}) {
 
   function pressItems(key) {
     console.log(key);
+    // nhấn vào ghế đã được chọn
     if (seatPick.includes(key)) {
       console.log('ton tai');
       setSeatPick(seatPick.filter(e => e !== key));
-      // Khong su dung map vi map se copy shadow, va reformat stucture
+      // Khong su dung map vi map se copy shadow, va reformat stucture của đối tượng
       // Using map to reformat objects in an array // mozilla
       for (var i = 0; i < seat.length; i++) {
         if (seat[i].key === key) {
@@ -192,7 +193,10 @@ function Seat({route, navigation}) {
         style={{
           flex: 3,
           opacity: 1,
-          marginLeft: 15,
+          marginLeft: 3,
+          marginRight: 3,
+          borderColor: 'red',
+          borderWidth: 1,
         }}>
         <View>
           <FlatList

@@ -70,13 +70,19 @@ function Home({navigation}) {
         {/* */}
         {film !== null ? <Toptab film={film} /> : <DotIndicator />}
       </View>
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          flex: 0.5,
+          // height: '10%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         {/*<Text> </Text>*/}
         {film !== null ? (
           <Button
             gradient
             onPress={() =>
-              navigation.navigate('ListFilm', {
+              navigation.navigate('Temp', {
                 data: film,
               })
             }>
@@ -88,6 +94,15 @@ function Home({navigation}) {
         ) : (
           <DotIndicator />
         )}
+        {/* <Button
+          gradient
+          onPress={() =>
+            navigation.navigate('Temp', {
+              data: film,
+            })
+          }>
+          <Text style={styles.textListFilm}> Danh Sách Các Phim Hiện Có </Text>
+        </Button> */}
       </View>
     </SafeAreaView>
   );

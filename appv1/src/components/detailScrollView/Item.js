@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   },
   name: {
     fontWeight: 'bold',
+    fontStyle: 'italic',
+    color: 'red',
+    fontSize: 22,
   },
   section: {
     padding: 20,
@@ -48,9 +51,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1,
+    borderRadius: 9,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   sectionContent: {
@@ -163,8 +167,8 @@ class Item extends Component {
             {/*  style={styless.gradient}*/}
             {/*/>*/}
             <Text style={styles.title}>
-              <Text style={styles.name}>{film.TenFilm}</Text> (Ngày chiếu {date}
-              )
+              <Text style={styles.name}>{film.TenFilm}</Text>
+              {'\n'}Khởi chiếu: {date}
             </Text>
           </TriggeringView>
           <View style={styles.section}>

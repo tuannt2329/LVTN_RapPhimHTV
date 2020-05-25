@@ -11,13 +11,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Switch,
 } from 'react-native';
 import {ButtonGroup, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../constants/index.style';
 import {useDispatch, useSelector} from 'react-redux';
-import * as LoginAction from '../redux/actions/auth';
 import {CommonActions} from '@react-navigation/native';
 import * as types from '../constants';
 import DotIndicator from '../components/indicator/DotIndicator';
@@ -40,6 +41,7 @@ function SignUpHook({navigation}) {
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
   const buttons = ['Nam', 'Nữ'];
+  const [showPassword, setShowPassword] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -70,6 +72,7 @@ function SignUpHook({navigation}) {
   const IMAGE_HEIGHT = 100;
   const IMAGE_HEIGHT_SMALL = 0;
   const imageHeight = new Animated.Value(IMAGE_HEIGHT);
+
   const keyboardDidShow = event => {
     Animated.timing(imageHeight, {
       toValue: IMAGE_HEIGHT_SMALL,
@@ -135,6 +138,13 @@ function SignUpHook({navigation}) {
   //   return () => dispatch(LoginAction.resetRegister());
   // });
 
+  // toggle show/hide password
+
+  function toggleSwitch() {
+    setShowPassword(!showPassword);
+  }
+
+  //
   function doSignUp() {
     console.log('stt button ', email, lastName);
     console.log(gender);
@@ -244,11 +254,21 @@ function SignUpHook({navigation}) {
         <View style={styles.inputView}>
           <Input
             placeholder="Mật khẩu..."
-            secureTextEntry
+            secureTextEntry={showPassword}
             style={styles.inputText}
             leftIcon={<Icon name="lock" size={24} color="black" />}
             placeholderTextColor="#003f5c"
             onChangeText={text => setPass(text)}
+            rightIcon={
+              // <Switch onValueChange={toggleSwitch} value={!showPassword} />
+              <TouchableOpacity onPress={toggleSwitch}>
+                {showPassword ? (
+                  <AntDesign name="eyeo" size={25} />
+                ) : (
+                  <AntDesign name="eye" size={25} color={'red'} />
+                )}
+              </TouchableOpacity>
+            }
           />
         </View>
         <View style={styles.inputView}>
@@ -310,7 +330,7 @@ function SignUpHook({navigation}) {
               marginLeft: 40,
               marginTop: 10,
               paddingTop: 5,
-              paddingBottom:10,
+              paddingBottom: 10,
               borderWidth: 1,
               overflow: 'hidden',
             },

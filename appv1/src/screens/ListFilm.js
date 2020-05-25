@@ -178,6 +178,7 @@ function ListFilm({navigation, route}) {
       }
       return list.filter(r => r.TheLoai === selectedValueType);
     }
+    
     if (selectedValueType === 'all' && selectedValueCountry !== 'all') {
       if (selectedValueSort === 'tang') {
         return list
@@ -191,7 +192,8 @@ function ListFilm({navigation, route}) {
       }
       return list.filter(r => r.TenNuocSX === selectedValueCountry);
     }
-    if (setSelectedValueCountry !== 'all' && selectedValueType !== 'all') {
+
+    if (selectedValueCountry !== 'all' && selectedValueType !== 'all') {
       if (selectedValueSort === 'tang') {
         return list
           .filter(

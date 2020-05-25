@@ -25,10 +25,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import CustomHeader from '../components/CustomHeader';
-import {CommonActions} from '@react-navigation/native';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const window = Dimensions.get('window');
 
 const IMAGE_HEIGHT = 100;
@@ -197,7 +196,14 @@ function LoginHook({navigation, route}) {
             // }
             onChangeText={text => setPass(text)}
             rightIcon={
-              <Switch onValueChange={toggleSwitch} value={!showPassword} />
+              // <Switch onValueChange={toggleSwitch} value={!showPassword} />
+              <TouchableOpacity onPress={toggleSwitch}>
+                {showPassword ? (
+                  <AntDesign name="eyeo" size={25} />
+                ) : (
+                  <AntDesign name="eye" size={25} color={'red'} />
+                )}
+              </TouchableOpacity>
             }
           />
         </View>

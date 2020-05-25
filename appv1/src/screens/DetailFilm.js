@@ -15,7 +15,6 @@ import * as Animatable from 'react-native-animatable';
 import Block from '../components/block';
 import Textt from '../components/text';
 import {theme} from '../components/theme';
-
 import Item from '../components/detailScrollView/Item';
 import {CommonActions} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -109,18 +108,18 @@ function DetailFilm({route, navigation}) {
             }),
           )
         }>
-        <Image
+        {/* <Image
           source={require('../assets/imgs/home.png')}
           style={{height: 30, width: 50}}
           resizeMode="contain"
-        />
+        /> */}
+        <AntDesign name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });
   return (
     <View flex={1}>
-      {/*<CustomHeader isHome="true" title="ĐĂNG NHẬP" navigation={navigation} />*/}
-      <View flex={6}>
+      <View flex={8}>
         <Item film={film} />
       </View>
       <View flex={1} style={{justifyContent: 'center'}}>
@@ -178,26 +177,41 @@ function DetailFilm({route, navigation}) {
                   width: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: '#98c6cd',
+                  // backgroundColor: '#98c6cd',
+
+                  elevation: 10,
+                  // paddingLeft: 5,
+                  // paddingRight: 5,
+                  paddingBottom: 0,
+
+                  // borderRadius: 20,
+                  // overflow: 'hidden',
                 }}>
                 {/*
                     View Button X đóng modal
                   */}
                 <View
                   style={{
-                    flex: 0.5,
+                    flex: 1,
                     alignContent: 'center',
-                    width: '100%',
+                    width: '15%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: '#fff',
+                    backgroundColor: 'white',
                     borderColor: 'red',
-                    borderTopWidth: 6,
+                    // borderTopWidth: 6,
                     borderBottomWidth: 1,
+
+                    marginBottom: 0,
+
+                    elevation: 20,
+                    borderRadius: 25,
+                    overflow: 'hidden',
                   }}>
                   <AntDesign
-                    name="closecircle"
-                    size={39}
+                    // name="closecircle"
+                    name="circledown"
+                    size={40}
                     color="red"
                     style={styless.btnCloseModal}
                     onPress={() => {
@@ -217,6 +231,10 @@ function DetailFilm({route, navigation}) {
                     // justifyContent: 'center',
                     backgroundColor: 'white',
                     alignItems: 'center',
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    borderTopEndRadius: 20,
+                    borderTopStartRadius: 20,
                   }}>
                   {/*<View>*/}
                   <View
@@ -327,7 +345,10 @@ function DetailFilm({route, navigation}) {
               // gradient
               onPress={() => {
                 if (new Date(start) > new Date()) {
-                  Alert.alert('Phim chưa được công chiếu', 'Trở lại sau');
+                  Alert.alert(
+                    'Phim chưa được công chiếu',
+                    `Trở lại vào ngày ${start}`,
+                  );
                   return;
                 }
                 setModal(true);

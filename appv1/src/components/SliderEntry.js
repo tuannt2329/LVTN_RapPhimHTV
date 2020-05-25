@@ -82,9 +82,10 @@ class SliderEntry extends Component {
           {uppercaseTitle}
           <Text
             style={[styles.subtitle, even ? styles.subtitleEven : {}]}
-            numberOfLines={2}>
+            numberOfLines={1}>
             Lượt Xem {LuotXem}
           </Text>
+          <Text style={{flexDirection: 'row', textAlign:'right'}}>dat ve</Text>
         </View>
       </TouchableOpacity>
     );

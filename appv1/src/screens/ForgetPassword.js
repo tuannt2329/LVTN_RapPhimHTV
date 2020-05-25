@@ -20,7 +20,7 @@ import {connect} from 'react-redux';
 import * as LoginAction from '../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../constants/index.style';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 import CustomHeader from '../components/CustomHeader';
@@ -38,7 +38,7 @@ class ForgetPassword extends React.Component {
       code: null,
       showError: false,
       loading: false,
-      timerID: null,
+      showPassword: true,
     };
     this.props.navigation.setOptions({
       title: 'Quên Mật Khẩu',
@@ -167,7 +167,11 @@ class ForgetPassword extends React.Component {
         console.log('catch forgot');
       });
   };
-
+  toggleSwitch = () => {
+    this.setState({
+      showPassword: !this.state.showPassword,
+    });
+  };
   render() {
     const {forgot} = this.props;
     return (
@@ -358,8 +362,18 @@ class ForgetPassword extends React.Component {
                     padding: 20,
                   }}
                   placeholder="Mật khẩu mới"
+                  secureTextEntry={this.state.showPassword}
                   style={styles.inputText}
                   leftIcon={<Icon name="user" size={24} color="black" />}
+                  rightIcon={
+                    <TouchableOpacity onPress={() => this.toggleSwitch()}>
+                      {this.state.showPassword ? (
+                        <Icon name="eyeo" size={25} />
+                      ) : (
+                        <Icon name="eye" size={25} color={'red'} />
+                      )}
+                    </TouchableOpacity>
+                  }
                   placeholderTextColor="#003f5c"
                   onChangeText={text => this.setState({pass: text})}
                   errorStyle={{

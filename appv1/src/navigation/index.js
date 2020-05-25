@@ -67,6 +67,7 @@ import Text from '../components/text';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DetailAccount from '../screens/DetailAccount';
+import Temp from '../screens/Temp';
 
 const showHeader = () => ({
   headerShown: false,
@@ -243,6 +244,14 @@ const Screens = ({navigation, style}) => {
             headerStyleInterpolator: forFadeHeader,
           }}>
           {props => <DetailAccount {...props} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Temp"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}>
+          {props => <Temp {...props} />}
         </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
