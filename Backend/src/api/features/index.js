@@ -3,5 +3,6 @@ module.exports = [
   require('./film'),
   require('./static'),
   require('./ticket'),
-  require('./ghe')
+  require('./ghe'),
+  require('./room')
 ]
