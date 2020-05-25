@@ -1,5 +1,9 @@
 module.exports = [
   require('./user'),
   require('./film'),
-  require('./static')
+  require('./static'),
+  require('./ticket'),
+  require('./ghe'),
+  require('./room'),
+  require('./schedule')
 ]
