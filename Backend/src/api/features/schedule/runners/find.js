@@ -2,12 +2,12 @@ const handler = ({ model }, _) => async (req, res) => {
   let listparams = req.body
   
   try {
-    const room = await model.find(listparams)
+    const schedule = await model.find(listparams)
 
-    if (room.length != 0) {
-      return res.send({ room })
+    if (schedule.length != 0) {
+      return res.send({ schedule })
     } else {
-      return res.send({ error: 'room don\'t exist!' })
+      return res.send({ error: 'schedule don\'t exist!' })
     }
   } catch (error) {
     res.send({ error })
