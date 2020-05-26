@@ -360,10 +360,10 @@ i {
 
 
 /* fix quên mật khẩu */
-/* html,
+html,
 body{
   padding: 0 !important;
-} */
+}
 
 /* nav-page-detailfilm */
   .breadcrumb > .active {
