@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import TrailerFilm from '../TrailerFilm/TrailerFilm';
 class Detail extends React.Component {
   constructor(props) {
@@ -13,6 +14,10 @@ class Detail extends React.Component {
   setStateFilms = (data) => {
     console.log(data)
     this.setState({ films: data, counter: 1 })
+  }
+
+  handleOnclickFilm = (tenphim) => {
+    sessionStorage.setItem("tenphim", tenphim);
   }
 
   render() {
@@ -173,10 +178,13 @@ class Detail extends React.Component {
 
                 <div className="muave-detail">
                   <div className="btn-muave-detailfilm">
-                    <button id="rating-click"
-                      type="submit"
-                      className="btn btn-primary btn-sm">Mua vé
-                          </button>
+                    <Link to={{ pathname: "/seat", film: item, reload: "abc" }}>
+                      <button id="rating-click"
+                        type="submit"
+                        className="btn btn-primary btn-sm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
+                        Đặt vé
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
