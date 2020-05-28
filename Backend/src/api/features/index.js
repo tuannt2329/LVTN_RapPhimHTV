@@ -5,5 +5,6 @@ module.exports = [
   require('./ticket'),
   require('./ghe'),
   require('./room'),
-  require('./schedule')
+  require('./schedule'),
+  require('./giave')
 ]
