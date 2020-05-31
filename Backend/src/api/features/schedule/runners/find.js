@@ -1,5 +1,6 @@
 const handler = ({ model }, _) => async (req, res) => {
   let listparams = req.body
+  listparams["deleted"] = false
   
   try {
     const schedule = await model.find(listparams)

@@ -36,11 +36,13 @@ class AllFilms extends Component {
     }
 
     handleOnclickDelete = (tenphim) => {
-        var tenfilm = {TenFilm: tenphim};
-        axios.put("http://localhost:8000/film/deletefilm", tenfilm)
-            .then((res) => {
-                window.location.reload();
-            });
+        if (window.confirm("Do you really want to delete?")) {
+            var tenfilm = {TenFilm: tenphim};
+            axios.put("http://localhost:8000/film/deletefilm", tenfilm)
+                .then((res) => {
+                    window.location.reload();
+                });
+        }
     }
 
     render() {

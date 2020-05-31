@@ -39,11 +39,13 @@ class AllUsers extends Component {
     }
 
     handleOnclickDelete = (email) => {
-        var email = {email: email};
-        axios.put("http://localhost:8000/user/deleteuser", email)
-            .then((res) => {
-                window.location.reload();
-            });
+        if (window.confirm("Do you really want to delete?")) {
+            var email = {email: email};
+            axios.put("http://localhost:8000/user/deleteuser", email)
+                .then((res) => {
+                    window.location.reload();
+                });
+        }
     }
 
     render() {
