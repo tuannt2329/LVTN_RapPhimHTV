@@ -97,14 +97,18 @@ class Login extends React.Component {
             Đăng nhập</a>
             </li>
           ) : (
-              <li>
-                <a href="/"
-                  data-toggle="dropdown" className="dropdown-toggle ng-scope" >
+            <li className="dropdown">
+            <a  href="/" aria-expanded="true"
+                  data-toggle="dropdown" className="dropdown-toggle" >
                   <i className="icon-member" />
-                  <span className="ng-binding">{this.state.fullname}</span>
+                  <span>{this.state.fullname}</span>
                 </a>
-                <span>|</span>
+                  <strong>|</strong>
                 <a href="/" onClick={this.onLogout}>Đăng xuất</a>
+                <div className="dropdown-menu">
+                  <a href="/updateinfouser" className="dropdown-item">Thông tin tài khoản</a>
+                  <a href="tickethistory" className="dropdown-item">Vé đã đặt</a>
+                </div>
               </li>
             )}
           {/* <li className="language hidden-xs">
@@ -161,8 +165,8 @@ class Login extends React.Component {
                                   />
                                   <div className="login-remember">
                                     <div className="forget-pass">
-                                      <a id="forgetPass" href="#" data-dismiss="modal" data-toggle="modal" 
-                                      data-target="#myModalForgetPassword" >Quên mật khẩu?</a>
+                                      <a id="forgetPass" href="#" data-dismiss="modal" data-toggle="modal"
+                                        data-target="#myModalForgetPassword" >Quên mật khẩu?</a>
 
                                     </div>
                                   </div>
@@ -175,8 +179,8 @@ class Login extends React.Component {
 
                             {/* Đăng ký */}
                             <div id="tab_login_2" className="tab-pane">
-                              
-                              <Register/>
+
+                              <Register />
 
                             </div>
                           </div>
@@ -227,8 +231,8 @@ class Login extends React.Component {
         <div className="modal fade" id="myModalForgetPassword" tabIndex={-1} role="dialog"
           aria-labelledby="myModalLabel" aria-hidden="true">
           <ForgotPassword />
-        </div>  
-        
+        </div>
+
       </div>
     );
   }

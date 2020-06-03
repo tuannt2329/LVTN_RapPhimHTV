@@ -7,28 +7,35 @@ class Home extends React.Component {
     super(props)
 
     this.state = {
-        films: []
+      films: [], show: false
     }
   }
 
-  UNSAFE_componentWillMount() {
-      axios.post("http://localhost:8000/film/find")
-          .then((res) => {
-            this.setStateFilms(res.data)
-          })
+  setStateFilms = (data) => {
+    this.setState({ films: data.film })
+    this.setState({ show: true })
   }
 
-  setStateFilms = (data) => {
-      this.setState({ films: data.film })
-  } 
-  
+  UNSAFE_componentWillMount() {
+    axios.post("http://localhost:8000/film/find")
+      .then((res) => {
+        this.setStateFilms(res.data);
+      })
+  }
+
+
+
   render() {
     return (
       <div>
-        {/* Slide Carousel, Mua vé Nhanh */}
-        <Slide films={this.state.films}/>
-        {/* Tab Phim đang chiếu, Phim sắp chiếu page home */}
-        <TabMovie films={this.state.films}/>
+        {this.state.show === true ?
+          <div>
+            {/* Slide Carousel, Mua vé Nhanh */}
+            <Slide films={this.state.films} />
+            {/* Tab Phim đang chiếu, Phim sắp chiếu page home */}
+            <TabMovie films={this.state.films} />
+          </div>
+          : null}
       </div>
     );
   }

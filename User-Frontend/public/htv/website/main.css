@@ -1162,11 +1162,11 @@ ul.search-list {
   content: '\f107';
   margin-left: 5px; }
 .dropdown span {
-  text-overflow: ellipsis;
+  /* text-overflow: ellipsis; */
   overflow: hidden;
   white-space: nowrap;
   display: inline-block;
-  width: 100px;
+  /* width: 100px; */
   vertical-align: middle;
   line-height: 24px; }
 .dropdown .dropdown-menu {
