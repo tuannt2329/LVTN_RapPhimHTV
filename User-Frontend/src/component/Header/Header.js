@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginRegister from '../Login_Register/Login';
+import LoginRegister from '../User/Login';
 import DateTime from './DateTime/DateTime';
 import NavbarHTV from './Navbar/Navbar';
 import axios from "axios";
@@ -8,20 +8,30 @@ class Header extends React.Component {
         super(props)
 
         this.state = {
-            films: []
+            films: [],
+            theloai: [],
+            theloai2: [],
         }
-    }
-
-    UNSAFE_componentWillMount() {
-        axios.post("http://localhost:8000/film/find")
-            .then((res) => {
-                this.setStateFilms(res.data)
-            })
     }
 
     setStateFilms = (data) => {
         this.setState({ films: data.film })
     }
+    UNSAFE_componentWillMount() {
+        axios.post("http://localhost:8000/film/find")
+            .then((res) => {
+                this.setStateFilms(res.data);
+                console.log(res.data)
+                res.data.film.forEach(element => {
+                    this.setState({
+                        theloai: [...this.state.theloai, element.TheLoai]
+                    })
+                });
+            }).then(r => this.setState({
+                theloai2: [... new Set(this.state.theloai)]
+            }));
+    }
+
     render() {
         return (
             <div>
@@ -71,7 +81,7 @@ class Header extends React.Component {
                 <div className="navicon fixed-mobile"><a href="#" className="nav-toggle"><span /></a></div>
 
 
-                <NavbarHTV films={this.state.films}/>
+                <NavbarHTV films={this.state.films} theloai={this.state.theloai2} />
 
 
             </div>

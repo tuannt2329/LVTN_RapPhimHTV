@@ -5,7 +5,7 @@ class Navbar extends React.Component {
         this.setStateFilms = this.setStateFilms.bind(this)
         this.state = {
             films: [],
-            counter: 0
+            counter: 0, theloai1: null,
         }
     }
 
@@ -13,7 +13,9 @@ class Navbar extends React.Component {
         console.log(data)
         this.setState({ films: data, counter: 1 })
     }
-
+    setStateType = (data) => {
+        this.setState({ theloai1: data })
+    }
     handleOnclickFilm = (tenphim) => {
         sessionStorage.setItem("tenphim", tenphim);
     }
@@ -22,6 +24,9 @@ class Navbar extends React.Component {
         if (this.props.films[0] && this.state.counter === 0) {
             this.setStateFilms(this.props.films)
         }
+        if (this.props.theloai[0] && this.state.theloai1 === null)
+            this.setStateType(this.props.theloai)
+
 
         return (
             <div className="htv-nav">
@@ -131,7 +136,7 @@ class Navbar extends React.Component {
                                 <a href="/">Thể loại phim</a>
                                 <div id="sub-menu">
                                     <ul>
-                                        <li>
+                                        {/* <li>
                                             <a href="/">Phim aventure</a>
                                         </li>
                                         <li>
@@ -145,7 +150,14 @@ class Navbar extends React.Component {
                                         </li>
                                         <li>
                                             <a href="/">Phim lãng mạn</a>
-                                        </li>
+                                        </li> */}
+                                        {
+                                            this.state.theloai1 !== null ? this.state.theloai1.map(i => (
+                                                <li>
+                                                    <a href="/">{i}</a>
+                                                </li>
+                                            )) : null
+                                        }
                                     </ul>
                                 </div>
                             </li>

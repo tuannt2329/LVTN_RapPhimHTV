@@ -380,3 +380,14 @@ body{
   line-height: 1;
   content: '\f105';
 }
+
+
+/* fix fullname user Login */
+.secondary-nav-wrapper ul.secondary-nav li a {
+  position: relative;
+  text-decoration: none;
+  font-size: 13px;
+}
+b, strong {
+    font-weight: 500;
+}
