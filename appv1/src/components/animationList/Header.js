@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 type HeaderProps = {
@@ -15,11 +15,14 @@ export default class Header extends React.PureComponent<HeaderProps> {
     const colors = [section.leftColor, section.rightColor];
     return (
       <View style={styles.container}>
+        {/*<TouchableOpacity onPress={()=>console.log('press')}>*/}
+        {/*  <Text>asldjasjd</Text>*/}
+        {/*</TouchableOpacity>*/}
         <Image source={section.image} style={styles.image} />
         <LinearGradient
           style={styles.gradient}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
+          // start={{x: 0, y: 0}}
+          // end={{x: 1, y: 0}}
           {...{colors}}
         />
       </View>

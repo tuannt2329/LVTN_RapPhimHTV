@@ -43,7 +43,7 @@ function DetailAccount({navigation}) {
   // loading sử dụng cho indicator
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
-  const buttons = ['Nam', 'Nữ'];
+  const buttons = ['Nam', 'Nữ', 'Khác'];
 
   const dispatch = useDispatch();
   navigation.setOptions({
@@ -95,6 +95,10 @@ function DetailAccount({navigation}) {
       setGender('male');
       console.log(gender);
     }
+    if (selectedIndex === 2) {
+      setGender('other');
+      console.log(gender);
+    }
   }, [selectedIndex, gender]);
 
   // keyboard event
@@ -122,6 +126,10 @@ function DetailAccount({navigation}) {
     if (user.user.gender === 'female') {
       console.log('female');
       setSelectedIndex(1);
+    }
+    if (user.user.gender === 'other') {
+      console.log('other');
+      setSelectedIndex(2);
     }
     setEmail(user.user.email);
   }, []);

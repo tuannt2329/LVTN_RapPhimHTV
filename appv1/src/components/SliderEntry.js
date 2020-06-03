@@ -85,7 +85,7 @@ class SliderEntry extends Component {
             numberOfLines={1}>
             Lượt Xem {LuotXem}
           </Text>
-          <Text style={{flexDirection: 'row', textAlign:'right'}}>dat ve</Text>
+          {/* <Text style={{flexDirection: 'row', textAlign:'right'}}>dat ve</Text> */}
         </View>
       </TouchableOpacity>
     );

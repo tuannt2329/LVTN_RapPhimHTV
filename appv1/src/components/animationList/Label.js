@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { StyleSheet, Platform, Dimensions } from 'react-native';
+import {StyleSheet, Platform, Dimensions, TouchableOpacity} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import {

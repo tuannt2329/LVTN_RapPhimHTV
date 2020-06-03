@@ -64,6 +64,7 @@ Button.defaultProps = {
   color: theme.colors.white,
 };
 export default Button;
+
 const styles = StyleSheet.create({
   button: {
     borderRadius: theme.sizes.radius,

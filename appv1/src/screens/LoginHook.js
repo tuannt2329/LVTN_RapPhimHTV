@@ -4,19 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   TouchableOpacity,
-  Alert,
   Image,
-  Button,
-  Switch,
-  KeyboardAvoidingView,
-  Platform,
   Animated,
   Keyboard,
   Dimensions,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import * as LoginAction from '../redux/actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,12 +17,11 @@ import styless, {colors} from '../constants/index.style';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../components/CustomHeader';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const window = Dimensions.get('window');
 
+const window = Dimensions.get('window');
 const IMAGE_HEIGHT = 100;
 const IMAGE_HEIGHT_SMALL = 0;
 const imageHeight = new Animated.Value(IMAGE_HEIGHT);
@@ -156,8 +148,8 @@ function LoginHook({navigation, route}) {
         />
 
         <Animated.Image
-          source={require('../assets/imgs/logo.png')}
-          style={{width: '70%', height: imageHeight}}
+          source={require('../assets/imgs/htv_logo.png')}
+          style={{width: '90%', resizeMode: 'contain', height: imageHeight}}
         />
         <Text style={styles.title}>
           cinemas

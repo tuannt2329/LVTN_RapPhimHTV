@@ -4,25 +4,32 @@ export const colors = {
   black: '#1a1917',
   gray: '#888888',
 
-  background1: '#e3b0bd',
-  background2: '#6b6b83',
-  background3: '#98c6cd',
+  // background1: '#ffdde1',
+  // background2: '#6b6b83',
+  // background3: '#98c6cd',
+
+  background1: '#1373c8',
+  background2: '#98c6cd',
+  background3: '#e0c3fc',
+
   // ['#e3b0bd', '#6b6b83', '#98c6cd']
   // background1Header: '#8f8796',
   // background2Header: '#6b6b83',
   // background3Header: '#4389A2',
   //
-  background1Header: '#839ea9',
-  background2Header: '#839ea9',
-  background3Header: '#e3b0bd',
+  background1Header: '#3690de',
+  background2Header: '#3690de',
+  background3Header: '#3690de',
+  // background3Header: '#98c6cd',
 
   // background1Login: '#e3b0bd',
   // background2Login: '#6b6b83',
   // background3Login: '#98c6cd',
 
   background1Login: '#98c6cd',
-  background2Login: '#6b6b83',
-  background3Login: '#e3b0bd',
+  // background2Login: '#6b6b83',
+  background2Login: '#e0c3fc',
+  background3Login: '#FEFEDF',
 };
 
 export default StyleSheet.create({
@@ -64,8 +71,9 @@ export default StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 30,
     backgroundColor: 'transparent',
-    color: 'red',
+    color: 'white',
     fontSize: 15,
+    fontWeight: 'bold',
     fontStyle: 'italic',
     textAlign: 'center',
   },

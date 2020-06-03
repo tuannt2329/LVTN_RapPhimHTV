@@ -19,9 +19,11 @@ export default class createTopTabs extends React.Component {
       <MaterialTopTabs.Navigator
         initialRouteName="Tab1"
         tabBarOptions={{
-          labelStyle: {fontSize: 15, fontWeight: 'bold'},
-          style: {backgroundColor: '#e7d6da'},
-          activeTintColor: 'black',
+          labelStyle: {fontSize: 15, fontWeight: 'bold', },
+          style: {backgroundColor: '#bfdde7'},
+          activeTintColor: 'red',
+          inactiveTintColor: 'gray',
+
           showIcon: true,
         }}>
         <MaterialTopTabs.Screen

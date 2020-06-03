@@ -41,7 +41,7 @@ export default class Sections extends React.PureComponent<SectionsProps> {
     return (
       <View style={styles.container}>
         <Headers {...{sections, y, x}} />
-        <Pages {...{sections, y, x}} />
+        {/*<Pages {...{sections, y, x}} />*/}
         <Animated.ScrollView
           style={StyleSheet.absoluteFill}
           showsVerticalScrollIndicator={false}

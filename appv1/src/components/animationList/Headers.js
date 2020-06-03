@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import {View, Dimensions} from 'react-native';
+import {View, Dimensions, TouchableOpacity} from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import {
@@ -103,7 +103,10 @@ export default class Headers extends React.PureComponent<HeadersProps> {
           const style = this.getStyle(headerHeight, key);
           return (
             <Animated.View {...{key, style}}>
+              <TouchableOpacity onPress={() => console.log('press')}>
+
               <Label index={key} {...{section, x, y}} />
+              </TouchableOpacity>
             </Animated.View>
           );
         })}

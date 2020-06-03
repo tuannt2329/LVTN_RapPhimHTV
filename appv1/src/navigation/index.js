@@ -67,7 +67,10 @@ import Text from '../components/text';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DetailAccount from '../screens/DetailAccount';
-import Temp from '../screens/Temp';
+import ListFilmSort from '../screens/ListFilmSort';
+import ListFilmSearch from '../screens/ListFilmSearch';
+import DemoAnt from '../screens/DemoAnt';
+import Ticket from '../screens/Ticket';
 
 const showHeader = () => ({
   headerShown: false,
@@ -246,12 +249,28 @@ const Screens = ({navigation, style}) => {
           {props => <DetailAccount {...props} />}
         </Stack.Screen>
         <Stack.Screen
-          name="Temp"
+          name="ListFilmSort"
           options={{
             cardStyleInterpolator: forFade,
             headerStyleInterpolator: forFadeHeader,
           }}>
-          {props => <Temp {...props} />}
+          {props => <ListFilmSort {...props} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="ListFilmSearch"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}>
+          {props => <ListFilmSearch {...props} />}
+        </Stack.Screen>
+         <Stack.Screen
+          name="Ticket"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}>
+          {props => <Ticket {...props} />}
         </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
@@ -269,7 +288,13 @@ const DrawerContent = props => {
       scrollEnabled={false}
       contentContainerStyle={{flex: 1}}>
       <Block top center>
-        <Block flex={0.4} margin={0.1} white center bottom>
+        <Block
+          flex={0.5}
+          margin={3}
+          // style={{marginLeft: '0%'}}
+          white
+          center
+          bottom>
           <FontAwesome5
             name={'user'}
             size={90}
@@ -389,7 +414,7 @@ const Drawerr = () => {
   return (
     <LinearGradient
       style={{flex: 1}}
-      colors={['#e3b0bd', '#6b6b83', '#98c6cd']}>
+      colors={[colors.background1, colors.background2, colors.background3]}>
       <Drawer.Navigator
         // hideStatusBar
         drawerType="slide"
@@ -440,8 +465,8 @@ const styles = StyleSheet.create({
   avatar: {
     // borderRadius: 20,
     // marginBottom: 17,
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     // alignSelf: 'center',
     // borderColor: 'white',
     // borderWidth: StyleSheet.hairlineWidth,

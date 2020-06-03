@@ -40,7 +40,7 @@ function SignUpHook({navigation}) {
   // loading sử dụng cho indicator
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
-  const buttons = ['Nam', 'Nữ'];
+  const buttons = ['Nam', 'Nữ', 'Khác'];
   const [showPassword, setShowPassword] = useState(true);
 
   const dispatch = useDispatch();
@@ -127,6 +127,10 @@ function SignUpHook({navigation}) {
     }
     if (selectedIndex === 0) {
       setGender('male');
+      console.log(gender);
+    }
+    if (selectedIndex === 2) {
+      setGender('other');
       console.log(gender);
     }
   }, [selectedIndex, gender]);
@@ -299,7 +303,7 @@ function SignUpHook({navigation}) {
               height: 50,
               borderRadius: 25,
               width: '80%',
-              backgroundColor: '#fde0f2',
+              backgroundColor: 'white',
             }}
           />
         </View>

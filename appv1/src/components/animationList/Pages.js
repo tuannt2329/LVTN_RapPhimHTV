@@ -9,7 +9,7 @@ import MockCard from './MockCard';
 import DetailFilm from '../../screens/DetailFilm';
 import LoginHook from '../../screens/LoginHook';
 import User from '../../screens/User';
-import Temp from '../../screens/Temp';
+import Temp from '../../screens/ListFilmSort';
 
 type PagesProps = {
   sections: Section[],
@@ -36,7 +36,6 @@ export default class Pages extends React.PureComponent<PagesProps> {
             <MockEntry {...{image}} />
           </Animated.View>
         ))}
-        <Temp />
       </View>
     );
   }

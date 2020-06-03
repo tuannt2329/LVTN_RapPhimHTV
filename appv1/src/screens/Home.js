@@ -82,7 +82,7 @@ function Home({navigation}) {
           <Button
             gradient
             onPress={() =>
-              navigation.navigate('Temp', {
+              navigation.navigate('ListFilm', {
                 data: film,
               })
             }>

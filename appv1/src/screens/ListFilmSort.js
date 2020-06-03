@@ -14,10 +14,9 @@ import {
 import Carousel from 'react-native-snap-carousel';
 import * as Constant from '../constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
-export default function Temp({navigation, route}) {
+export default function ListFilmSort({navigation, route}) {
   const carouselRef = useRef(null);
   const {data} = route.params;
   // const [lista, setLista] = useState(data);
@@ -26,12 +25,10 @@ export default function Temp({navigation, route}) {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // type of film
-  const [type, setType] = useState([]);
-  // country of film
-  const [country, setCountry] = useState([]);
+  // type b;
 
   // const for render
+  // sử dụng cho hàm 2 cái useEffect đầu tiên
   const [show, setShow] = useState('no');
   const [load, setLoad] = useState('f');
 
@@ -70,9 +67,9 @@ export default function Temp({navigation, route}) {
         await setType([...new Set(type)]);
         await setCountry([...new Set(country)]);
       }
+      await setShow('yes');
       console.log('from type', type);
       console.log('from country', country);
-      await setShow('yes');
     }
     a();
   }, [load]);
@@ -197,75 +194,6 @@ export default function Temp({navigation, route}) {
     }
     // hii();
   }, [selectedValueType, selectedValueCountry, selectedValueSort]);
-
-  function filterBy() {
-    if (selectedValueType === 'all' && selectedValueCountry === 'all') {
-      if (selectedValueSort === 'tang') {
-        return list.sort((a, b) => a.TongThu - b.TongThu);
-      }
-      if (selectedValueSort === 'giam') {
-        return list.sort((a, b) => b.TongThu - a.TongThu);
-      }
-      return list;
-    }
-    if (selectedValueType !== 'all' && selectedValueCountry === 'all') {
-      console.log('Jumppping');
-      if (selectedValueSort === 'tang') {
-        setActiveIndex(0);
-        return list
-          .filter(r => r.TheLoai === selectedValueType)
-          .sort((a, b) => a.TongThu - b.TongThu);
-      }
-      if (selectedValueSort === 'giam') {
-        setActiveIndex(0);
-
-        return list
-          .filter(r => r.TheLoai === selectedValueType)
-          .sort((a, b) => b.TongThu - a.TongThu);
-      }
-      setListFilter(list.filter(r => r.TheLoai === selectedValueType));
-      setActiveIndex(0);
-      return list.filter(r => r.TheLoai === selectedValueType);
-    }
-    if (selectedValueType === 'all' && selectedValueCountry !== 'all') {
-      if (selectedValueSort === 'tang') {
-        return list
-          .filter(r => r.TenNuocSX === selectedValueCountry)
-          .sort((a, b) => a.TongThu - b.TongThu);
-      }
-      if (selectedValueSort === 'giam') {
-        return list
-          .filter(r => r.TenNuocSX === selectedValueCountry)
-          .sort((a, b) => b.TongThu - a.TongThu);
-      }
-      return list.filter(r => r.TenNuocSX === selectedValueCountry);
-    }
-    if (setSelectedValueCountry !== 'all' && selectedValueType !== 'all') {
-      if (selectedValueSort === 'tang') {
-        return list
-          .filter(
-            r =>
-              r.TheLoai === selectedValueType &&
-              r.TenNuocSX === selectedValueCountry,
-          )
-          .sort((a, b) => a.TongThu - b.TongThu);
-      }
-      if (selectedValueSort === 'giam') {
-        return list
-          .filter(
-            r =>
-              r.TheLoai === selectedValueType &&
-              r.TenNuocSX === selectedValueCountry,
-          )
-          .sort((a, b) => b.TongThu - a.TongThu);
-      }
-      return list.filter(
-        r =>
-          r.TheLoai === selectedValueType &&
-          r.TenNuocSX === selectedValueCountry,
-      );
-    }
-  }
 
   const _renderItem = ({item, index}) => {
     return (
@@ -433,12 +361,12 @@ export default function Temp({navigation, route}) {
             <Text
               style={{
                 color: '#FFF',
-                fontSize: 25,
-                fontWeight: 'bold',
+                fontSize: 20,
+                fontWeight: 'normal',
                 marginLeft: 10,
                 marginVertical: 10,
               }}>
-              Danh Sach Phim
+              Danh Sách Phim
             </Text>
 
             <View style={styles.slideView}>
@@ -474,7 +402,7 @@ export default function Temp({navigation, route}) {
                   {listFilter === [] ||
                   typeof listFilter[activeIndex] === 'undefined'
                     ? 'Không có phim như yêu cầu'
-                    :  listFilter[activeIndex].TomTat.slice(0, 200)}
+                    : listFilter[activeIndex].TomTat.slice(0, 200)}
                   ...
                 </Text>
               </View>
@@ -504,7 +432,6 @@ const styles = StyleSheet.create({
     // backgroundColor: '#000',
     backgroundColor: 'transparent',
     resizeMode: 'cover',
-
   },
   viewSearch: {
     flex: 1,
