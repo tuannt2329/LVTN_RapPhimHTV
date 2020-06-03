@@ -16,14 +16,26 @@ const handler = ({ model }, _) => async (req, res) => {
     res.send({ error: 'Gia ve is required.' })
   } else {
     try {
-      const result = await model.create(req.body)
+      let param = {
+        TenFilm : TenFilm,
+        TenPhong: TenPhong,
+        TenGhe: TenGhe,
+        ThoiGianChieu: ThoiGianChieu
+      }
+      const ticket = await model.find(param)
 
-      if(result) {
-        const content = 'You have successfully bought tickets of HTV cinema'
-        const subject = 'Successful ticket purchase'
-        
-        const a = await sendEmail(email, subject, content)
-        res.send({ content: subject })
+      if (ticket.length != 0) {
+        res.send({ error: 'ticket exist!' })
+      } else {
+        const result = await model.create(req.body)
+
+        if(result) {
+          const content = 'You have successfully bought tickets of HTV cinema'
+          const subject = 'Successful ticket purchase'
+          
+          const a = await sendEmail(email, subject, content)
+          res.send({ content: subject })
+      }
       }
     } catch (error) {
       res.send({ error })

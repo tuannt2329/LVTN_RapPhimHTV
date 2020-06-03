@@ -33,6 +33,10 @@ module.exports = new Schema({
       type: Date,
       default: Date.now()
   },
+  NguoiXacNhan: {
+      type: String,
+      default: ""
+  },
   GiaVe: {
     type: Number,
     default: 0

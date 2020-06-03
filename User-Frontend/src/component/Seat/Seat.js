@@ -7,10 +7,10 @@ import {
   Route,
   Link
 } from "react-router-dom";
-var list = [{}];
-var GioChieu = [];
+var list = [];
 var stt = [];
 var strghe = "";
+var tongtien = 0
 class Seat extends React.Component {
   constructor(props) {
     super(props);
@@ -28,30 +28,22 @@ class Seat extends React.Component {
       GioChieu: 'CHỌN SUẤT CHIẾU',
       TenPhong: null,
       Ghe: [],
-      choosing: []
+      choosing: [],
+      TongTienVe: 0
     }
-    this.renderChonNgay = this.renderChonNgay.bind(this);
     this.getGhebyPhong = this.getGhebyPhong.bind(this);
+    this.updateStatusGhe = this.updateStatusGhe.bind(this)
   }
 
   setStateFilms = (data) => {
-    console.log(data)
     this.setState({ films: data, counter: 1 })
   }
 
   UNSAFE_componentWillMount() {
-    if (this.props.location.film) {
-      sessionStorage.setItem("Film", JSON.stringify(this.props.location.film));
-      window.location.reload();
-    }
     this.isLocalStorage();
 
     var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
-    // axios.post("http://localhost:8000/film/find")
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     this.setStateFilms(res.data.film);
-    //   })
+    
     axios.post("http://localhost:8000/film/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data.film)
@@ -59,112 +51,137 @@ class Seat extends React.Component {
   }
 
   isLocalStorage = () => {
-    if (JSON.parse(sessionStorage.getItem('Film')) != null) {
-      var tenfilm = JSON.parse(sessionStorage.getItem('Film'))["TenFilm"] ?
-        JSON.parse(sessionStorage.getItem('Film'))["TenFilm"] : null;
+    if (sessionStorage.getItem('tenphim') != null) {
+      var tenfilm = sessionStorage.getItem('tenphim') ?
+        sessionStorage.getItem('tenphim') : null;
     }
     this.setState({ TenFilm: tenfilm });
 
   }
-  // componentDidMount() {
-  //   this.getFilminLichChieu();
-  // }
+  componentDidMount() {
+    this.getFilminLichChieu();
+  }
 
-  // getFilminLichChieu = () => {
-  //   var tenfilm = { TenFilm: this.state.TenFilm };
-  //   axios.post('http://localhost:8000/schedule/find', tenfilm)
-  //     .then((res) => {
-  //       if (res.data.length !== 0) {
-  //         for (const lc in res.data) {
-  //           var lichchieu = (res.data[lc]["ThoiGianChieu"]).split("T");
-  //           var i = 0;
-  //           for (const n in list) {
-  //             if (lichchieu[0] !== list[n].NgayChieu) {
-  //               i++;
-  //             }
-  //           }
-  //           if (i === list.length) {
-  //             list.push({ NgayChieu: lichchieu[0] });
-  //           }
-  //         }
-  //         for (const n in list) {
-  //           var a = [];
-  //           for (const lc1 in res.data) {
-  //             var lichchieu1 = (res.data[lc1]["ThoiGianChieu"]).split("T");
-  //             if (lichchieu1[0] === list[n].NgayChieu) {
-  //               a.push(lichchieu1[1]);
-  //             }
-  //           }
-  //           list[n]["GioChieu"] = a;
-  //         }
-  //         list.splice(0, 1);
-  //         this.setState({ LichChieu: list });
-  //       }
-  //     });
-  // }
+  getFilminLichChieu = () => {
+    var tenfilm = { TenFilm: this.state.TenFilm };
+    var today = new Date()
+    let date = today.getFullYear() + '-0' + (today.getMonth() + 1)
+    if(today.getDate() < 10) {
+      date += '-0' + today.getDate()
+    } else {
+      date += '-' + today.getDate()
+    }
+    const time= today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
+    const datetime = date + 'T' + time
+    axios.post('http://localhost:8000/schedule/find', tenfilm)
+      .then((res) => {
+        if (!res.data.error) {
+          for (const lc in res.data.schedule) {
+            if(res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
+              var lichchieu = (res.data.schedule[lc]["ThoiGianChieu"]).split("T");
+              var i = 0;
+              for (const n in list) {
+                if (lichchieu[0] !== list[n].NgayChieu) {
+                  i++;
+                }
+              }
+              if (i === list.length) {
+                list.push({ NgayChieu: lichchieu[0] });
+              }
+            }
+          }
+          for (const n in list) {
+            var a = [""];
+            for (const lc1 in res.data.schedule) {
+              var lichchieu1 = (res.data.schedule[lc1]["ThoiGianChieu"]).split("T");
+              if (lichchieu1[0] === list[n].NgayChieu) {
+                if(lichchieu1[0] === date && lichchieu1[1] < time) {
+                  continue
+                }
+                a.push(lichchieu1[1]);
+              }
+            }
+            
+            list[n]["GioChieu"] = a;
+          }
+          this.setState({ LichChieu: list });
+        }
+      });
+  }
 
-  getGhebyPhong = () => {
+  getGhebyPhong = (lichchieu) => {
     const tenphong = { TenPhong: this.state.TenPhong };
     axios.post('http://localhost:8000/ghe/find', tenphong)
       .then((res) => {
-        if (res.data) {
-          this.setState({ Ghe: res.data });
-
+        if (!res.data.error) {
+          this.setState({ Ghe: res.data.ghe });
+          this.updateStatusGhe(lichchieu)
+        } else {
+          return window.alert(res.data.error)
         }
       });
   }
 
   HandleClickNgay = (ngaychieu) => {
-    for (const i in this.state.LichChieu) {
-      if (this.state.LichChieu[i].NgayChieu === ngaychieu) {
-        GioChieu = this.state.LichChieu[i].GioChieu;
-        this.setState({ NgayChieu: ngaychieu });
-      }
-    }
+    this.setState({GioChieu: 'CHỌN SUẤT CHIẾU'})
+    this.setState({ NgayChieu: ngaychieu.target.value });
   }
 
-  renderChonNgay = () => {
-    return this.state.LichChieu.map((item, index) => {
-      return (
-        <button
-          className="dropdown-item"
-          onClick={this.HandleClickNgay.bind(this, item.NgayChieu)} key={index}
-        >
-          {item.NgayChieu}
-        </button>
-      )
-    });
+  updateStatusGhe = (lichchieu) => {
+    axios.post('http://localhost:8000/ticket/find', lichchieu)
+    .then((res) => {
+      if(!res.data.error) {
+        let ghedadat = []
+        for (var t in res.data.ticket) {
+          for(var r in res.data.ticket[t].TenGhe) {
+            ghedadat.push(res.data.ticket[t].TenGhe[r])
+          }
+        }
+        var gheghe = this.state.Ghe
+        for (var i in gheghe) {
+          for (var z in ghedadat) {
+            if(gheghe[i].TenGhe === ghedadat[z]) {
+              gheghe[i].status = true
+            } 
+          }
+        }
+        this.setState({Ghe: gheghe})
+      } else {
+        if(res.data.error !== 'ticket don\'t exist!') {
+          return window.alert(res.data.error)
+        }
+      }
+    })
   }
+  
   HandleClickGio = (giochieu) => {
-    sessionStorage.setItem("LichChieu", JSON.stringify(this.state.NgayChieu + "T" + giochieu));
-    this.setState({ GioChieu: giochieu });
+    stt = []
+    strghe = ""
+    tongtien = 0
+    this.setState({ GioChieu: giochieu.target.value, choosing: [], TongTienVe: 0 });
+
     var lichchieu = {
       TenFilm: this.state.TenFilm,
-      ThoiGianChieu: this.state.NgayChieu + "T" + giochieu
+      ThoiGianChieu: this.state.NgayChieu + "T" + giochieu.target.value
     }
-
-    axios.post('http://localhost:8000/phong/find', lichchieu)
+    axios.post('http://localhost:8000/schedule/find', lichchieu)
       .then((res) => {
-        if (res.data) {
-          this.setState({ TenPhong: res.data[0]["TenPhong"] });
-          this.getGhebyPhong();
+        if (!res.data.error) {
+          this.setState({ TenPhong: res.data.schedule[0]["TenPhong"] });
+          this.getGhebyPhong(lichchieu)
+        } else {
+          return window.alert(res.data.error)
         }
       });
   }
-  renderChonGioChieu = () => {
-    return GioChieu.map((item, index) => {
-      return (
-        <button className="dropdown-item" key={index} onClick={this.HandleClickGio.bind(this, item)}>{item.substring(0, item.length - 5)} </button>
-      );
-    });
-  }
 
   renderGhe = () => {
+    if(this.state.choosing.length !== 0) {
+    }
     var arr = [];
     this.state.Ghe.forEach((item, index) => {
       if (arr.length === 0) {
         arr.push(item["TenGhe"].slice(0, 1));
-
       }
       var a = false;
       arr.map((ghe) => {
@@ -173,16 +190,17 @@ class Seat extends React.Component {
         }
         return null;
       })
-      if (a === false) {
+      if (a === false && item["TenGhe"]) {
         arr.push(item["TenGhe"].slice(0, 1));
       }
     })
     return arr.map((ghe, ind) =>
       <tr key={ind}>
+        <td className="road" colSpan={2}>{ghe}</td>
         {
           this.state.Ghe.map((item, index) => {
             var status = 'single ';
-            if (item["TenGhe"].slice(0, 1) === ghe) {
+            if (item["TenGhe"].slice(0, 1) === ghe && ghe !== "R") {
               if (item["status"] === true) {
                 status = 'busy';
               } else {
@@ -196,6 +214,23 @@ class Seat extends React.Component {
               return (
                 <td className={status} key={index} onClick={this.handleGheOnclick.bind(this, item["TenGhe"], status)}>{item["TenGhe"]}</td>
               );
+            } else {
+              status = 'couple '
+              if (item["TenGhe"].slice(0, 1) === ghe && ghe === "R") {
+                if (item["status"] === true) {
+                  status = 'busy';
+                } else {
+                  for (var i = 0; i < this.state.choosing.length; i++) {
+                    if (item["TenGhe"] === this.state.choosing[i]) {
+                      status += "choosing";
+                      break;
+                    }
+                  }
+                }
+                return (
+                  <td colSpan={2} className={status} key={index} onClick={this.handleGheOnclick.bind(this, item["TenGhe"], status)}>{item["TenGhe"]}</td>
+                );
+              }
             }
             return null;
           })
@@ -207,7 +242,7 @@ class Seat extends React.Component {
 
 
   handleGheOnclick = (tenghe, status) => {
-    if (status === "single choosing") {
+    if (status === "single choosing" || status === 'couple choosing') {
       stt.splice(stt.indexOf(tenghe), 1);
     } else {
       if (status !== "busy") {
@@ -228,6 +263,42 @@ class Seat extends React.Component {
     stt.forEach((item) => {
       strghe += (item + ', ');
     });
+    if(status === 'single ' || status  === "single choosing") {
+      const ticketType = {
+        LoaiVe: 'VIP'
+      }
+      axios.post('http://localhost:8000/giave/find', ticketType)
+      .then((res) => {
+        if(!res.data.error) {
+          if(status === 'single ') {
+            tongtien += res.data.loaive[0]['GiaVe']
+          } else {
+            tongtien -= res.data.loaive[0]['GiaVe']
+          }
+          this.setState({TongTienVe:tongtien})
+        } else {
+          return window.alert(res.data.error)
+        }
+      })
+    } else {
+      const ticketType = {
+        LoaiVe: 'COUPLE'
+      }
+      axios.post('http://localhost:8000/giave/find', ticketType)
+      .then((res) => {
+        if(!res.data.error) {
+          if(status === 'couple ') {
+            tongtien += res.data.loaive[0]['GiaVe']
+          } else {
+            tongtien -= res.data.loaive[0]['GiaVe']
+          }
+          this.setState({TongTienVe:tongtien})
+        } else {
+          return window.alert(res.data.error)
+        }
+      })
+    }
+    
   }
 
   handleOnclickXacNhanDatVe = () => {
@@ -260,43 +331,39 @@ class Seat extends React.Component {
         TenPhong: this.state.TenPhong,
         TenGhe: this.state.choosing,
         ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
-        ThoiGianDat: thoigianxacthuc
+        ThoiGianDat: thoigianxacthuc,
+        GiaVe: this.state.TongTienVe
       }
       axios.post('http://localhost:8000/ticket/createticket', ve)
         .then((res) => {
-          if (res.data['mess'] === "Them ve thanh cong!") {
-            var ghes = [];
-            this.state.choosing.forEach(item => {
-              var a = {
-                TenPhong: this.state.TenPhong,
-                TenGhe: item,
-                status: 'true'
-              }
-              ghes.push(a);
-            });
+          if (!res.data.error) {
             const tongthu = {
               TenFilm: this.state.TenFilm,
-              TongThu: this.state.choosing.length
+              TongThu: this.state.TongTienVe + this.state.films.TongThu,
+              DaoDien: this.state.films[0].DaoDien,
+              TheLoai: this.state.films[0].TheLoai,
+              TenNuocSX: this.state.films[0].TenNuocSX,
+              TomTat: this.state.films[0].TomTat,
+              TongChi: this.state.films[0].TongChi,
+              NgayChieu: this.state.films[0].NgayChieu,
+              NgayKetThuc: this.state.films[0].NgayKetThuc
             }
             axios.put('http://localhost:8000/film/updatefilm', tongthu)
-              .then((res) => {
-                ghes.forEach(item => {
-                  axios.put('http://localhost:8000/ghe/updateStatus', item)
-                    .then((res) => {
-                      if (res.data['mess'] === "update status success!") {
-                        this.setState({ choosing: [] });
-                        strghe = "";
-                        stt = [];
-                        return (
-                          window.location = '/',
-                          window.alert('Đặt vé thành công!')
-                        )
-                      }
-
-                    });
-                });
+              .then((res1) => {
+                if (!res1.data.error) {
+                  this.setState({ choosing: [] });
+                  strghe = "";
+                  stt = [];
+                  return (
+                    window.alert('Đặt vé thành công!'),
+                    window.location = '/'
+                  )
+                } else {
+                  return window.alert(res1.data.error)
+                }
               });
-
+          } else {
+            return window.alert(res.data.error)
           }
         });
     } else {
@@ -305,6 +372,7 @@ class Seat extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -316,30 +384,34 @@ class Seat extends React.Component {
                     <section className="booking-ticket">
                       <h2 className="booking-title">Chọn ghế: &nbsp;<span className="select-seat" /></h2>
                       <div className="seat-map-wrapper">
+                        
                         <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 first-col">
                           <htv-select>
                             <div className="btn-select-sex login location">
-                              <select id="sex"
-                                value={this.state.gender}
-                                onChange={this.onChangeGender}>
+                              <select id="date"
+                                onChange={this.HandleClickNgay} onClick={this.HandleClickNgay}>
                                 <option value="" disabled selected tabIndex="6">Chọn ngày chiếu</option>
-                                <option value="male">1/1/1111</option>
-                                <option value="female">2/2/2222</option>
-                                <option value="other">3/3/3333</option>
+                                {this.state.LichChieu.map((item, index) =>
+                                  <option value={item.NgayChieu}>{item.NgayChieu}</option>
+                                )}
                               </select>
                             </div>
                           </htv-select>
                         </div>
+
                         <div className="col-md-4 col-sm-4 col-xs-12 second-col">
                           <htv-select>
                             <div className="btn-select-sex login location">
-                              <select id="sex"
-                                value={this.state.gender}
-                                onChange={this.onChangeGender}>
+                              <select id="time"
+                                onChange={this.HandleClickGio} >
                                 <option value="" disabled selected tabIndex="6">Chọn suất chiếu</option>
-                                <option value="male">1h</option>
-                                <option value="female">2h</option>
-                                <option value="other">3h</option>
+                                {this.state.LichChieu.map((item, index) =>
+                                  (item.NgayChieu === this.state.NgayChieu) ?
+                                    item.GioChieu.map((gc) =>
+                                      <option value={gc}>{gc.substring(0, gc.length - 5)}</option>
+                                    )
+                                  : null
+                                )}
                               </select>
                             </div>
                           </htv-select>
@@ -353,233 +425,22 @@ class Seat extends React.Component {
                               <div className="tbl-wrap">
                                 <table>
                                   <tbody>
-                                    {this.renderGhe()}
-
+                                  {this.renderGhe()}
+                                   
+                                    
                                     <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201997}>A01</td>
-                                      <td className="single  " data-seat={1108202014}>A02</td>
-                                      <td className="single  " data-seat={1108201997}>A01</td>
-                                      <td className="single  " data-seat={1108202014}>A02</td>
-                                      <td className="single  " data-seat={1108202031}>A03</td>
-                                      <td className="single  " data-seat={1108202047}>A04</td>
-                                      <td className="single  " data-seat={1108202063}>A05</td>
-                                      <td className="single  " data-seat={1108202079}>A06</td>
-                                      <td className="single  " data-seat={1108202094}>A07</td>
-                                      <td className="single  " data-seat={1108202109}>A08</td>
-                                      <td className="single  " data-seat={1108202124}>A09</td>
-                                      <td className="single  " data-seat={1108202140}>A10</td>
-                                      <td className="single  " data-seat={1108202157}>A11</td>
-                                      <td className="single  " data-seat={1108202173}>A12</td>
-                                      <td className="single  " data-seat={1108202190}>A13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201998}>B01</td>
-                                      <td className="single  " data-seat={1108202015}>B02</td>
-                                      <td className="single  " data-seat={1108201998}>B01</td>
-                                      <td className="single  " data-seat={1108202015}>B02</td>
-                                      <td className="single  " data-seat={1108202032}>B03</td>
-                                      <td className="single  " data-seat={1108202048}>B04</td>
-                                      <td className="single  " data-seat={1108202064}>B05</td>
-                                      <td className="single  " data-seat={1108202080}>B06</td>
-                                      <td className="single  " data-seat={1108202095}>B07</td>
-                                      <td className="single  " data-seat={1108202110}>B08</td>
-                                      <td className="single  " data-seat={1108202125}>B09</td>
-                                      <td className="single  " data-seat={1108202141}>B10</td>
-                                      <td className="single  " data-seat={1108202158}>B11</td>
-                                      <td className="single  " data-seat={1108202174}>B12</td>
-                                      <td className="single  " data-seat={1108202191}>B13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201998}>C01</td>
-                                      <td className="single  " data-seat={1108202015}>B02</td>
-                                      <td className="single  " data-seat={1108201999}>C01</td>
-                                      <td className="single  " data-seat={1108202016}>C02</td>
-                                      <td className="single  " data-seat={1108202033}>C03</td>
-                                      <td className="single  " data-seat={1108202049}>C04</td>
-                                      <td className="single  " data-seat={1108202065}>C05</td>
-                                      <td className="single  " data-seat={1108202081}>C06</td>
-                                      <td className="single  " data-seat={1108202096}>C07</td>
-                                      <td className="single  " data-seat={1108202111}>C08</td>
-                                      <td className="single  " data-seat={1108202126}>C09</td>
-                                      <td className="single  " data-seat={1108202142}>C10</td>
-                                      <td className="single  " data-seat={1108202159}>C11</td>
-                                      <td className="single  " data-seat={1108202175}>C12</td>
-                                      <td className="single  " data-seat={1108202192}>C13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108202000}>D01</td>
-                                      <td className="single  " data-seat={1108202017}>D02</td>
-                                      <td className="single  " data-seat={1108202000}>D01</td>
-                                      <td className="single  " data-seat={1108202017}>D02</td>
-                                      <td className="single  " data-seat={1108202034}>D03</td>
-                                      <td className="single  " data-seat={1108202050}>D04</td>
-                                      <td className="single  " data-seat={1108202066}>D05</td>
-                                      <td className="single  " data-seat={1108202082}>D06</td>
-                                      <td className="single  " data-seat={1108202097}>D07</td>
-                                      <td className="single  " data-seat={1108202112}>D08</td>
-                                      <td className="single  " data-seat={1108202127}>D09</td>
-                                      <td className="single  " data-seat={1108202143}>D10</td>
-                                      <td className="single  " data-seat={1108202160}>D11</td>
-                                      <td className="single  " data-seat={1108202176}>D12</td>
-                                      <td className="single  " data-seat={1108202193}>D13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108202001}>E01</td>
-                                      <td className="single  " data-seat={1108202018}>E02</td>
-                                      <td className="single  " data-seat={1108202001}>E01</td>
-                                      <td className="single  " data-seat={1108202018}>E02</td>
-                                      <td className="single  " data-seat={1108202035}>E03</td>
-                                      <td className="single  " data-seat={1108202051}>E04</td>
-                                      <td className="single  " data-seat={1108202067}>E05</td>
-                                      <td className="single  " data-seat={1108202083}>E06</td>
-                                      <td className="single  " data-seat={1108202098}>E07</td>
-                                      <td className="single  " data-seat={1108202113}>E08</td>
-                                      <td className="single  " data-seat={1108202128}>E09</td>
-                                      <td className="single  " data-seat={1108202144}>E10</td>
-                                      <td className="single  " data-seat={1108202161}>E11</td>
-                                      <td className="single  " data-seat={1108202177}>E12</td>
-                                      <td className="single  " data-seat={1108202194}>E13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108202002}>F01</td>
-                                      <td className="single  " data-seat={1108202019}>F02</td>
-                                      <td className="single  " data-seat={1108202002}>F01</td>
-                                      <td className="single  " data-seat={1108202019}>F02</td>
-                                      <td className="single  " data-seat={1108202036}>F03</td>
-                                      <td className="single  " data-seat={1108202052}>F04</td>
-                                      <td className="single  " data-seat={1108202068}>F05</td>
-                                      <td className="single  " data-seat={1108202084}>F06</td>
-                                      <td className="single  " data-seat={1108202099}>F07</td>
-                                      <td className="single  " data-seat={1108202114}>F08</td>
-                                      <td className="single  " data-seat={1108202129}>F09</td>
-                                      <td className="single  " data-seat={1108202145}>F10</td>
-                                      <td className="single  " data-seat={1108202162}>F11</td>
-                                      <td className="single  " data-seat={1108202178}>F12</td>
-                                      <td className="single  " data-seat={1108202195}>F13</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201970}>G01</td>
-                                      <td className="single  " data-seat={1108201970}>G02</td>
-                                      <td className="single  " data-seat={1108202003}>G03</td>
-                                      <td className="single  " data-seat={1108202020}>G04</td>
-                                      <td className="single  " data-seat={1108202037}>G05</td>
-                                      <td className="single  " data-seat={1108202053}>G06</td>
-                                      <td className="single  " data-seat={1108202069}>G07</td>
-                                      <td className="single  " data-seat={1108202085}>G08</td>
-                                      <td className="single busy " data-seat={1108202100}>G09</td>
-                                      <td className="single busy " data-seat={1108202115}>G10</td>
-                                      <td className="single  " data-seat={1108202130}>G11</td>
-                                      <td className="single  " data-seat={1108202146}>G12</td>
-                                      <td className="single  " data-seat={1108202163}>G13</td>
-                                      <td className="single  " data-seat={1108202179}>G14</td>
-                                      <td className="single  " data-seat={1108202196}>G15</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201960}>H01</td>
-                                      <td className="single  " data-seat={1108201971}>H02</td>
-                                      <td className="single  " data-seat={1108202004}>H03</td>
-                                      <td className="single  " data-seat={1108202021}>H04</td>
-                                      <td className="single  " data-seat={1108202038}>H05</td>
-                                      <td className="single  " data-seat={1108202054}>H06</td>
-                                      <td className="single  " data-seat={1108202070}>H07</td>
-                                      <td className="single  " data-seat={1108202086}>H08</td>
-                                      <td className="single  " data-seat={1108202101}>H09</td>
-                                      <td className="single  " data-seat={1108202116}>H10</td>
-                                      <td className="single  " data-seat={1108202131}>H11</td>
-                                      <td className="single  " data-seat={1108202147}>H12</td>
-                                      <td className="single  " data-seat={1108202164}>H13</td>
-                                      <td className="single  " data-seat={1108202180}>H14</td>
-                                      <td className="single  " data-seat={1108202197}>H15</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201964}>M01</td>
-                                      <td className="single  " data-seat={1108201964}>M01</td>
-                                      <td className="single  " data-seat={1108201975}>M02</td>
-                                      <td className="single  " data-seat={1108202008}>M03</td>
-                                      <td className="single  " data-seat={1108202025}>M04</td>
-                                      <td className="single  " data-seat={1108202042}>M05</td>
-                                      <td className="single  " data-seat={1108202058}>M06</td>
-                                      <td className="single  " data-seat={1108202074}>M07</td>
-                                      <td className="single  " data-seat={1108202090}>M08</td>
-                                      <td className="single  " data-seat={1108202105}>M09</td>
-                                      <td className="single  " data-seat={1108202120}>M10</td>
-                                      <td className="single  " data-seat={1108202135}>M11</td>
-                                      <td className="single  " data-seat={1108202151}>M12</td>
-                                      <td className="single  " data-seat={1108202168}>M13</td>
-                                      <td className="single  " data-seat={1108202184}>M14</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201976}>N02</td>
-                                      <td className="single  " data-seat={1108202009}>N03</td>
-                                      <td className="single  " data-seat={1108202009}>N03</td>
-                                      <td className="single  " data-seat={1108202026}>N04</td>
-                                      <td className="single  " data-seat={1108202043}>N05</td>
-                                      <td className="single  " data-seat={1108202059}>N06</td>
-                                      <td className="single  " data-seat={1108202075}>N07</td>
-                                      <td className="single  " data-seat={1108202091}>N08</td>
-                                      <td className="single  " data-seat={1108202106}>N09</td>
-                                      <td className="single  " data-seat={1108202121}>N10</td>
-                                      <td className="single  " data-seat={1108202136}>N11</td>
-                                      <td className="single  " data-seat={1108202152}>N12</td>
-                                      <td className="single  " data-seat={1108202169}>N13</td>
-                                      <td className="single  " data-seat={1108202185}>N14</td>
-                                      <td className="single  " data-seat={1108202202}>N15</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-                                    <tr>
-                                      <td className="road" colSpan={2}>V</td>
-                                      <td className="single  " data-seat={1108201966}>O01</td>
-                                      <td className="single  " data-seat={1108201977}>O02</td>
-                                      <td className="single  " data-seat={1108202010}>O03</td>
-                                      <td className="single  " data-seat={1108202027}>O04</td>
-                                      <td className="single  " data-seat={1108202044}>O05</td>
-                                      <td className="single  " data-seat={1108202060}>O06</td>
-                                      <td className="single  " data-seat={1108202076}>O07</td>
-                                      <td className="single  " data-seat={1108202092}>O08</td>
-                                      <td className="single  " data-seat={1108202107}>O09</td>
-                                      <td className="single  " data-seat={1108202122}>O10</td>
-                                      <td className="single  " data-seat={1108202137}>O11</td>
-                                      <td className="single  " data-seat={1108202153}>O12</td>
-                                      <td className="single  " data-seat={1108202170}>O13</td>
-                                      <td className="single  " data-seat={1108202186}>O14</td>
-                                      <td className="single  " data-seat={1108202203}>O15</td>
-                                      <td className="road" colSpan={2}>V</td>
-                                    </tr>
-
-                                    <tr>
-                                      <td />
-                                      <td />
-                                      <td colSpan={2} className="couple  " data-seat={1108201969}>R01</td>
-                                      <td colSpan={2} className="couple  " data-seat={1108201996}>R02</td>
-                                      <td colSpan={2} className="couple  " data-seat={1108202013}>R03</td>
-                                      <td />
-                                      <td />
-                                      <td />
-                                      <td colSpan={2} className="couple  " data-seat={1108202156}>R04</td>
-                                      <td colSpan={2} className="couple  " data-seat={1108202189}>R05</td>
-                                      <td colSpan={2} className="couple  " data-seat={1108202222}>R06</td>
-                                      <td />
-                                      <td />
+                                      <td/>
+                                      <td/>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td colSpan={2} className="road" ></td>
+                                      <td/>
+                                      <td/>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -593,17 +454,8 @@ class Seat extends React.Component {
                               <li className="busy">Ghế đã chọn</li>
                               <li className="road">Lối đi</li>
                             </ul>
-
                           </div>
                         </div>
-                      </div>
-                      <div className="total-mobile step2 hidden-lg">
-                        <div className="ticket-price-total"><p>Ghế: &nbsp;
-                            <span className="select-seat   " /></p>
-                        </div>
-                        <a
-                          className="btn primary-arrow primary-arrow-right right">
-                          <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
                       </div>
                     </section>
                   </div>
@@ -630,20 +482,20 @@ class Seat extends React.Component {
                             </span>
                           </div>
                           <div className="ticket-info">
-                            <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP 5&nbsp;</p>
-                            <p><b>Suất chiếu: &nbsp;</b>14:30&nbsp; | Thứ ba, 26/05/2020</p>
+                          <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
+                            <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>
                             <p className="  "><b>Combo: &nbsp;</b></p>
-                            <p className="  "><b>Ghế: &nbsp;</b></p>
+                            <p className="  "><b>Ghế: {strghe}&nbsp;</b></p>
                           </div>
                           <div className="ticket-price-total">
                             <p>Tổng: &nbsp;
                               <htv-summary-ticket>
-                                <span className="  ">50,000 VNĐ</span>
+                                <span className="  ">{this.state.TongTienVe} đồng</span>
                               </htv-summary-ticket></p>
                           </div>
                           <div className="ticket-button">
-                            <a className="btn primary-arrow primary-arrow-left">Quay lại</a>
-                            <a className="btn primary-arrow primary-arrow-right right">
+                            <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
+                            <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
                               <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
                           </div>
                         </div>

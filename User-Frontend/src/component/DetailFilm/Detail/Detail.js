@@ -171,7 +171,7 @@ class Detail extends React.Component {
                     </div>
                     <div className="detail-info-row">
                       <label>Khởi chiếu:&nbsp;</label>
-                      <div className="detail-info-right">{item.NgayChieu} - {item.NgayKetThuc}</div>
+                      <div className="detail-info-right">{item.NgayChieu.substring(0, item.NgayChieu.length - 14)} -> {item.NgayKetThuc.substring(0, item.NgayKetThuc.length - 14)}</div>
                     </div>
                   </div>
                 </div>

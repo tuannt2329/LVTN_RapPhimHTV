@@ -1,7 +1,7 @@
 const handler = ({ model }, _) => async (req, res) => {
   const modeInstance = model(req.body)
   modeInstance.validateSync()
-  const { email, TenFilm, TenPhong, TenGhe, ThoiGianChieu } = modeInstance
+  const { email, TenFilm, TenPhong, TenGhe, ThoiGianChieu, NguoiXacNhan } = modeInstance
   if (!email) {
     res.send({ error: 'email is required.' })
   } else if (!TenFilm) {
@@ -12,6 +12,8 @@ const handler = ({ model }, _) => async (req, res) => {
     res.send({ error: 'Ten ghe is required.' })
   } else if (!ThoiGianChieu) {
     res.send({ error: 'Thoi gian chieu is required.' })
+  } else if (!NguoiXacNhan) {
+    res.send({ error: 'Nguoi Xac Nhan is required.' })
   } else {
     const error = 'Your email is wrong.'
     try {
@@ -36,7 +38,8 @@ const handler = ({ model }, _) => async (req, res) => {
           },
           {$set: {
             status: true,
-            ThoiGianXacNhan: Date.now()
+            ThoiGianXacNhan: Date.now(),
+            NguoiXacNhan: NguoiXacNhan
             }
           })
 
