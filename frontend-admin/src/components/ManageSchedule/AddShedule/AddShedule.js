@@ -10,12 +10,13 @@ class AddShedule extends Component {
             }
         }
         this.onChangeGioChieu = this.onChangeGioChieu.bind(this);
+        this.onChangeGioKetThuc = this.onChangeGioKetThuc.bind(this);
         this.onChangePhongChieu = this.onChangePhongChieu.bind(this);
     }
 
     UNSAFE_componentWillMount() {
         var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-        axios.post("http://localhost:3001/lichchieu/getlichbytenfilm", TenFilm)
+        axios.post("http://localhost:8000/schedule/find", TenFilm)
             .then((res) => {
                 // this.setStateFilms(res.data);
             });
@@ -27,6 +28,7 @@ class AddShedule extends Component {
 
     onChangePhongChieu = (e) => {
         var film = this.state.Film;
+        film["TenPhong"] = ""
         film["TenPhong"] = e.target.value;
         this.setState({
             Film: film
@@ -35,15 +37,38 @@ class AddShedule extends Component {
 
     onChangeNgayChieu = (e) => {
         var film = this.state.Film;
-        film["ThoiGianChieu"] = e.target.value;
+        film["ThoiGianChieu"] = ""
+        film["ThoiGianKetThuc"] = ""
+        film["ThoiGianChieu"] = e.target.value
+        film["ThoiGianKetThuc"] = e.target.value
+        this.setState({
+            Film: film
+        })
+    }
+
+    onChangeGioChieu = (e) => {
+        var film = this.state.Film;
+        try {
+            const ngayChieu = (film["ThoiGianChieu"]).split("T")[0]
+            film["ThoiGianChieu"] = ngayChieu
+        } catch (error) {
+            console.log(error)
+        }
+        film["ThoiGianChieu"] = this.state.Film["ThoiGianChieu"] + "T" + e.target.value + ":00.000Z";
         this.setState({
             Film: film
         });
     }
 
-    onChangeGioChieu = (e) => {
+    onChangeGioKetThuc = (e) => {
         var film = this.state.Film;
-        film["ThoiGianChieu"] = this.state.Film["ThoiGianChieu"] + "T" + e.target.value + ":00.000Z";
+        try {
+            const ngayKetThuc = (film["ThoiGianKetThuc"]).split("T")[0]
+            film["ThoiGianKetThuc"] = ngayKetThuc
+        } catch (error) {
+            console.log(error)
+        }
+        film["ThoiGianKetThuc"] = this.state.Film["ThoiGianKetThuc"] + "T" + e.target.value + ":00.000Z";
         this.setState({
             Film: film
         });
@@ -51,23 +76,30 @@ class AddShedule extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        if(this.state.Film["TenPhong"] && this.state.Film["ThoiGianChieu"]) {
-            const film = this.state.Film;
-            axios.post('http://localhost:3001/lichchieu/addlichchieu', film)
-            .then((res) => {
-                if(res.data["mess"] === "New schedule created!") {
-                    window.alert("New schedule created!");
-                    return window.location.reload();
-                }
-            });
+        if(this.state.Film["TenPhong"] && this.state.Film["ThoiGianChieu"] && this.state.Film["ThoiGianKetThuc"]) {
+            if(this.state.Film["ThoiGianChieu"] < this.state.Film["ThoiGianKetThuc"]) {
+                const film = this.state.Film;
+                axios.post('http://localhost:8000/schedule/createSchedule', film)
+                .then((res) => {
+                    if (!res.data.error) {
+                        window.alert("create schedule success!")
+                        return window.location.reload()
+                    } else {
+                        return window.alert(res.data.error)
+                    }
+                });
+            } else {
+                return window.alert("Thoi Gian Chieu < Thoi Gian Ket Thuc")
+            }
+            
         } else {
-            window.alert("nhập đầy đủ thông tin");
+            window.alert("please, input full information");
             return window.location.reload();
         }
     }
 
     render() {
-        console.log(this.state.Film);
+        console.log(this.state.Film)
         if(this.state.Film) {
             return (
                 <div>
@@ -129,6 +161,13 @@ class AddShedule extends Component {
                                                                     <label htmlFor="inputSkills" className="col-sm-2 col-form-label">Giờ chiếu</label>
                                                                     <div className="col-sm-10">
                                                                         <input type="time" className="form-control" id="abc" onChange={this.onChangeGioChieu}/>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="form-group row">
+                                                                    <label htmlFor="inputSkills" className="col-sm-2 col-form-label">Thời gian kết thúc</label>
+                                                                    <div className="col-sm-10">
+                                                                        <input type="time" className="form-control" id="abc" onChange={this.onChangeGioKetThuc}/>
                                                                     </div>
                                                                 </div>
 

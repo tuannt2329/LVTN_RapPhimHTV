@@ -360,10 +360,10 @@ i {
 
 
 /* fix quên mật khẩu */
-/* html,
+html,
 body{
   padding: 0 !important;
-} */
+}
 
 /* nav-page-detailfilm */
   .breadcrumb > .active {
@@ -379,4 +379,15 @@ body{
   font-weight: 400;
   line-height: 1;
   content: '\f105';
+}
+
+
+/* fix fullname user Login */
+.secondary-nav-wrapper ul.secondary-nav li a {
+  position: relative;
+  text-decoration: none;
+  font-size: 13px;
+}
+b, strong {
+    font-weight: 500;
 }

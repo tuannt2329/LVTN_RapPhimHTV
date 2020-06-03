@@ -30,7 +30,8 @@ class DateTime extends Component {
             default:
                 day="Lỗi"
           }
-        var date= day+ ', '+today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()+'   (UTC+ ' + today.getUTCHours()+')';
+        // var date= day+ ', '+today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()+'   (UTC+ ' + today.getUTCHours()+')';
+        var date= day+ ', '+today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear()
         this.state={
            datenow:date
         } 

@@ -6,9 +6,10 @@
   position: relative;
   display: inline-block;
   width: auto;
-  background-color: #778079;
-  margin-top: 50px; 
-  margin-bottom: 20px; 
+  /* background-color: #778079; */
+  /* margin-top: 2%; */
+  /* margin-top: 50px; 
+  margin-bottom: 20px;  */
 }
 .cinema-title {
   text-align: center;
@@ -26,9 +27,8 @@
   line-height: 42px;
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.1);
   margin-left: 25%;
-  margin-bottom: 20px; 
-  margin-top: 70px; 
- 
+  /* margin-bottom: 20px;  */
+  margin-top: 3%;
 }
 .cinema-wrap-background{
   margin-left: 450px;
@@ -36,7 +36,7 @@
 }
 .cinema-seat td.road {
   background-color: #c6c6c6;
-  color: #fff;
+  color:white;
   font-family: myriadbold;
   font-weight: 400;
   font-size: 16px;
@@ -171,6 +171,7 @@ table {
   border-color: grey;
 }
 .cinema-seat {
+  background-color: #778079;
   width: auto;
   text-align: center;
   display: none;
@@ -261,6 +262,14 @@ html {
   background: #ededed url("/htv/website/images/couple-chair.jpg") no-repeat center top;
 
   -webkit-transition: all 0.3s ease-in-out;
+
+  transition: all 0.3s ease-in-out;
+  width: 86px;
+}
+.cinema-seat td.couple:hover,
+.cinema-seat td.couple:focus {
+  background: url("/htv/website/images/couple-chair.jpg") no-repeat left -46px;
+  background-color: #fff;
 }
 .cinema-seat table td {
   min-width: 43px;
@@ -315,4 +324,41 @@ html {
   display: table;
   table-layout: fixed;
   width: 100%;
+}
+
+
+.container-wrap-magin-top{
+  margin-top: 2%;
+}
+
+.tbl-wrap {
+  /* display: block;
+  width: 100%; */
+  margin-top: 2%;
+  margin-bottom: 2px;
+}
+
+.ticket-feature article img {
+  width: 100%;
+  height: auto;
+}
+
+.aa{
+  position: relative;
+  transition: top 0.3s ease-in-out 0s;
+  z-index: 2;
+  min-height:100%;
+}
+.btn.primary-arrow.primary-arrow-left:hover{
+  /* color: #000408; */
+  background-color: #286ffc;
+  text-decoration: none;
+  color: white;
+}
+
+.btn.primary-arrow.primary-arrow-right.right:hover{
+/* color: #000408; */
+background-color: #286ffc;
+text-decoration: none;
+color: white;
 }

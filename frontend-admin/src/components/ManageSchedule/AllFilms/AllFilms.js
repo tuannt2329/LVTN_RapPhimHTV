@@ -10,28 +10,25 @@ class AllFilms extends Component {
         };
     }
 
-    componentDidMount() {
-
-    }
     UNSAFE_componentWillMount() {
         this.isLocalStorage();
-        axios.get("http://localhost:3001/film/allfilms")
+        axios.post("http://localhost:8000/film/find")
             .then((res) => {
                 this.setStateFilms(res.data);
             });
     }
 
     setStateFilms = (data) => {
-        this.setState({ films: data });
+        this.setState({ films: data.film });
     }
 
     isLocalStorage = () => {
         if (JSON.parse(sessionStorage.getItem('user')) != null) {
-            var username = JSON.parse(sessionStorage.getItem('user'))["username"] ?
-                JSON.parse(sessionStorage.getItem('user'))["username"] : null;
+            var username = JSON.parse(sessionStorage.getItem('user'))["firstName"] ?
+                JSON.parse(sessionStorage.getItem('user'))["firstName"] : null;
         }
         if(!username)
-        return window.location = '/';
+            return window.location = '/';
     }
 
     handleOnclickFilm = (tenphim) => {

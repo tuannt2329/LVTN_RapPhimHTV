@@ -1,14 +1,13 @@
 const handler = ({ model }, _) => async (req, res) => {
   let listparams = req.body
-  listparams["deleted"] = false
   
   try {
-    const schedule = await model.find(listparams)
+    const loaive = await model.find(listparams)
 
-    if (schedule.length != 0) {
-      return res.send({ schedule })
+    if (loaive.length != 0) {
+      return res.send({ loaive })
     } else {
-      return res.send({ error: 'schedule don\'t exist!' })
+      return res.send({ error: 'loai ve don\'t exist!' })
     }
   } catch (error) {
     res.send({ error })

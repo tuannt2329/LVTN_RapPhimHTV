@@ -11,7 +11,6 @@ class FilmNowShowing extends React.Component {
     }
 
     setStateFilms = (data) => {
-        console.log(data)
         this.setState({ films: data, counter: 1 })
     }
 
@@ -19,7 +18,6 @@ class FilmNowShowing extends React.Component {
             
             axios.post("http://localhost:8000/film/find")
               .then((res) => {
-                console.log(res.data);
                 this.setStateFilms(res.data.film);
               })
           
