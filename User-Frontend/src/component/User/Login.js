@@ -107,7 +107,8 @@ class Login extends React.Component {
                 <a href="/" onClick={this.onLogout}>Đăng xuất</a>
                 <div className="dropdown-menu">
                   <a href="/updateinfouser" className="dropdown-item">Thông tin tài khoản</a>
-                  <a href="tickethistory" className="dropdown-item">Vé đã đặt</a>
+                  <a href="ticketdadat" className="dropdown-item">Vé đã đặt</a>
+                  <a href="tickethistory" className="dropdown-item">Lịch sử đặt vé</a>
                 </div>
               </li>
             )}
