@@ -218,7 +218,7 @@ class Seat extends React.Component {
               status = 'couple '
               if (item["TenGhe"].slice(0, 1) === ghe && ghe === "R") {
                 if (item["status"] === true) {
-                  status = 'busy';
+                  status = 'couple busy';
                 } else {
                   for (var i = 0; i < this.state.choosing.length; i++) {
                     if (item["TenGhe"] === this.state.choosing[i]) {
