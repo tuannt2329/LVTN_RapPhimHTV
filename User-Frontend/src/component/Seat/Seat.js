@@ -263,10 +263,9 @@ class Seat extends React.Component {
     stt.forEach((item) => {
       strghe += (item + ', ');
     });
-    if (status !== 'busy' && status !== 'busy-couple') {
-      if (status === 'single ' || status === "single choosing") {
-        const ticketType = {
-        LoaiVe: 'VIP'
+    if (status === 'single ' || status === "single choosing") {
+      const ticketType = {
+      LoaiVe: 'VIP'
       }
       axios.post('http://localhost:8000/giave/find', ticketType)
       .then((res) => {
@@ -282,27 +281,28 @@ class Seat extends React.Component {
         }
       })
     } else {
-      const ticketType = {
-        LoaiVe: 'COUPLE'
-      }
-      axios.post('http://localhost:8000/giave/find', ticketType)
-      .then((res) => {
-        if(!res.data.error) {
-          if(status === 'couple ') {
-            tongtien += res.data.loaive[0]['GiaVe']
-          } else {
-            tongtien -= res.data.loaive[0]['GiaVe']
-          }
-          this.setState({TongTienVe:tongtien})
-        } else {
-          return window.alert(res.data.error)
+      if (status === 'couple ' || status === "couple choosing") {
+        const ticketType = {
+          LoaiVe: 'COUPLE'
         }
-      })
+        axios.post('http://localhost:8000/giave/find', ticketType)
+        .then((res) => {
+          if(!res.data.error) {
+            if(status === 'couple ') {
+              tongtien += res.data.loaive[0]['GiaVe']
+            } else {
+              tongtien -= res.data.loaive[0]['GiaVe']
+            }
+            this.setState({TongTienVe:tongtien})
+          } else {
+            return window.alert(res.data.error)
+          }
+        })
+      }
+      
     }
     
   }
-
-}
 
   handleOnclickXacNhanDatVe = () => {
     if (localStorage.getItem('user') && this.state.choosing) {
