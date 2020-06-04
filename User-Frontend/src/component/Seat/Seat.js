@@ -218,7 +218,7 @@ class Seat extends React.Component {
               status = 'couple '
               if (item["TenGhe"].slice(0, 1) === ghe && ghe === "R") {
                 if (item["status"] === true) {
-                  status = 'busy';
+                  status = 'busy-couple';
                 } else {
                   for (var i = 0; i < this.state.choosing.length; i++) {
                     if (item["TenGhe"] === this.state.choosing[i]) {
@@ -242,10 +242,10 @@ class Seat extends React.Component {
 
 
   handleGheOnclick = (tenghe, status) => {
-    if (status === "single choosing" || status === 'couple choosing') {
+    if (status === 'single choosing' || status === 'couple choosing') {
       stt.splice(stt.indexOf(tenghe), 1);
     } else {
-      if (status !== "busy") {
+      if (status !== "busy" && status !== "busy-couple") {
         var exist = false;
         for (var i = 0; i < stt.length; i++) {
           if (stt[i] === tenghe) {
@@ -263,8 +263,9 @@ class Seat extends React.Component {
     stt.forEach((item) => {
       strghe += (item + ', ');
     });
-    if(status === 'single ' || status  === "single choosing") {
-      const ticketType = {
+    if (status !== 'busy' && status !== 'busy-couple') {
+      if (status === 'single ' || status === "single choosing") {
+        const ticketType = {
         LoaiVe: 'VIP'
       }
       axios.post('http://localhost:8000/giave/find', ticketType)
@@ -300,6 +301,8 @@ class Seat extends React.Component {
     }
     
   }
+
+}
 
   handleOnclickXacNhanDatVe = () => {
     if (localStorage.getItem('user') && this.state.choosing) {
@@ -490,7 +493,7 @@ class Seat extends React.Component {
                           <div className="ticket-price-total">
                             <p>Tổng: &nbsp;
                               <htv-summary-ticket>
-                                <span className="  ">{this.state.TongTienVe} đồng</span>
+                                <span className="  ">{Number(this.state.TongTienVe).toLocaleString('en')} đồng</span>
                               </htv-summary-ticket></p>
                           </div>
                           <div className="ticket-button">

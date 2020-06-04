@@ -16,8 +16,8 @@ class UpdateInfoUser extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    var email = JSON.parse(localStorage.getItem('user')).email;
-    axios.post("http://localhost:8000/user/find", { email })
+    var email = {email: JSON.parse(localStorage.getItem('user')).email}
+    axios.post("http://localhost:8000/user/find", email)
       .then((res) => {
         this.setStateUsers(res.data.user[0]);
         this.setState({
@@ -140,7 +140,7 @@ class UpdateInfoUser extends React.Component {
                             </div>
 
                             <div className="row">
-                              <div className="col-md-5 col-sm-7 col-xs-7">
+                              {/* <div className="col-md-5 col-sm-7 col-xs-7">
                                 <label>Mật khẩu</label>
                                 <input id="address"
                                   placeholder="Mật khẩu" type="password"
@@ -148,7 +148,7 @@ class UpdateInfoUser extends React.Component {
                                   // defaultValue={this.state.User["password"]}
                                   onChange={this.onChangePassword}
                                 />
-                              </div>
+                              </div> */}
                               <div className="col-md-5 col-sm-5 col-xs-5">
                                 <label>Tên</label>
                                 <input id="address"
