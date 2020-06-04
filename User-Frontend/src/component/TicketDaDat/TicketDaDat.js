@@ -2,7 +2,7 @@ import React from 'react';
 import "./TicketHistory.css";
 import axios from "axios";
 var images = [];
-class TicketHistory extends React.Component {
+class TicketDaDat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class TicketHistory extends React.Component {
       const email = user["email"]
       const ve = {
         email: email,
-        status: true
+        status: false
       }
       axios.post('http://localhost:8000/ticket/find', ve)
         .then((res) => {
@@ -40,7 +40,6 @@ class TicketHistory extends React.Component {
           }
         })
     }
-
   }
 
   getImageByFilmName = (tenfilm) => {
@@ -82,8 +81,6 @@ class TicketHistory extends React.Component {
         var thoigianchieu = item['ThoiGianChieu'].split('T')[1];
         var giodat = item['ThoiGianDat'].split('T')[1];
         var thoigiandat = giodat.substring(0, giodat.length - 5) + " " + item['ThoiGianDat'].split('T')[0];
-        var gioxacnhan = item['ThoiGianXacNhan'].split('T')[1];
-        var thoigianxacnhan = gioxacnhan.substring(0, gioxacnhan.length - 5) + " " + item['ThoiGianXacNhan'].split('T')[0];
         return (
           <div className="ticket-wrap" key={index}>
             <div className="ticket-center" >
@@ -108,7 +105,6 @@ class TicketHistory extends React.Component {
                       <div className="col-title">Phòng chiếu:</div><div className="col-value">{item['TenPhong']}</div><br />
                       <div className="col-title">Chỗ ngồi:</div><div className="col-value">{tenghe.substring(0, tenghe.length - 2)}</div><br />
                       <div className="col-title">Thời gian đặt vé:</div><div className="col-value">{thoigiandat}</div><br />
-                      <div className="col-title">Thời gian thời gian xác nhận:</div><div className="col-value">{thoigianxacnhan}</div><br />
                       <div className="col-title">Giá vé:</div><div className="col-value">{Number(item['GiaVe']).toLocaleString('en')} đồng</div><br />
                     </ul>
                   </div>
@@ -135,13 +131,12 @@ class TicketHistory extends React.Component {
   }
 
   render() {
-    const hStyle = { color: 'blue' };
     return (
       <div className="container">
-        <center><h2 className="font-header-ticket-history"><br />LỊCH SỬ ĐẶT VÉ</h2></center>
+        <center><h2 className="font-header-ticket-history"><br />VÉ ĐÃ ĐẶT</h2></center>
         {this.renderVe()}
       </div>
     );
   }
 }
-export default TicketHistory;
+export default TicketDaDat;
