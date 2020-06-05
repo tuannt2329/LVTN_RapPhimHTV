@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 class Navbar extends React.Component {
     constructor(props) {
         super(props)
@@ -18,6 +19,20 @@ class Navbar extends React.Component {
     }
     handleOnclickFilm = (tenphim) => {
         sessionStorage.setItem("tenphim", tenphim);
+    }
+
+    findByTheLoaiPhim = (theloai) => {
+        const theloaiphim = {
+            TheLoai: theloai
+        };
+        axios.post("http://localhost:8000/film/find", theloaiphim)
+            .then((res) => {
+                if (!res.data.error) {
+                    console.log("theloai", res.data.film);
+                } else {
+                    return window.alert(res.data.error);
+                }
+            })
     }
 
     render() {
@@ -133,7 +148,7 @@ class Navbar extends React.Component {
                             </li>
 
                             <li className="sub-nav">
-                                <a href="/">Thể loại phim</a>
+                                <a >Thể loại phim</a>
                                 <div id="sub-menu">
                                     <ul>
                                         {/* <li>
@@ -154,7 +169,7 @@ class Navbar extends React.Component {
                                         {
                                             this.state.theloai1 !== null ? this.state.theloai1.map(i => (
                                                 <li>
-                                                    <a href="/">{i}</a>
+                                                    <a onClick={this.findByTheLoaiPhim.bind(this, i)}>{i}</a>
                                                 </li>
                                             )) : null
                                         }

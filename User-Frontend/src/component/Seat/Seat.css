@@ -362,3 +362,9 @@ background-color: #286ffc;
 text-decoration: none;
 color: white;
 }
+
+/* chair couple busy */
+.cinema-seat td.busy-couple {
+  background: url("/htv/website/images/picked-chair-couple.jpg") no-repeat left -46px;
+  background-color: #fff;
+}
