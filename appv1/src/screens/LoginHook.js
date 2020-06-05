@@ -20,7 +20,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
+import {CommonActions} from '@react-navigation/native';
 const window = Dimensions.get('window');
 const IMAGE_HEIGHT = 100;
 const IMAGE_HEIGHT_SMALL = 0;

@@ -185,11 +185,16 @@ function DetailFilm({route, navigation}) {
         }),
       })
         .then(res => res.json())
+        .then(result =>
+          result.schedule.filter(
+            item => Date.parse(item.ThoiGianChieu) >= Date.parse(Date()),
+          ),
+        )
         .then(async res => {
-          setSchedule(res.schedule);
+          setSchedule(res);
           // xử lý mảng lưu object là
           // { ngày : giờ }
-          await res.schedule.map((item, index) => {
+          await res.map((item, index) => {
             console.log(item.ThoiGianChieu.toString());
             let date = item.ThoiGianChieu;
             let i = 0;
@@ -208,7 +213,7 @@ function DetailFilm({route, navigation}) {
           });
           await arr.map((val, id) => {
             let a = [];
-            res.schedule.map((item, i) => {
+            res.map((item, i) => {
               let date1 = item.ThoiGianChieu.split('T')[0].slice(0, 10);
               let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
               if (date1 === arr[id].NgayChieu.split('T')[0].slice(0, 10)) {
@@ -231,7 +236,9 @@ function DetailFilm({route, navigation}) {
         });
     };
     // getAPI();
-    getList().then(r => setOK(true));
+    if (Date.parse(film.NgayChieu) < Date.parse(Date())) {
+      getList().then(r => setOK(true));
+    }
     console.log('hiih');
   }, []);
 
@@ -570,42 +577,82 @@ function DetailFilm({route, navigation}) {
             {/*
               button show modal
             */}
-            {show === true ? (
+            {Date.parse(film.NgayChieu) > Date.parse(Date()) ? (
+              <TouchableOpacity
+                onPress={() => {
+                  // if (new Date(start) > new Date()) {
+                  Alert.alert(
+                    'Phim chưa được công chiếu',
+                    `Trở lại vào ngày ${film.NgayChieu.split('T')[0].slice(
+                      0,
+                      10,
+                    )}`,
+                  );
+                  // }
+                  // setModal(true);
+                }}
+                style={styles.btn}>
+                <LinearGradient
+                  // start={{x: 0, y: 0}}
+                  // end={{x: 1, y: 1}}
+                  startPoint={{x: 1, y: 0}}
+                  endPoint={{x: 0, y: 1}}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 1}}
+                  locations={[0.1, 0.9]}
+                  colors={['#d53369', '#cbad6d']}
+                  style={styless.gradient}
+                />
+                <Textt
+                  bold
+                  white
+                  h1
+                  center
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '80%',
+                    overflow: 'hidden',
+                  }}>
+                  ĐẶT VÉ NGAY
+                </Textt>
+              </TouchableOpacity>
+            ) : show === true ? (
               <TouchableOpacity
                 // gradient
                 onPress={() => {
-                  if (new Date(start) > new Date()) {
-                    Alert.alert(
-                      'Phim chưa được công chiếu',
-                      `Trở lại vào ngày ${start}`,
-                    );
-                    return;
-                  } else {
-                    {
-                      user === null
-                        ? Alert.alert(
-                            'Đăng Nhập Ngay?',
-                            'Không thể đặt vé khi không có tài khoản',
-                            [
-                              {
-                                text: 'Hủy',
-                                onPress: () => console.log('Cancel Pressed'),
-                                style: 'cancel',
-                              },
-                              {
-                                text: 'OK',
-                                onPress: () => {
-                                  setModal(false);
-                                  navigation.navigate('Login', {
-                                    continueBooking: true,
-                                  });
-                                },
-                              },
-                            ],
-                          )
-                        : setModal(true);
-                    }
-                  }
+                  // if (new Date(start) > new Date()) {
+                  //   Alert.alert(
+                  //     'Phim chưa được công chiếu',
+                  //     `Trở lại vào ngày ${start}`,
+                  //   );
+                  //   return;
+                  // } else {
+                  //   {
+                  user === null
+                    ? Alert.alert(
+                        'Đăng Nhập Ngay?',
+                        'Không thể đặt vé khi không có tài khoản',
+                        [
+                          {
+                            text: 'Hủy',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'OK',
+                            onPress: () => {
+                              setModal(false);
+                              navigation.navigate('Login', {
+                                continueBooking: true,
+                              });
+                            },
+                          },
+                        ],
+                      )
+                    : setModal(true);
+                  //   }
+                  // }
                   // setModal(true);
                 }}
                 style={styles.btn}>
