@@ -19,155 +19,6 @@ import DotIndicator from '../components/indicator/DotIndicator';
 import LinearGradient from 'react-native-linear-gradient';
 import styless from '../constants/index.style';
 
-// const data = [
-//   {key: 'A1', color: '#e2ab32'},
-//   {key: 'A2', color: '#e2ab32'},
-//   {key: 'A3', color: '#e2ab32'},
-//   {key: 'A4', color: '#e2ab32'},
-//   {key: 'A5', color: '#e2ab32'},
-//   {key: 'A6', color: '#e2ab32'},
-//   {key: 'A7', color: '#e2ab32'},
-//   {key: 'A8', color: '#e2ab32'},
-//   {key: 'A9', color: '#e2ab32'},
-//   {key: 'A10', color: '#e2ab32'},
-//   {key: 'A11', color: '#e2ab32'},
-//   {key: 'A12', color: '#e2ab32'},
-//   {key: 'A13', color: '#e2ab32'},
-//   {key: 'A14', color: '#e2ab32'},
-//   {key: 'A15', color: '#e2ab32'},
-
-//   {key: 'B1', color: '#e2ab32'},
-//   {key: 'B2', color: '#e2ab32'},
-//   {key: 'B3', color: '#e2ab32'},
-//   {key: 'B4', color: '#e2ab32'},
-//   {key: 'B5', color: '#e2ab32'},
-//   {key: 'B6', color: '#e2ab32'},
-//   {key: 'B7', color: '#e2ab32'},
-//   {key: 'B8', color: '#e2ab32'},
-//   {key: 'B9', color: '#e2ab32'},
-//   {key: 'B10', color: '#e2ab32'},
-//   {key: 'B11', color: '#e2ab32'},
-//   {key: 'B12', color: '#e2ab32'},
-//   {key: 'B13', color: '#e2ab32'},
-//   {key: 'B14', color: '#e2ab32'},
-//   {key: 'B15', color: '#e2ab32'},
-
-//   {key: 'C1', color: '#e2ab32'},
-//   {key: 'C2', color: '#e2ab32'},
-//   {key: 'C3', color: '#e2ab32'},
-//   {key: 'C4', color: '#e2ab32'},
-//   {key: 'C5', color: '#e2ab32'},
-//   {key: 'C6', color: '#e2ab32'},
-//   {key: 'C7', color: '#e2ab32'},
-//   {key: 'C8', color: '#e2ab32'},
-//   {key: 'C9', color: '#e2ab32'},
-//   {key: 'C10', color: '#e2ab32'},
-//   {key: 'C11', color: '#e2ab32'},
-//   {key: 'C12', color: '#e2ab32'},
-//   {key: 'C13', color: '#e2ab32'},
-//   {key: 'C14', color: '#e2ab32'},
-//   {key: 'C15', color: '#e2ab32'},
-
-//   {key: 'D1', color: '#e2ab32'},
-//   {key: 'D2', color: '#e2ab32'},
-//   {key: 'D3', color: '#e2ab32'},
-//   {key: 'D4', color: '#e2ab32'},
-//   {key: 'D5', color: '#e2ab32'},
-//   {key: 'D6', color: '#e2ab32'},
-//   {key: 'D7', color: '#e2ab32'},
-//   {key: 'D8', color: '#e2ab32'},
-//   {key: 'D9', color: '#e2ab32'},
-//   {key: 'D10', color: '#e2ab32'},
-//   {key: 'D11', color: '#e2ab32'},
-//   {key: 'D12', color: '#e2ab32'},
-//   {key: 'D13', color: '#e2ab32'},
-//   {key: 'D14', color: '#e2ab32'},
-//   {key: 'D15', color: '#e2ab32'},
-
-//   {key: 'E1', color: '#e2ab32'},
-//   {key: 'E2', color: '#e2ab32'},
-//   {key: 'E3', color: '#e2ab32'},
-//   {key: 'E4', color: '#e2ab32'},
-//   {key: 'E5', color: '#e2ab32'},
-//   {key: 'E6', color: '#e2ab32'},
-//   {key: 'E7', color: '#e2ab32'},
-//   {key: 'E8', color: '#e2ab32'},
-//   {key: 'E9', color: '#e2ab32'},
-//   {key: 'E10', color: '#e2ab32'},
-//   {key: 'E11', color: '#e2ab32'},
-//   {key: 'E12', color: '#e2ab32'},
-//   {key: 'E13', color: '#e2ab32'},
-//   {key: 'E14', color: '#e2ab32'},
-//   {key: 'E15', color: '#e2ab32'},
-
-//   {key: 'F1', color: '#e2ab32'},
-//   {key: 'F2', color: '#e2ab32'},
-//   {key: 'F3', color: '#e2ab32'},
-//   {key: 'F4', color: '#e2ab32'},
-//   {key: 'F5', color: '#e2ab32'},
-//   {key: 'F6', color: '#e2ab32'},
-//   {key: 'F7', color: '#e2ab32'},
-//   {key: 'F8', color: '#e2ab32'},
-//   {key: 'F9', color: '#e2ab32'},
-//   {key: 'F10', color: '#e2ab32'},
-//   {key: 'F11', color: '#e2ab32'},
-//   {key: 'F12', color: '#e2ab32'},
-//   {key: 'F13', color: '#e2ab32'},
-//   {key: 'F14', color: '#e2ab32'},
-//   {key: 'F15', color: '#e2ab32'},
-
-//   {key: 'G1', color: '#e2ab32'},
-//   {key: 'G2', color: '#e2ab32'},
-//   {key: 'G3', color: '#e2ab32'},
-//   {key: 'G4', color: '#e2ab32'},
-//   {key: 'G5', color: '#e2ab32'},
-//   {key: 'G6', color: '#e2ab32'},
-//   {key: 'G7', color: '#e2ab32'},
-//   {key: 'G8', color: '#e2ab32'},
-//   {key: 'G9', color: '#e2ab32'},
-//   {key: 'G10', color: '#e2ab32'},
-//   {key: 'G11', color: '#e2ab32'},
-//   {key: 'G12', color: '#e2ab32'},
-//   {key: 'G13', color: '#e2ab32'},
-//   {key: 'G14', color: '#e2ab32'},
-//   {key: 'G15', color: '#e2ab32'},
-
-//   {key: 'I1', color: '#e2ab32'},
-//   {key: 'I2', color: '#e2ab32'},
-//   {key: 'I3', color: '#e2ab32'},
-//   {key: 'I4', color: '#e2ab32'},
-//   {key: 'I5', color: '#e2ab32'},
-//   {key: 'I6', color: '#e2ab32'},
-//   {key: 'I7', color: '#e2ab32'},
-//   {key: 'I8', color: '#e2ab32'},
-//   {key: 'I9', color: '#e2ab32'},
-//   {key: 'I10', color: '#e2ab32'},
-//   {key: 'I11', color: '#e2ab32'},
-//   {key: 'I12', color: '#e2ab32'},
-//   {key: 'I13', color: '#e2ab32'},
-//   {key: 'I14', color: '#e2ab32'},
-//   {key: 'I15', color: '#e2ab32'},
-
-//   {key: 'N01', color: '#e2ab32'},
-//   {key: 'N02', color: '#e2ab32'},
-//   {key: 'N03', color: '#e2ab32'},
-//   {key: 'N04', color: '#e2ab32'},
-//   {key: 'N05', color: '#e2ab32'},
-//   {key: 'N06', color: '#e2ab32'},
-//   {key: 'N07', color: '#e2ab32'},
-//   {key: 'K08', color: '#e2ab32'},
-//   {key: 'K09', color: '#e2ab32'},
-//   {key: 'K10', color: '#e2ab32'},
-//   {key: 'K11', color: '#e2ab32'},
-//   {key: 'K12', color: '#e2ab32'},
-//   {key: 'K13', color: '#e2ab32'},
-//   {key: 'K14', color: '#e2ab32'},
-//   {key: 'K15', color: '#e2ab32'},
-
-//   // { key: 'K' },
-//   // { key: 'L' },
-// ];
-
 const couple = [
   {key: 'Y1', color: 'pink'},
   {key: 'Y2', color: 'pink'},
@@ -399,6 +250,7 @@ function Seat({route, navigation}) {
 
       await setListSeat(arr);
       await setListSeatCouple(arrCouple);
+      await console.log('Geh couple', listSeatCouple);
 
       await setDone(true);
       // return kq;
@@ -617,8 +469,22 @@ function Seat({route, navigation}) {
       </View>
       <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
         <View style={{width: '100%'}}>
-          <Text>Ghế đang chọn {seatPick}</Text>
-          <Text>Tiền thanh toán {amount} VNĐ</Text>
+          <Text>
+            Ghế đang chọn{' '}
+            <Text>
+              {' '}
+              {seatPick.map(val => (
+                <Text>{val} </Text>
+              ))}{' '}
+            </Text>
+          </Text>
+          <Text>
+            Tiền thanh toán{' '}
+            <Text style={{fontWeight: 'bold', color: 'blue'}}>
+              {' '}
+              {amount} VNĐ{' '}
+            </Text>
+          </Text>
         </View>
         <View style={{width: '100%'}}>
           {amount > 0 ? (

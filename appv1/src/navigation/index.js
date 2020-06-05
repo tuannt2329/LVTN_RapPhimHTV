@@ -264,7 +264,7 @@ const Screens = ({navigation, style}) => {
           }}>
           {props => <ListFilmSearch {...props} />}
         </Stack.Screen>
-         <Stack.Screen
+        <Stack.Screen
           name="Ticket"
           options={{
             cardStyleInterpolator: forFade,
@@ -307,7 +307,13 @@ const DrawerContent = props => {
               Bạn chưa đăng nhập
             </Text>
           ) : (
-            <>
+            <View
+              style={{
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                alignContent: 'flex-start',
+                margin: 0,
+              }}>
               <Text center align={'center'} title white>
                 {user.user.email}
               </Text>
@@ -316,7 +322,7 @@ const DrawerContent = props => {
                 labelStyle={{
                   color: 'black',
                   fontWeight: 'bold',
-                  marginLeft: -16,
+                  // marginLeft: -16,
                   fontSize: 20,
                 }}
                 style={styles.drawerItem}
@@ -325,7 +331,35 @@ const DrawerContent = props => {
                   <MaterialCommunityIcons name={'account-details'} size={30} />
                 )}
               />
-            </>
+              <DrawerItem
+                label="Tìm Phim"
+                labelStyle={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  // marginLeft: -16,
+                  fontSize: 20,
+                }}
+                style={styles.drawerItem}
+                onPress={() => props.navigation.navigate('ListFilmSort')}
+                icon={() => (
+                  <MaterialCommunityIcons name={'account-details'} size={30} />
+                )}
+              />
+              <DrawerItem
+                label="Quản Lý Vé"
+                labelStyle={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  // marginLeft: -16,
+                  fontSize: 20,
+                }}
+                style={styles.drawerItem}
+                onPress={() => props.navigation.navigate('Ticket')}
+                icon={() => (
+                  <MaterialCommunityIcons name={'account-details'} size={30} />
+                )}
+              />
+            </View>
           )}
         </Block>
         {user === null ? (
