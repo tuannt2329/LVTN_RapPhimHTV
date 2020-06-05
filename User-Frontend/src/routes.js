@@ -22,7 +22,7 @@ class RouterWeb extends React.Component {
                 <Route exact path='/updateinfouser' component={UpdateInfoUser}/>
                 <Route exact path='/tickethistory' component={TicketHistory}/>
                 <Route exact path='/ticketdadat' component={TicketDaDat}/>
-                <Route exact path='/film' component={TabMovie}/>
+                <Route exact path='/tabmovie' component={TabMovie}/>
             </Switch>
         )
     }
