@@ -30,7 +30,8 @@ class TicketsHistory extends Component {
                     })
                     this.setState({ids: idArray})
                 } else {
-                    return window.alert(res.data.error)
+                    if (res.data.error != "ticket don't exist!")
+                     return window.alert(res.data.error)
                 }
             });
     }
