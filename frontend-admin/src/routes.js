@@ -17,8 +17,10 @@ import UpdateFilm from './components/ManageFilm/UpdateFilm/UpdateFilm';
 import AllFilmsShedule from './components/ManageSchedule/AllFilms/AllFilms';
 import DetailShedule from './components/ManageSchedule/DetailShedule/DetailShedule';
 import AddShedule from './components/ManageSchedule/AddShedule/AddShedule';
-
-
+import AllTickets from './components/ManageTicket/AllTickets/AllTicket'
+import DetailTicket from './components/ManageTicket/DetailTicket/DetailTicket'
+import TicketHistory from './components/ManageTicket/LichSuVe/LichSuVe'
+import DetailTicketHistory from './components/ManageTicket/DetailTicketHistory/DetailTicketHistory' 
 class RouterWeb extends React.Component {	
 
     render() {	
@@ -42,6 +44,11 @@ class RouterWeb extends React.Component {
                 <Route exact path='/allfilmsshedule' component={AllFilmsShedule}/>
                 <Route exact path='/detailshedule' component={DetailShedule}/>
                 <Route exact path='/addshedule' component={AddShedule}/>
+
+                <Route exact path='/alltickets' component={AllTickets}/>
+                <Route exact path='/ticketshistory' component={TicketHistory}/>
+                <Route exact path='/detailticket' component={DetailTicket}/>
+                <Route exact path='/detailtickethistory' component={DetailTicketHistory}/>
                 
             </Switch>	
 

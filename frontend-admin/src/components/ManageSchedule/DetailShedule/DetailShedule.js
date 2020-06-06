@@ -59,21 +59,22 @@ class DetailShedule extends Component {
   onSubmit = (e) => {
     if (window.confirm("Do you really want to update?")) {
       e.preventDefault();
-      var count = 0;
-      this.state.Film.map((item) => {
+      let count = 0;
+      this.state.Film.map( async (item) => {
         const film = item;
-        axios.put('http://localhost:8000/schedule/updateSchedule', film)
+        await axios.put('http://localhost:8000/schedule/updateSchedule', film)
         .then((res) => {
           if (!res.data.error) {
             count++;
-            console.log(count)
           } else {
             return window.alert(res.data.error)
           }
         });
+        if(count === this.state.Film.length) {
+          window.alert("update shedule success!");
+          return window.location.reload();
+        }
       })
-      window.alert("update shedule success!");
-      return window.location.reload();
     }
   }
 

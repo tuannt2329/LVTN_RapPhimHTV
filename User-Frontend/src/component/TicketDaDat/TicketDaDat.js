@@ -104,6 +104,7 @@ class TicketDaDat extends React.Component {
                           <div className="ticket-detail">
                             <div className="ticket-info">
                               <p><b>Rạp: &nbsp;</b>RẠP HTV Thủ đức</p>
+                              <p><b>id: &nbsp;</b>{item['_id']}</p>
                               <p><b>Phim &nbsp;</b>{item['TenFilm']}</p>
                               <p className="  "><b>Ngày chiếu: &nbsp;</b>{item['ThoiGianChieu'].split('T')[0]}</p>
                               <p className="  "><b>Thời gian chiếu: &nbsp;</b>{thoigianchieu.substring(0, thoigianchieu.length - 5)}</p>

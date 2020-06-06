@@ -107,6 +107,7 @@ class TicketHistory extends React.Component {
                           <div className="ticket-detail">
                             <div className="ticket-info">
                               <p><b>Rạp: &nbsp;</b>RẠP HTV Thủ đức</p>
+                              <p><b>id: &nbsp;</b>{item['_id']}</p>
                               <p><b>Phim &nbsp;</b>{item['TenFilm']}</p>
                               <p className="  "><b>Ngày chiếu: &nbsp;</b>{item['ThoiGianChieu'].split('T')[0]}</p>
                               <p className="  "><b>Thời gian chiếu: &nbsp;</b>{thoigianchieu.substring(0, thoigianchieu.length - 5)}</p>
@@ -115,18 +116,7 @@ class TicketHistory extends React.Component {
                               <p className="  "><b>Thời gian đặt vé: &nbsp;</b>{thoigiandat}</p>
                               <p className="  "><b>Thời gian xác nhận: </b>{thoigianxacnhan}</p>
                             </div>
-                          </div>
-                        </div>
-                      </article>
-                    </section>
-                  </div>
-                  
-                  <div htv-scroll-follow-content className="ticket-header-giave">
-                    <section className="ticket-feature">
-                      <article className="row">
-                        <div className="col-md-12">
-                          <div className="ticket-detail">
-                          <div className="ticket-price-total">
+                            <div className="ticket-price-total">
                               <p>
                                 <htv-summary-ticket>
                                   <span className="  ">Giá vé:  {Number(item['GiaVe']).toLocaleString('en')} đồng</span>

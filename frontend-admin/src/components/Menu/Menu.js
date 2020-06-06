@@ -141,6 +141,29 @@ class Menu extends Component {
 
                                 <li className="nav-item has-treeview">
                                     <a href="" className="nav-link">
+                                        <i className="nav-icon fas fa-book" />
+                                        <p>Manage Ticket
+                                    <i className="fas fa-angle-left right" />
+                                        </p>
+                                    </a>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <a href="/alltickets" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>tickets booked</p>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a href="/ticketshistory" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>tickets history</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li className="nav-item has-treeview">
+                                    <a href="" className="nav-link">
                                         <i className="nav-icon fas fa-chart-pie" />
                                         <p>
                                             Statistical Revenue
