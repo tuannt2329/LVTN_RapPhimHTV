@@ -159,6 +159,12 @@ class Menu extends Component {
                                                 <p>tickets history</p>
                                             </a>
                                         </li>
+                                        <li className="nav-item">
+                                            <a href="/alltickettype" className="nav-link">
+                                                <i className="far fa-circle nav-icon" />
+                                                <p>tickets type</p>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
 

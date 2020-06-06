@@ -20,7 +20,10 @@ import AddShedule from './components/ManageSchedule/AddShedule/AddShedule';
 import AllTickets from './components/ManageTicket/AllTickets/AllTicket'
 import DetailTicket from './components/ManageTicket/DetailTicket/DetailTicket'
 import TicketHistory from './components/ManageTicket/LichSuVe/LichSuVe'
-import DetailTicketHistory from './components/ManageTicket/DetailTicketHistory/DetailTicketHistory' 
+import DetailTicketHistory from './components/ManageTicket/DetailTicketHistory/DetailTicketHistory'
+import AllTicketType from './components/ManageTicket/AllTicketType/AllTicketType'
+import DetailTicketType from './components/ManageTicket/DetailTicketType/DetailTicketType'
+ 
 class RouterWeb extends React.Component {	
 
     render() {	
@@ -49,6 +52,8 @@ class RouterWeb extends React.Component {
                 <Route exact path='/ticketshistory' component={TicketHistory}/>
                 <Route exact path='/detailticket' component={DetailTicket}/>
                 <Route exact path='/detailtickethistory' component={DetailTicketHistory}/>
+                <Route exact path='/alltickettype' component={AllTicketType}/>
+                <Route exact path='/detailtickettype' component={DetailTicketType}/>
                 
             </Switch>	
 
