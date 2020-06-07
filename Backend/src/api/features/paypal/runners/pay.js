@@ -12,8 +12,8 @@ const handler = ({ model }, _) => async (req, res) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:8000/paypal/success",
-        "cancel_url": "http://localhost:3000"
+        "return_url": "http://conallserver.ddns.net:8000/paypal/success",
+        "cancel_url": "http://conallserver.ddns.net:3000"
     },
     "transactions": [{
         "item_list": {
