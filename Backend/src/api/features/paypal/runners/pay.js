@@ -13,7 +13,7 @@ const handler = ({ model }, _) => async (req, res) => {
     },
     "redirect_urls": {
         "return_url": "http://conallserver.ddns.net:8000/paypal/success",
-        "cancel_url": "http://localhost:3000"
+        "cancel_url": "http://conallserver.ddns.net:3000"
     },
     "transactions": [{
         "item_list": {
