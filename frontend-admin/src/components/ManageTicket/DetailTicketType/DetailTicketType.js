@@ -12,7 +12,7 @@ class DetailTicketType extends Component {
 
   UNSAFE_componentWillMount() {
     var LoaiVe = {LoaiVe: sessionStorage.getItem('loaive')};
-    axios.post("http://localhost:8000/giave/find", LoaiVe)
+    axios.post("http://conallserver.ddns.net:8000/giave/find", LoaiVe)
       .then((res) => {
         this.setStateFilms(res.data.loaive);
       });
@@ -41,7 +41,7 @@ class DetailTicketType extends Component {
       let count = 0;
       this.state.Film.map( async (item) => {
         const film = item;
-        await axios.put('http://localhost:8000/giave/updateGiaVe', film)
+        await axios.put('http://conallserver.ddns.net:8000/giave/updateGiaVe', film)
         .then((res) => {
           if (!res.data.error) {
             count++;
@@ -60,7 +60,7 @@ class DetailTicketType extends Component {
   handleOnclickDelete = (film) => {
     if (window.confirm("Do you really want to delete?")) {
       var film = film;
-      axios.put("http://localhost:8000/giave/deleteTicketType", film)
+      axios.put("http://conallserver.ddns.net:8000/giave/deleteTicketType", film)
         .then((res) => {
           if (!res.data.error) {
             window.alert("delete successfull !!!")

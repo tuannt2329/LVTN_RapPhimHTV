@@ -11,7 +11,7 @@ class DetailTicket extends Component {
 
   UNSAFE_componentWillMount() {
     const id = {_id: sessionStorage.getItem('id')};
-    axios.post("http://localhost:8000/ticket/find", id)
+    axios.post("http://conallserver.ddns.net:8000/ticket/find", id)
       .then((res) => {
         this.setStateFilms(res.data.ticket);
         const email = {
@@ -66,7 +66,7 @@ class DetailTicket extends Component {
         ThoiGianXacNhan: thoigianxacthuc,
         NguoiXacNhan: JSON.parse(sessionStorage.getItem('user'))["email"]
       }
-      axios.put('http://localhost:8000/ticket/updateStatus', ticket)
+      axios.put('http://conallserver.ddns.net:8000/ticket/updateStatus', ticket)
       .then((res) => {
         if (!res.data.error) {
           window.alert("get Ticket successful!");

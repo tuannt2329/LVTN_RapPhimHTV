@@ -45,7 +45,7 @@ class Seat extends React.Component {
 
     var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
     
-    axios.post("http://localhost:8000/film/find", TenFilm)
+    axios.post("http://conallserver.ddns.net:8000/film/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data.film)
       })
@@ -74,7 +74,7 @@ class Seat extends React.Component {
     }
     const time= today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
     const datetime = date + 'T' + time
-    axios.post('http://localhost:8000/schedule/find', tenfilm)
+    axios.post('http://conallserver.ddns.net:8000/schedule/find', tenfilm)
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
@@ -112,7 +112,7 @@ class Seat extends React.Component {
 
   getGhebyPhong = (lichchieu) => {
     const tenphong = { TenPhong: this.state.TenPhong };
-    axios.post('http://localhost:8000/ghe/find', tenphong)
+    axios.post('http://conallserver.ddns.net:8000/ghe/find', tenphong)
       .then((res) => {
         if (!res.data.error) {
           this.setState({ Ghe: res.data.ghe });
@@ -129,7 +129,7 @@ class Seat extends React.Component {
   }
 
   updateStatusGhe = (lichchieu) => {
-    axios.post('http://localhost:8000/ticket/find', lichchieu)
+    axios.post('http://conallserver.ddns.net:8000/ticket/find', lichchieu)
     .then((res) => {
       if(!res.data.error) {
         let ghedadat = []
@@ -165,7 +165,7 @@ class Seat extends React.Component {
       TenFilm: this.state.TenFilm,
       ThoiGianChieu: this.state.NgayChieu + "T" + giochieu.target.value
     }
-    axios.post('http://localhost:8000/schedule/find', lichchieu)
+    axios.post('http://conallserver.ddns.net:8000/schedule/find', lichchieu)
       .then((res) => {
         if (!res.data.error) {
           this.setState({ TenPhong: res.data.schedule[0]["TenPhong"] });
@@ -268,7 +268,7 @@ class Seat extends React.Component {
       const ticketType = {
       LoaiVe: 'VIP'
       }
-      axios.post('http://localhost:8000/giave/find', ticketType)
+      axios.post('http://conallserver.ddns.net:8000/giave/find', ticketType)
       .then((res) => {
         if(!res.data.error) {
           if(status === 'single ') {
@@ -286,7 +286,7 @@ class Seat extends React.Component {
         const ticketType = {
           LoaiVe: 'COUPLE'
         }
-        axios.post('http://localhost:8000/giave/find', ticketType)
+        axios.post('http://conallserver.ddns.net:8000/giave/find', ticketType)
         .then((res) => {
           if(!res.data.error) {
             if(status === 'couple ') {
@@ -342,8 +342,9 @@ class Seat extends React.Component {
             GiaVe: this.state.TongTienVe,
             payed: true
           }
+        
           sessionStorage.setItem('ve', JSON.stringify(ve))
-          axios.post('http://localhost:8000/paypal/pay', ve)
+          axios.post('http://conallserver.ddns.net:8000/paypal/pay', ve)
           .then((res) => {
             if(!res.data.error) {
               return window.location = res.data.result
@@ -474,7 +475,7 @@ class Seat extends React.Component {
                     || (Date.parse(item["NgayChieu"]) > Date.parse(Date()))) ?
                     <article className="row">
                       <div style={{ textAlign: 'center' }} className="col-md-12">
-                        <img src={"http://localhost:8000/images/" + item.AnhBia} className="loading" data-was-processed="true" />
+                        <img src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia} className="loading" data-was-processed="true" />
                       </div>
                       <div className="col-md-12">
                         <div className="ticket-detail">
