@@ -54,7 +54,7 @@ class TabMovie extends React.Component {
                               <div className="article-movie-home">
                                 <img style={{ height: 264 }}
                                   key={index}
-                                  src={"http://localhost:8000/images/" + item.AnhBia}
+                                  src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia}
                                   className="lazy loaded" />
                                 <Link to ="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                   <div className="decription-hover overlay">
@@ -91,7 +91,7 @@ class TabMovie extends React.Component {
                               <div className="article-movie-home">
                                 <img style={{ height: 264 }}
                                   key={index}
-                                  src={"http://localhost:8000/images/" + item.AnhBia}
+                                  src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia}
                                   className="lazy loaded" />
                                 <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                   <div className="decription-hover overlay">
