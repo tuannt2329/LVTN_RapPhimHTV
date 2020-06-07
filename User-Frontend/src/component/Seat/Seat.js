@@ -338,38 +338,16 @@ class Seat extends React.Component {
           ThoiGianDat: thoigianxacthuc,
           GiaVe: this.state.TongTienVe
         }
-        axios.post('http://localhost:8000/ticket/createticket', ve)
-          .then((res) => {
-            if (!res.data.error) {
-              const tongthu = {
-                TenFilm: this.state.TenFilm,
-                TongThu: this.state.TongTienVe + this.state.films.TongThu,
-                DaoDien: this.state.films[0].DaoDien,
-                TheLoai: this.state.films[0].TheLoai,
-                TenNuocSX: this.state.films[0].TenNuocSX,
-                TomTat: this.state.films[0].TomTat,
-                TongChi: this.state.films[0].TongChi,
-                NgayChieu: this.state.films[0].NgayChieu,
-                NgayKetThuc: this.state.films[0].NgayKetThuc
-              }
-              axios.put('http://localhost:8000/film/updatefilm', tongthu)
-                .then((res1) => {
-                  if (!res1.data.error) {
-                    this.setState({ choosing: [] });
-                    strghe = "";
-                    stt = [];
-                    return (
-                      window.alert('Đặt vé thành công!'),
-                      window.location = '/'
-                    )
-                  } else {
-                    return window.alert(res1.data.error)
-                  }
-                });
-            } else {
-              return window.alert(res.data.error)
-            }
-          });
+        sessionStorage.setItem('ve', JSON.stringify(ve))
+        axios.post('http://localhost:8000/paypal/pay', ve)
+        .then((res) => {
+          if(!res.data.error) {
+            return window.location = res.data.result
+          } else {
+            return window.alert(res.data.error)
+          }
+        })
+       
       } else {
         return window.location = '/login';
       } 

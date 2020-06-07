@@ -6,5 +6,6 @@ module.exports = [
   require('./ghe'),
   require('./room'),
   require('./schedule'),
-  require('./giave')
+  require('./giave'),
+  require('./paypal')
 ]
