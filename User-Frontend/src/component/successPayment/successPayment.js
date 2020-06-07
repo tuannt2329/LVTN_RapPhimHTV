@@ -29,7 +29,11 @@ class successPayment extends React.Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
     if(this.state.ve.payed === false) {
+=======
+    if(this.state.ve) {
+>>>>>>> 9400b1d... test server
       axios.post('http://conallserver.ddns.net:8000/ticket/createticket', this.state.ve)
           .then((res) => {
             if (!res.data.error) {
