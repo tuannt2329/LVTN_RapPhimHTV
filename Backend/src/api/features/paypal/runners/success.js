@@ -22,7 +22,7 @@ const handler = ({ model }, _) => async (req, res) => {
     if (error) {
        res.send({cancle : error});
     } else {
-        res.redirect("http://localhost:3000/successpayment");
+        res.redirect("http://conallserver.ddns.net:3000/successpayment");
     }
   });
 
