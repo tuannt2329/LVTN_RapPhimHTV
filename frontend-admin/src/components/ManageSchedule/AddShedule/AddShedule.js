@@ -81,7 +81,7 @@ class AddShedule extends Component {
                     TenPhong: this.state.Film.TenPhong
                 }
                 let count = 0
-                await axios.post('http://localhost:8000/schedule/find', schedule)
+                await axios.post('http://conallserver.ddns.net:8000/schedule/find', schedule)
                 .then((res) => {
                     if (!res.data.error) {
                         res.data.schedule.map((item) => {
@@ -98,7 +98,7 @@ class AddShedule extends Component {
                 })
                 if(count == 0 ) {
                     const film = this.state.Film;
-                    axios.post('http://localhost:8000/schedule/createSchedule', film)
+                    axios.post('http://conallserver.ddns.net:8000/schedule/createSchedule', film)
                     .then((res) => {
                         if (!res.data.error) {
                             window.alert("create schedule success!")

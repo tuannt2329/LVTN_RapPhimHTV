@@ -16,7 +16,7 @@ class FilmNowShowing extends React.Component {
 
     UNSAFE_componentWillMount() {
             
-            axios.post("http://localhost:8000/film/find")
+            axios.post("http://conallserver.ddns.net:8000/film/find")
               .then((res) => {
                 this.setStateFilms(res.data.film);
               })
@@ -41,7 +41,7 @@ class FilmNowShowing extends React.Component {
                                 <div className="article-movie-home">
                                     <img style={{ height: 200 }}
                                         key={index}
-                                        src={"http://localhost:8000/images/" + item.AnhBia}
+                                        src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia}
                                         className="lazy loaded" />
                                     <a href ="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                         <div className="decription-hover overlay">
