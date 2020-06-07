@@ -61,7 +61,7 @@ const handler = ({ model }, _) => async (req, res) => {
 
               const a = await sendEmail(vexemphim.email, subject, content)
               // res.send({ content: subject })
-              res.redirect("http://localhost:3000/successpayment");
+              res.redirect("http://conallserver.ddns.net:3000/successpayment");
             } else {
               return res.send({ error: 'film don\'t exist!' })
             }
