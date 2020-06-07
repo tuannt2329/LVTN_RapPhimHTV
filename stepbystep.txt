@@ -12,39 +12,39 @@
 ==> de xem full database
 
 ***doi voi cac ham "get" dung browser
-6. truy cap localhost:8000/user/find (method get)
+6. truy cap conallserver.ddns.net:8000/user/find (method get)
 
 ***doi voi cac ham "post, put, delete" dung postman 
-7. truy cap localhost:8000/user/signup (method post) => dang ky tai khoan
+7. truy cap conallserver.ddns.net:8000/user/signup (method post) => dang ky tai khoan
 --(firstName, lastName, gender (khong bat buoc), email, password)
 
-8. truy cap localhost:8000/user/login (method post) => dang nhap tai khoan
+8. truy cap conallserver.ddns.net:8000/user/login (method post) => dang nhap tai khoan
 --(email, password)
 
 9. quen mat khau 
---9.1. truy cap http://localhost:8000/user/verification (method post) => lay ma xac nhan
+--9.1. truy cap http://conallserver.ddns.net:8000/user/verification (method post) => lay ma xac nhan
 ----(email)
---9.2. truy cap http://localhost:8000/user/updateInfo (method put) => lay lai mat khau
+--9.2. truy cap http://conallserver.ddns.net:8000/user/updateInfo (method put) => lay lai mat khau
 ----(email, verificationCode, password(new password))
 
-10. truy cap http://localhost:8000/user/updateInfo (method put) => sua thong tin ca nhan
+10. truy cap http://conallserver.ddns.net:8000/user/updateInfo (method put) => sua thong tin ca nhan
 --(email, firstName(new first name), lastName(new last name), (gender), password(new password))
 
 -------------------------------
 
 11. create a new film
--- truy cap http://localhost:8000/ (method get) (dien day du thong tin -> click button "upload a file" )
+-- truy cap http://conallserver.ddns.net:8000/ (method get) (dien day du thong tin -> click button "upload a file" )
 **(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, LuotLike, LuotXem, TongThu, TongChi, AnhBia(png,jpg))
 
 12. delete a film
----- truy cap http://localhost:8000/film/deletefilm (method put)
+---- truy cap http://conallserver.ddns.net:8000/film/deletefilm (method put)
 **((TenFilm)
 
 13. update a film
--- truy cap http://localhost:8000/film/updatefilm (method put)
+-- truy cap http://conallserver.ddns.net:8000/film/updatefilm (method put)
 **(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, TongThu, TongChi)
 
-14. find film: truy cap http://localhost:8000/film/find (method post)
+14. find film: truy cap http://conallserver.ddns.net:8000/film/find (method post)
 --14.1. khong dien gi het => find all film
 --14.2. dien 1 hoac NHIEU parameter
 **(TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu, NgayKetThuc, LuotLike, LuotXem, TongThu, TongChi)

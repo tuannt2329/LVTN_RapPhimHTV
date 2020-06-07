@@ -17,7 +17,7 @@ class UpdateFilm extends Component {
 
     UNSAFE_componentWillMount() {
         var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-        axios.post("http://localhost:8000/film/find", TenFilm)
+        axios.post("http://conallserver.ddns.net:8000/film/find", TenFilm)
             .then((res) => {
                 this.setStateFilms(res.data.film[0]);
             });
@@ -80,7 +80,7 @@ class UpdateFilm extends Component {
         
         const film = this.state.Film;
         if(film.NgayChieu <= film.NgayKetThuc) {
-            axios.put('http://localhost:8000/film/updatefilm', film)
+            axios.put('http://conallserver.ddns.net:8000/film/updatefilm', film)
             .then((res) => {
                 if (!res.data.error) {
                     window.alert("update film success!")
