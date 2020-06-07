@@ -24,7 +24,7 @@ class Search extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        axios.post("http://localhost:8000/film/find")
+        axios.post("http://conallserver.ddns.net:8000/film/find")
             .then((res) => {
                 if (!res.data.error) {
                     this.setStateFilms(res.data)

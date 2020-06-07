@@ -125,7 +125,7 @@ class AddFilm extends Component {
         fd.append('Trailer', this.state.Film.Trailer);
         const film = this.state.Film;
         if(film.NgayChieu <= film.NgayKetThuc) {
-            axios.post('http://localhost:8000/film/createfilm', fd)
+            axios.post('http://conallserver.ddns.net:8000/film/createfilm', fd)
             .then((res) => {
                 if (!res.data.error) {
                     window.alert("create film success!")

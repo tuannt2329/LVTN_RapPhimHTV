@@ -79,7 +79,7 @@ class Detail extends React.Component {
                   <div className="detail-feat-img">
                     <img style={{ height: '380px', objectFit: "cover" }}
                       // src="htv/website/images/detail-film-VoDienSatNhan.jpg"
-                      src={"http://localhost:8000/images/" + item.AnhBia}
+                      src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia}
                       className="loading"
                       data-was-processed="true" />
                   </div>
