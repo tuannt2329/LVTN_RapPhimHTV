@@ -330,6 +330,7 @@ class Seat extends React.Component {
           thoigianxacthuc += "0";
         }
         thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
+<<<<<<< HEAD
 
         if(this.state.paymentmethods === "payonline") {
           let ve = {
@@ -341,6 +342,24 @@ class Seat extends React.Component {
             ThoiGianDat: thoigianxacthuc,
             GiaVe: this.state.TongTienVe,
             payed: true
+=======
+        var ve = {
+          email: JSON.parse(localStorage.getItem('user'))['email'],
+          TenFilm: this.state.TenFilm,
+          TenPhong: this.state.TenPhong,
+          TenGhe: this.state.choosing,
+          ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+          ThoiGianDat: thoigianxacthuc,
+          GiaVe: this.state.TongTienVe
+        }
+        sessionStorage.setItem('ve', JSON.stringify(ve))
+        axios.post('http://conallserver.ddns.net:8000/paypal/pay', ve)
+        .then((res) => {
+          if(!res.data.error) {
+            return window.location = res.data.result
+          } else {
+            return window.alert(res.data.error)
+>>>>>>> 13d092d... test server
           }
         
           sessionStorage.setItem('ve', JSON.stringify(ve))
