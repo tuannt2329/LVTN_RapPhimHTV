@@ -331,20 +331,7 @@ const DrawerContent = props => {
                   <MaterialCommunityIcons name={'account-details'} size={30} />
                 )}
               />
-              <DrawerItem
-                label="Tìm Phim"
-                labelStyle={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                  // marginLeft: -16,
-                  fontSize: 20,
-                }}
-                style={styles.drawerItem}
-                onPress={() => props.navigation.navigate('ListFilmSort')}
-                icon={() => (
-                  <MaterialCommunityIcons name={'account-details'} size={30} />
-                )}
-              />
+
               <DrawerItem
                 label="Quản Lý Vé"
                 labelStyle={{

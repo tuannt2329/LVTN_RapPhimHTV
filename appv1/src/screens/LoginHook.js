@@ -169,7 +169,10 @@ function LoginHook({navigation, route}) {
             style={styles.inputText}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
-            onChangeText={text => setEmail(text)}
+            onChangeText={text => {
+              setEmail(text);
+              setError(false);
+            }}
           />
         </View>
         <View style={styles.inputView}>
@@ -186,7 +189,10 @@ function LoginHook({navigation, route}) {
             //     ? 'EMAIL/MẬT KHẨU KHÔNG CHÍNH XÁC'
             //     : ''
             // }
-            onChangeText={text => setPass(text)}
+            onChangeText={text => {
+              setPass(text);
+              setError(false);
+            }}
             rightIcon={
               // <Switch onValueChange={toggleSwitch} value={!showPassword} />
               <TouchableOpacity onPress={toggleSwitch}>

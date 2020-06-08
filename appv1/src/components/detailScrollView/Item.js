@@ -122,7 +122,11 @@ class Item extends Component {
 
   render() {
     const {film} = this.props;
-    const date = new Date(film.NgayChieu).toLocaleDateString('en-US');
+    const date = film.NgayChieu.split('T')[0]
+      .slice(0, 10)
+      .split('-')
+      .reverse()
+      .join('-');
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle="light-content" />

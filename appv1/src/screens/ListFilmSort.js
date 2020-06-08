@@ -38,6 +38,11 @@ export default function ListFilmSort({navigation, route}) {
 
   const [selectedValueSort, setSelectedValueSort] = useState('all');
 
+  // type of film
+  const [type, setType] = useState([]);
+  // country of film
+  const [country, setCountry] = useState([]);
+
   //  state hold variable of list after filter
   const [listFilter, setListFilter] = useState(data);
   const [background, setBackground] = useState(

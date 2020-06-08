@@ -163,6 +163,8 @@ function SignUpHook({navigation}) {
       firstName === null
     ) {
       setError('Nhập hết các thông tin');
+    } else if (pass.length < 7) {
+      setError('Mật khẩu phải tối thiểu 6 ký tự');
     } else {
       // dispatch(LoginAction.signup(email, pass, firstName, lastName, gender));
       setLoading(true);
@@ -262,7 +264,10 @@ function SignUpHook({navigation}) {
             style={styles.inputText}
             leftIcon={<Icon name="lock" size={24} color="black" />}
             placeholderTextColor="#003f5c"
-            onChangeText={text => setPass(text)}
+            onChangeText={text => {
+              setPass(text);
+              setError('');
+            }}
             rightIcon={
               // <Switch onValueChange={toggleSwitch} value={!showPassword} />
               <TouchableOpacity onPress={toggleSwitch}>
@@ -281,7 +286,10 @@ function SignUpHook({navigation}) {
             style={styles.inputText}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
-            onChangeText={text => setFirstName(text)}
+            onChangeText={text => {
+              setFirstName(text);
+              setError('');
+            }}
           />
         </View>
         <View style={styles.inputView}>
@@ -290,7 +298,10 @@ function SignUpHook({navigation}) {
             style={styles.inputText}
             leftIcon={<Icon name="user" size={24} color="black" />}
             placeholderTextColor="#003f5c"
-            onChangeText={text => setLastName(text)}
+            onChangeText={text => {
+              setLastName(text);
+              setError('');
+            }}
           />
         </View>
         {/*<View style={styles.buttonGroup}>*/}

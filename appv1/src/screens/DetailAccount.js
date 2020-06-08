@@ -22,6 +22,7 @@ import {CommonActions} from '@react-navigation/native';
 import * as types from '../constants';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const window = Dimensions.get('window');
 
@@ -29,16 +30,18 @@ const IMAGE_HEIGHT = 100;
 const IMAGE_HEIGHT_SMALL = 0;
 function DetailAccount({navigation}) {
   const user = useSelector(state => state.loginIn.user);
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   const [email, setEmail] = useState(user.user.email);
   const [pass, setPass] = useState(null);
-  const [firstName, setFirstName] = useState(user.user.firstName);
-  const [lastName, setLastName] = useState(user.user.lastName);
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
   const [gender, setGender] = useState(null);
   const [error, setError] = useState('');
-
+  const [infoUser, setInfoUser] = useState(null);
+  const [done, setDone] = useState(null);
   // const [fromGender, setFromGender] = useState(user.user.gender);
+  const [showPassword, setShowPassword] = useState(true);
 
   // loading sử dụng cho indicator
   const [loading, setLoading] = useState(false);
@@ -120,20 +123,51 @@ function DetailAccount({navigation}) {
 
   useEffect(() => {
     console.log('mount');
-    if (user.user.gender === 'male') {
-      setSelectedIndex(0);
-    }
-    if (user.user.gender === 'female') {
-      console.log('female');
-      setSelectedIndex(1);
-    }
-    if (user.user.gender === 'other') {
-      console.log('other');
-      setSelectedIndex(2);
-    }
     setEmail(user.user.email);
+
+    async function a(){
+      await fetch(`${types.API}user/find/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.user.email,
+        }),
+      })
+        .then(res => res.json())
+        .then(async users => {
+          console.log(users)
+          if (users.user[0].gender === 'male') {
+            console.log('male');
+            console.log(selectedIndex);
+            await setSelectedIndex(0);
+          }
+          if (users.user[0].gender === 'female') {
+            console.log('female');
+            console.log(selectedIndex);
+            await setSelectedIndex(1);
+          }
+          if (users.user[0].gender === 'other') {
+            console.log(selectedIndex);
+            console.log('other');
+            await setSelectedIndex(2);
+          }
+          await setFirstName(users.user[0].firstName);
+          await setLastName(users.user[0].lastName);
+        })
+        .catch(e => {
+          console.log('catch get list film from home');
+          console.log(e);
+        });
+    }
+    a();
   }, []);
 
+  function toggleSwitch() {
+    setShowPassword(!showPassword);
+  }
   // func update info
   function doUpdate() {
     fetch(`${types.API}user/updateInfo/`, {
@@ -235,13 +269,23 @@ function DetailAccount({navigation}) {
           />
         </View>
         <View style={styles.inputView}>
-          <Input
+           <Input
             placeholder="Mật khẩu..."
-            secureTextEntry
+            secureTextEntry={showPassword}
             style={styles.inputText}
             leftIcon={<Icon name="lock" size={24} color="black" />}
             placeholderTextColor="#003f5c"
             onChangeText={text => setPass(text)}
+            rightIcon={
+              // <Switch onValueChange={toggleSwitch} value={!showPassword} />
+              <TouchableOpacity onPress={toggleSwitch}>
+                {showPassword ? (
+                  <AntDesign name="eyeo" size={25} />
+                ) : (
+                  <AntDesign name="eye" size={25} color={'red'} />
+                )}
+              </TouchableOpacity>
+            }
           />
         </View>
         <View style={styles.inputView}>
@@ -266,17 +310,19 @@ function DetailAccount({navigation}) {
         </View>
         {/*<View style={styles.buttonGroup}>*/}
         <View>
-          <ButtonGroup
-            selectedIndex={selectedIndex}
-            onPress={setSelectedIndex}
-            buttons={buttons}
-            containerStyle={{
-              height: 50,
-              borderRadius: 25,
-              width: '80%',
-              backgroundColor: '#fde0f2',
-            }}
-          />
+          {selectedIndex !== null ? (
+            <ButtonGroup
+              selectedIndex={selectedIndex}
+              onPress={setSelectedIndex}
+              buttons={buttons}
+              containerStyle={{
+                height: 50,
+                borderRadius: 25,
+                width: '80%',
+                backgroundColor: '#fde0f2',
+              }}
+            />
+          ) : null}
         </View>
         <Text
           style={{

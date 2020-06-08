@@ -82,14 +82,11 @@ function Home({navigation}) {
           <Button
             gradient
             onPress={() =>
-              navigation.navigate('Ticket', {
+              navigation.navigate('ListFilmSort', {
                 data: film,
               })
             }>
-            <Text style={styles.textListFilm}>
-              {' '}
-              Danh Sách Các Phim Hiện Có{' '}
-            </Text>
+            <Text style={styles.textListFilm}> Tất cả các phim </Text>
           </Button>
         ) : (
           <DotIndicator />

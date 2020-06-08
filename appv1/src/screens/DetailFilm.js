@@ -55,7 +55,7 @@ function DetailFilm({route, navigation}) {
 
   const [arrDate, setArrDate] = useState([{NgayChieu: null, GioChieu: []}]);
   let arr = [];
-
+  const [haveSchedule, setHaveSchedule] = useState(null);
   // start date time picker
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -124,55 +124,6 @@ function DetailFilm({route, navigation}) {
     // console.log(endDate);
     // setEnd(endDate);
 
-    async function getAPI() {
-      const res = await fetch(`${types.API}schedule/find/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          TenFilm: film.TenFilm,
-        }),
-      });
-      const json = await res.json();
-      setSchedule(json.schedule);
-      // xử lý mảng lưu object là
-      // { ngày : giờ }
-      await json.schedule.map((item, index) => {
-        console.log(item.ThoiGianChieu.toString());
-        let date = item.ThoiGianChieu.split('T')[0];
-        let i = 0;
-        arr.map((value, vitri) => {
-          if (date !== arr[vitri].NgayChieu) {
-            i++;
-          }
-        });
-
-        if (i === arr.length) {
-          arr.push({NgayChieu: date});
-        }
-      });
-      await arr.map((val, id) => {
-        let a = [];
-        json.schedule.map((item, i) => {
-          let date1 = item.ThoiGianChieu.split('T')[0];
-          let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
-          if (date1 === arr[id].NgayChieu) {
-            a.push(time1);
-          }
-        });
-        arr[id].GioChieu = a;
-      });
-      // await console.log(arr.slice(0, 1));
-      await setArrDate(arr);
-
-      console.log('arrrrrr', arr);
-      // await setOK(true);
-      await console.log('final', arrDate);
-    }
-    //
-
     const getList = async () => {
       await fetch(`${types.API}schedule/find/`, {
         method: 'POST',
@@ -231,20 +182,132 @@ function DetailFilm({route, navigation}) {
           setOK(true);
         })
         .catch(e => {
-          console.log('catch get list film from home');
+          console.log('catch get list film ');
           console.log(e);
         });
     };
-    // getAPI();
+
     if (Date.parse(film.NgayChieu) < Date.parse(Date())) {
-      getList().then(r => setOK(true));
+      const callhihi = async () => {
+        let t = await fetch(`${types.API}schedule/find/`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            TenFilm: film.TenFilm,
+          }),
+        });
+        let res = await t.json();
+
+        async function a() {
+          if (res.error === "schedule don't exist!") {
+            console.log(res);
+            await setHaveSchedule(false);
+            // await process();
+          } else {
+            console.log(res);
+            await setHaveSchedule(true);
+            // await process();
+          }
+        }
+        await a();
+        // await process();
+      };
+
+      callhihi();
+      //process();
+    } else {
+      setHaveSchedule(false);
     }
-    console.log('hiih');
   }, []);
 
   useEffect(() => {
+    const getList = async () => {
+      await fetch(`${types.API}schedule/find/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          TenFilm: film.TenFilm,
+        }),
+      })
+        .then(res => res.json())
+        .then(result =>
+          result.schedule.filter(
+            item => Date.parse(item.ThoiGianChieu) >= Date.parse(Date()),
+          ),
+        )
+        .then(async res => {
+          setSchedule(res);
+          // xử lý mảng lưu object là
+          // { ngày : giờ }
+          await res.map((item, index) => {
+            console.log(item.ThoiGianChieu.toString());
+            let date = item.ThoiGianChieu;
+            let i = 0;
+            arr.map((value, vitri) => {
+              if (
+                date.split('T')[0].slice(0, 10) !==
+                arr[vitri].NgayChieu.split('T')[0].slice(0, 10)
+              ) {
+                i++;
+              }
+            });
+
+            if (i === arr.length) {
+              arr.push({NgayChieu: date});
+            }
+          });
+          await arr.map((val, id) => {
+            let a = [];
+            res.map((item, i) => {
+              let date1 = item.ThoiGianChieu.split('T')[0].slice(0, 10);
+              let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
+              if (date1 === arr[id].NgayChieu.split('T')[0].slice(0, 10)) {
+                a.push(time1);
+              }
+            });
+            arr[id].GioChieu = a;
+          });
+          // await console.log(arr.slice(0, 1));
+          await setArrDate(arr);
+          // await setOK(true);
+          await console.log('final', arrDate);
+        })
+        .then(r => {
+          setOK(true);
+        })
+        .catch(e => {
+          console.log('catch get list film ');
+          console.log(e);
+        });
+    };
+
+    const process = async () => {
+      console.log('func process');
+      console.log(haveSchedule);
+      if (haveSchedule === true) {
+        await console.log('Co Schedule');
+        // await getList().then(r => setOK(true));
+        await getList();
+      }
+      if (haveSchedule === false) {
+        await console.log('Chua Co Schedule');
+        await setHaveSchedule(false);
+        await setShow(true);
+      }
+    };
+    process();
+  }, [haveSchedule]);
+  
+  useEffect(() => {
     async function a() {
       if (ok) {
+        console.log('set show');
         await setShow(true);
         await setTime(arrDate[0].GioChieu);
         await setDate(arrDate[0].NgayChieu);
@@ -452,7 +515,6 @@ function DetailFilm({route, navigation}) {
                       maximumDate={new Date(end)}
                     />
                     <Text>{date}</Text> */}
-
                       <Picker
                         itemStyle={{
                           // flex: 1,
@@ -466,7 +528,7 @@ function DetailFilm({route, navigation}) {
                         onValueChange={(itemValue, itemIndex) =>
                           selectedDate(itemValue, itemIndex)
                         }>
-                        {show === false
+                        {show === false || haveSchedule === false
                           ? null
                           : arrDate.map((item, id) => (
                               <Picker.Item
@@ -474,6 +536,9 @@ function DetailFilm({route, navigation}) {
                                 value={item.NgayChieu}
                                 label={item.NgayChieu.split('T')[0]
                                   .slice(0, 10)
+                                  .split('-')
+                                  .reverse()
+                                  .join('-')
                                   .toString()}
                               />
                             ))}
@@ -505,6 +570,9 @@ function DetailFilm({route, navigation}) {
                             ))
                           : null}
                       </Picker>
+                      <Text>
+                        {haveSchedule ? null : 'Phim chua co lich chieu'}
+                      </Text>
                     </View>
                   </View>
                   <View
@@ -583,10 +651,11 @@ function DetailFilm({route, navigation}) {
                   // if (new Date(start) > new Date()) {
                   Alert.alert(
                     'Phim chưa được công chiếu',
-                    `Trở lại vào ngày ${film.NgayChieu.split('T')[0].slice(
-                      0,
-                      10,
-                    )}`,
+                    `Trở lại vào ngày ${film.NgayChieu.split('T')[0]
+                      .slice(0, 10)
+                      .split('-')
+                      .reverse()
+                      .join('-')}`,
                   );
                   // }
                   // setModal(true);

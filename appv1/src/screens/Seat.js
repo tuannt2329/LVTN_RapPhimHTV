@@ -334,7 +334,12 @@ function Seat({route, navigation}) {
         </View>
         <View style={{flex: 1}}>
           <Text>
-            Suất chiếu {schedule.ThoiGianChieu.split('T')[0].slice(0, 10)}
+            Suất chiếu
+            {schedule.ThoiGianChieu.split('T')[0]
+              .slice(0, 10)
+              .split('-')
+              .reverse()
+              .join('-')}
           </Text>
         </View>
         <View style={{flex: 1}}>
