@@ -272,6 +272,14 @@ const Screens = ({navigation, style}) => {
           }}>
           {props => <Ticket {...props} />}
         </Stack.Screen>
+        <Stack.Screen
+          name="Demo"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}>
+          {props => <DemoAnt {...props} />}
+        </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
     </Animatedd.View>
@@ -314,9 +322,17 @@ const DrawerContent = props => {
                 alignContent: 'flex-start',
                 margin: 0,
               }}>
-              <Text center align={'center'} title white>
-                {user.user.email}
-              </Text>
+              <View
+                style={{
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                }}>
+                <Text center align={'center'} title white>
+                  {user.user.email}
+                </Text>
+              </View>
+
               <DrawerItem
                 label="Tài Khoản"
                 labelStyle={{

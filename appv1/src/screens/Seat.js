@@ -60,6 +60,7 @@ function Seat({route, navigation}) {
   const [seatPick, setSeatPick] = useState([]);
   // const seat = JSON.parse(JSON.stringify(data));
   const [seatPicked, setSeatPicked] = useState([]);
+  const [seatPickedCouple, setSeatPickedCouple] = useState([]);
   const [listSeat, setListSeat] = useState([]);
   const [listSeatCouple, setListSeatCouple] = useState([]);
   const [amount, setAmount] = useState(0);
@@ -206,11 +207,13 @@ function Seat({route, navigation}) {
       });
       let dataa = await res.json();
       if (dataa.ticket !== undefined) {
-        let kq = await Promise.all(
+        await Promise.all(
           dataa.ticket.map(value => {
             console.log('promise all');
             value.TenGhe.map(value2 => {
-              setSeatPicked(r => [...r, value2]);
+              if (value2.slice(0, 1) !== 'R')
+                setSeatPicked(r => [...r, value2]);
+              else setSeatPickedCouple(r => [...r, value2]);
             });
           }),
         );
@@ -234,7 +237,7 @@ function Seat({route, navigation}) {
 
       let arr = [];
       let arrCouple = [];
-      let kq = await dataa.ghe.map(value => {
+      await dataa.ghe.map(value => {
         if (value.TenGhe.slice(0, 1) === 'R') {
           arrCouple.push({
             key: value.TenGhe,
@@ -257,8 +260,6 @@ function Seat({route, navigation}) {
     }
 
     if (isSubscribed === true) {
-      fetchSeatPicked();
-      fetchSeat();
       let t = fetch(`${types.API}giave/find/`, {
         method: 'POST',
         headers: {
@@ -270,16 +271,22 @@ function Seat({route, navigation}) {
         .then(res => setCost(res.loaive));
     }
 
+    fetchSeatPicked();
+    fetchSeat();
+
     return () => (isSubscribed = false);
   }, []);
 
   useEffect(() => {
     async function handleSeatFromAPI() {
       // let t = async function() {
+      console.log('handle from seate api');
       if (done === true) {
+        console.log('done', done);
         if (seatPicked.length > 0) {
-          await listSeat.map(async value => {
-            await seatPicked.map(async value1 => {
+          await listSeat.map(value => {
+            seatPicked.map(value1 => {
+              console.log('key', value.key);
               if (value1 === value.key) {
                 value.Color = 'red';
               }
@@ -287,8 +294,9 @@ function Seat({route, navigation}) {
           });
         }
         if (seatPicked.length > 0) {
-          await listSeatCouple.map(async value => {
-            await seatPicked.map(async value1 => {
+          await listSeatCouple.map(value => {
+            seatPickedCouple.map(value1 => {
+              console.log('key', value.key);
               if (value1 === value.key) {
                 value.Color = 'red';
               }
