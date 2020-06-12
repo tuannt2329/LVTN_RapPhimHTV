@@ -60,42 +60,44 @@ class AllFilms extends Component {
                             </div>
                             <div className="row">
                             {this.state.films.map((item, index) =>
-                                (index === 0) ?
-                                    <div className="col-md-6">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <button className="btn btn-success btn-sm float-right" onClick={this.handleOnClickThemLich.bind(this, item.TenFilm)}>
-                                                    <i className="fas fa-add float-right"></i>Thêm lịch chiếu</button>
-                                                <div>
-                                                    <div className="carousel-inner">
-                                                        <div className="carousel-item carousel-item-next carousel-item-left">
-                                                            <a href='/detailshedule' onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
-                                                                <center><dt>{item.TenFilm}</dt></center>
-                                                            </a>
+                                (((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))) || Date.parse(item["NgayChieu"]) > Date.parse(Date())) ?
+                                    (index === 0) ?
+                                        <div className="col-md-6">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <button className="btn btn-success btn-sm float-right" onClick={this.handleOnClickThemLich.bind(this, item.TenFilm)}>
+                                                        <i className="fas fa-add float-right"></i>Thêm lịch chiếu</button>
+                                                    <div>
+                                                        <div className="carousel-inner">
+                                                            <div className="carousel-item carousel-item-next carousel-item-left">
+                                                                <a href='/detailshedule' onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
+                                                                    <center><dt>{item.TenFilm}</dt></center>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                :
-                                    <div className="col-md-6">
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <button className="btn btn-success btn-sm float-right" onClick={this.handleOnClickThemLich.bind(this, item.TenFilm)}>
-                                                    <i className="fas fa-add float-right"></i>Thêm lịch chiếu</button>
-                                                <div>
-                                                    <div className="carousel-inner">
-                                                        <div className="carousel-item carousel-item-next carousel-item-left">
-                                                            <a href='/detailshedule'  onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
-                                                                <center><dt>{item.TenFilm}</dt></center>
-                                                            </a>
+                                    :
+                                        <div className="col-md-6">
+                                            <div className="card">
+                                                <div className="card-body">
+                                                    <button className="btn btn-success btn-sm float-right" onClick={this.handleOnClickThemLich.bind(this, item.TenFilm)}>
+                                                        <i className="fas fa-add float-right"></i>Thêm lịch chiếu</button>
+                                                    <div>
+                                                        <div className="carousel-inner">
+                                                            <div className="carousel-item carousel-item-next carousel-item-left">
+                                                                <a href='/detailshedule'  onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
+                                                                    <center><dt>{item.TenFilm}</dt></center>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                : null
                             )}
                             </div>
                             <a id="back-to-top" href="#" className="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">

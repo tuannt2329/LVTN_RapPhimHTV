@@ -59,21 +59,22 @@ class DetailShedule extends Component {
   onSubmit = (e) => {
     if (window.confirm("Do you really want to update?")) {
       e.preventDefault();
-      var count = 0;
-      this.state.Film.map((item) => {
+      let count = 0;
+      this.state.Film.map( async (item) => {
         const film = item;
-        axios.put('http://localhost:8000/schedule/updateSchedule', film)
+        await axios.put('http://localhost:8000/schedule/updateSchedule', film)
         .then((res) => {
           if (!res.data.error) {
             count++;
-            console.log(count)
           } else {
             return window.alert(res.data.error)
           }
         });
+        if(count === this.state.Film.length) {
+          window.alert("update shedule success!");
+          return window.location.reload();
+        }
       })
-      window.alert("update shedule success!");
-      return window.location.reload();
     }
   }
 
@@ -196,7 +197,62 @@ class DetailShedule extends Component {
       );
     }
     return (
-      <div></div>
+      <div>
+                <Menu />
+                <div className="content-wrapper">
+                    <section className="content-header">
+                        <div className="container-fluid">
+                            <div className="row mb-2">
+                                <div className="col-sm-6">
+                                    <h1>Detail Shedule</h1>
+                                </div>
+                                <div className="col-sm-6">
+                                    <ol className="breadcrumb float-sm-right">
+                                        <li className="breadcrumb-item"><a href="/menu">Home</a></li>
+                                        <li className="breadcrumb-item active">DetailShedule</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>{/* /.container-fluid */}
+                    </section>
+                    {/* Main content */}
+                    <section className="content">
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-md-9 mx-auto d-block">
+                                    <div className="card">
+                                        <div className="card-header p-2">
+                                            <ul className="nav nav-pills">
+                                                <li className="nav-item">
+                                                    <a className="nav-link" href="" data-toggle="tab">Thông tin lịch chiếu</a>
+                                                </li>
+                                            </ul>
+                                        </div>{/* /.card-header */}
+                                            <div className="card-body">
+                                                <div className="tab-content">
+                                                    <div className="active tab-pane" id="settings">
+                                                        <form className="form-horizontal">
+                                                            <div className="form-group row">
+                                                                <div className="col-sm-10">
+                                                                    <input type="text" className="form-control" id="inputFilmName" placeholder="Tên phim" defaultValue="Chưa có lịch chiếu" disabled/>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row">
+                                                                <div className="col-12">
+                                                                    <a href="/allfilmsshedule" className="btn btn-secondary">Cancel</a>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
     );
 
   }

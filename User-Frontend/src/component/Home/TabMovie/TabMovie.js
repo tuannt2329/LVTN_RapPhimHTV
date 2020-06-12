@@ -9,6 +9,7 @@ import {
 class TabMovie extends React.Component {
   constructor(props) {
     super(props)
+    console.log('from hommmmeeee', props.films)
     this.setStateFilms = this.setStateFilms.bind(this)
     this.state = {
       films: [],

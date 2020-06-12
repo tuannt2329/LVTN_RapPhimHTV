@@ -11,15 +11,16 @@ class Home extends React.Component {
     }
   }
 
-  setStateFilms = (data) => {
-    this.setState({ films: data.film })
-    this.setState({ show: true })
+  setStateFilms = async (data) => {
+   await this.setState({ films: data.film })
+   await console.log('state', this.state.films);
+   await this.setState({ show: true })
   }
 
   UNSAFE_componentWillMount() {
     axios.post("http://localhost:8000/film/find")
-      .then((res) => {
-        this.setStateFilms(res.data);
+      .then(async(res) => {
+        await this.setStateFilms(res.data);
       })
   }
 

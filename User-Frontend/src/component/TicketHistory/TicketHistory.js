@@ -1,5 +1,4 @@
 import React from 'react';
-import "./TicketHistory.css";
 import axios from "axios";
 var images = [];
 class TicketHistory extends React.Component {
@@ -73,7 +72,7 @@ class TicketHistory extends React.Component {
       return this.state.ve.map((item, index) => {
         var tenghe = "";
         item['TenGhe'].forEach((ghe) => {
-          if(ghe.substring(0, 1) != 'R') {
+          if (ghe.substring(0, 1) != 'R') {
             tenghe += "VIP: " + ghe + ", ";
           } else {
             tenghe += "COUPLE: " + ghe + ", ";
@@ -91,26 +90,42 @@ class TicketHistory extends React.Component {
                 <div className="col-md-4" >
                   {this.state.image.map(items =>
                     (item["TenFilm"] === items["TenFilm"]) ?
-                      <img key={index + 100} src={"http://localhost:8000/images/" + items["AnhBia"]} alt={items.TenFilm} style={{ width: 383, height: 315 }}></img>
+                      <img style={{ width: 399, height: 291 }}
+                        key={index + 100}
+                        src={"http://localhost:8000/images/" + items["AnhBia"]} alt={items.TenFilm}
+                        className="lazy loaded" />
                       :
                       null
                   )}
 
                 </div>
                 <div className="col-md-8" >
-                  <div className="ticket-info" >
-                    <h2>THÔNG TIN VÉ</h2>
-                    <ul>
-                      <div className="col-title">RẠP HTV THỦ ĐỨC</div> <br />
-                      <div className="col-title">Phim:</div><div className="col-value">{item['TenFilm']}</div> <br />
-                      <div className="col-title">Ngày chiếu:</div><div className="col-value">{item['ThoiGianChieu'].split('T')[0]}</div><br />
-                      <div className="col-title">Thời gian chiếu:</div><div className="col-value">{thoigianchieu.substring(0, thoigianchieu.length - 5)}</div><br />
-                      <div className="col-title">Phòng chiếu:</div><div className="col-value">{item['TenPhong']}</div><br />
-                      <div className="col-title">Chỗ ngồi:</div><div className="col-value">{tenghe.substring(0, tenghe.length - 2)}</div><br />
-                      <div className="col-title">Thời gian đặt vé:</div><div className="col-value">{thoigiandat}</div><br />
-                      <div className="col-title">Thời gian thời gian xác nhận:</div><div className="col-value">{thoigianxacnhan}</div><br />
-                      <div className="col-title">Giá vé:</div><div className="col-value">{Number(item['GiaVe']).toLocaleString('en')} đồng</div><br />
-                    </ul>
+                  <div htv-scroll-follow-content className="ticket-header aa">
+                    <section className="ticket-feature">
+                      <article className="row">
+                        <div className="col-md-12">
+                          <div className="ticket-detail">
+                            <div className="ticket-info">
+                              <p><b>Rạp: &nbsp;</b>RẠP HTV Thủ đức</p>
+                              <p><b>id: &nbsp;</b>{item['_id']}</p>
+                              <p><b>Phim &nbsp;</b>{item['TenFilm']}</p>
+                              <p className="  "><b>Ngày chiếu: &nbsp;</b>{item['ThoiGianChieu'].split('T')[0]}</p>
+                              <p className="  "><b>Thời gian chiếu: &nbsp;</b>{thoigianchieu.substring(0, thoigianchieu.length - 5)}</p>
+                              <p className="  "><b>Phòng chiếu: &nbsp;</b>{item['TenPhong']}</p>
+                              <p className="  "><b>Chỗ ngồi: &nbsp;</b>{tenghe.substring(0, tenghe.length - 2)}</p>
+                              <p className="  "><b>Thời gian đặt vé: &nbsp;</b>{thoigiandat}</p>
+                              <p className="  "><b>Thời gian xác nhận: </b>{thoigianxacnhan}</p>
+                            </div>
+                            <div className="ticket-price-total">
+                              <p>
+                                <htv-summary-ticket>
+                                  <span className="  ">Giá vé:  {Number(item['GiaVe']).toLocaleString('en')} đồng</span>
+                                </htv-summary-ticket></p>
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    </section>
                   </div>
                 </div>
               </div>

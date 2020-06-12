@@ -2743,6 +2743,7 @@ a.showtimes-list {
   margin-bottom: 15px; }
 
 .ticket-feature {
+  padding-left: 2%;  /**/
   clear: both;
   min-height: 0;
   box-sizing: border-box;

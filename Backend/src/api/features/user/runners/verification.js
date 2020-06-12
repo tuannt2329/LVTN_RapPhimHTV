@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const sendEmail = require('../send-email')
 
-const verification = Math.floor(Math.random() * Math.floor(1000000))
+var verification = Math.floor(Math.random() * Math.floor(1000000))
 global.verification = verification
 
 const handler = ({ model }, _) => async (req, res) => {

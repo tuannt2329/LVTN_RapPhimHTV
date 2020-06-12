@@ -1,6 +1,6 @@
 const handler = ({ model }, _) => async (req, res) => {
   let listparams = req.body
-  
+      listparams['deleted'] = false
   try {
     const loaive = await model.find(listparams)
 

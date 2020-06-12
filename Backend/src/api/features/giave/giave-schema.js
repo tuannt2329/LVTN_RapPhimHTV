@@ -9,5 +9,9 @@ module.exports = new Schema({
   GiaVe: {
     type: Number,
     default: 0
+  },
+  deleted: {
+    type: Boolean,
+    default: false
   }
 })

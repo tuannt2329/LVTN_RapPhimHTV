@@ -16,10 +16,7 @@ class AddShedule extends Component {
 
     UNSAFE_componentWillMount() {
         var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-        axios.post("http://localhost:8000/schedule/find", TenFilm)
-            .then((res) => {
-                // this.setStateFilms(res.data);
-            });
+        
     }
 
     setStateFilms = (Film) => {
@@ -72,22 +69,49 @@ class AddShedule extends Component {
         this.setState({
             Film: film
         });
+
+        
     }
 
-    onSubmit = (e) => {
+    onSubmit = async (e) => {
         e.preventDefault();
         if(this.state.Film["TenPhong"] && this.state.Film["ThoiGianChieu"] && this.state.Film["ThoiGianKetThuc"]) {
-            if(this.state.Film["ThoiGianChieu"] < this.state.Film["ThoiGianKetThuc"]) {
-                const film = this.state.Film;
-                axios.post('http://localhost:8000/schedule/createSchedule', film)
+            if (this.state.Film["ThoiGianChieu"] < this.state.Film["ThoiGianKetThuc"]) {
+                const schedule = {
+                    TenPhong: this.state.Film.TenPhong
+                }
+                let count = 0
+                await axios.post('http://localhost:8000/schedule/find', schedule)
                 .then((res) => {
                     if (!res.data.error) {
-                        window.alert("create schedule success!")
-                        return window.location.reload()
+                        res.data.schedule.map((item) => {
+                            if(this.state.Film.ThoiGianChieu <= item.ThoiGianKetThuc && this.state.Film.ThoiGianChieu >= item.ThoiGianChieu) {
+                                count++
+                                
+                            }
+                        })
                     } else {
-                        return window.alert(res.data.error)
+                        if(res.data.error != "schedule don't exist!") {
+                            console.log(res.data.error)
+                        }
                     }
-                });
+                })
+                if(count == 0 ) {
+                    const film = this.state.Film;
+                    axios.post('http://localhost:8000/schedule/createSchedule', film)
+                    .then((res) => {
+                        if (!res.data.error) {
+                            window.alert("create schedule success!")
+                            return window.location.reload()
+                        } else {
+                            return window.alert(res.data.error)
+                        }
+                    });
+                } else {
+                    window.alert("Phòng này đang chiếu phim khác")
+                    return window.location.reload()
+                }
+                
             } else {
                 return window.alert("Thoi Gian Chieu < Thoi Gian Ket Thuc")
             }
@@ -99,7 +123,6 @@ class AddShedule extends Component {
     }
 
     render() {
-        console.log(this.state.Film)
         if(this.state.Film) {
             return (
                 <div>

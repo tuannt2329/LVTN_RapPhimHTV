@@ -305,72 +305,52 @@ class Seat extends React.Component {
   }
 
   handleOnclickXacNhanDatVe = () => {
-    if (localStorage.getItem('user') && this.state.choosing) {
-      var thoigianthuc = new Date();
-      var thoigianxacthuc = thoigianthuc.getFullYear() + "-";
-      if (thoigianthuc.getMonth() + 1 < 10) {
-        thoigianxacthuc += "0";
-      }
-      thoigianxacthuc += (thoigianthuc.getMonth() + 1) + "-";
-      if (thoigianthuc.getDate() < 10) {
-        thoigianxacthuc += "0";
-      }
-      thoigianxacthuc += thoigianthuc.getDate() + "T";
-      if (thoigianthuc.getHours() < 10) {
-        thoigianxacthuc += "0";
-      }
-      thoigianxacthuc += thoigianthuc.getHours() + ":";
-      if (thoigianthuc.getMinutes() < 10) {
-        thoigianxacthuc += "0";
-      }
-      thoigianxacthuc += thoigianthuc.getMinutes() + ":";
-      if (thoigianthuc.getSeconds() < 10) {
-        thoigianxacthuc += "0";
-      }
-      thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
-      var ve = {
-        email: JSON.parse(localStorage.getItem('user'))['email'],
-        TenFilm: this.state.TenFilm,
-        TenPhong: this.state.TenPhong,
-        TenGhe: this.state.choosing,
-        ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
-        ThoiGianDat: thoigianxacthuc,
-        GiaVe: this.state.TongTienVe
-      }
-      axios.post('http://localhost:8000/ticket/createticket', ve)
+    if (window.confirm("bạn đã suy nghĩ kĩ?")) {
+      if (localStorage.getItem('user') && this.state.choosing) {
+        var thoigianthuc = new Date();
+        var thoigianxacthuc = thoigianthuc.getFullYear() + "-";
+        if (thoigianthuc.getMonth() + 1 < 10) {
+          thoigianxacthuc += "0";
+        }
+        thoigianxacthuc += (thoigianthuc.getMonth() + 1) + "-";
+        if (thoigianthuc.getDate() < 10) {
+          thoigianxacthuc += "0";
+        }
+        thoigianxacthuc += thoigianthuc.getDate() + "T";
+        if (thoigianthuc.getHours() < 10) {
+          thoigianxacthuc += "0";
+        }
+        thoigianxacthuc += thoigianthuc.getHours() + ":";
+        if (thoigianthuc.getMinutes() < 10) {
+          thoigianxacthuc += "0";
+        }
+        thoigianxacthuc += thoigianthuc.getMinutes() + ":";
+        if (thoigianthuc.getSeconds() < 10) {
+          thoigianxacthuc += "0";
+        }
+        thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
+        var ve = {
+          email: JSON.parse(localStorage.getItem('user'))['email'],
+          TenFilm: this.state.TenFilm,
+          TenPhong: this.state.TenPhong,
+          TenGhe: this.state.choosing,
+          ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+          ThoiGianDat: thoigianxacthuc,
+          GiaVe: this.state.TongTienVe
+        }
+        sessionStorage.setItem('ve', JSON.stringify(ve))
+        axios.post('http://localhost:8000/paypal/pay', ve)
         .then((res) => {
-          if (!res.data.error) {
-            const tongthu = {
-              TenFilm: this.state.TenFilm,
-              TongThu: this.state.TongTienVe + this.state.films.TongThu,
-              DaoDien: this.state.films[0].DaoDien,
-              TheLoai: this.state.films[0].TheLoai,
-              TenNuocSX: this.state.films[0].TenNuocSX,
-              TomTat: this.state.films[0].TomTat,
-              TongChi: this.state.films[0].TongChi,
-              NgayChieu: this.state.films[0].NgayChieu,
-              NgayKetThuc: this.state.films[0].NgayKetThuc
-            }
-            axios.put('http://localhost:8000/film/updatefilm', tongthu)
-              .then((res1) => {
-                if (!res1.data.error) {
-                  this.setState({ choosing: [] });
-                  strghe = "";
-                  stt = [];
-                  return (
-                    window.alert('Đặt vé thành công!'),
-                    window.location = '/'
-                  )
-                } else {
-                  return window.alert(res1.data.error)
-                }
-              });
+          if(!res.data.error) {
+            return window.location = res.data.result
           } else {
             return window.alert(res.data.error)
           }
-        });
-    } else {
-      return window.location = '/login';
+        })
+       
+      } else {
+        return window.location = '/login';
+      } 
     }
   }
 
