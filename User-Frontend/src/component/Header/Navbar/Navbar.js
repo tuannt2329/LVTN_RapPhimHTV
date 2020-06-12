@@ -1,5 +1,11 @@
 import React from 'react';
 import axios from "axios";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 class Navbar extends React.Component {
     constructor(props) {
         super(props)
@@ -169,7 +175,7 @@ class Navbar extends React.Component {
                                         {
                                             this.state.theloai1 !== null ? this.state.theloai1.map(i => (
                                                 <li>
-                                                    <a onClick={this.findByTheLoaiPhim.bind(this, i)}>{i}</a>
+                                                    <Link to ={`/film/:${i}`} onClick={this.findByTheLoaiPhim.bind(this, i)}>{i}</Link>
                                                 </li>
                                             )) : null
                                         }

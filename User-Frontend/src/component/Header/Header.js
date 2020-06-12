@@ -3,6 +3,7 @@ import LoginRegister from '../User/Login';
 import DateTime from './DateTime/DateTime';
 import NavbarHTV from './Navbar/Navbar';
 import axios from "axios";
+import Search from './Search/Search';
 class Header extends React.Component {
     constructor(props) {
         super(props)
@@ -21,12 +22,12 @@ class Header extends React.Component {
         axios.post("http://localhost:8000/film/find")
             .then((res) => {
                 this.setStateFilms(res.data);
-                console.log(res.data)
-                res.data.film.forEach(element => {
-                    this.setState({
-                        theloai: [...this.state.theloai, element.TheLoai]
-                    })
-                });
+                res.data.film.filter(item =>
+                    Date.parse(item["NgayKetThuc"]) > Date.parse(Date())).forEach(element => {
+                        this.setState({
+                            theloai: [...this.state.theloai, element.TheLoai]
+                        })
+                    });
             }).then(r => this.setState({
                 theloai2: [... new Set(this.state.theloai)]
             }));
@@ -52,7 +53,8 @@ class Header extends React.Component {
                             </div>
                             <div className="col-md-8 col-sm-8 col-xs-8">
                                 <div className="primary-nav-wrapper hidden-xs hidden-sm">
-                                    <div className="search">
+                                    <Search />
+                                    {/* <div className="search">
                                         <htv-search-bar>
                                             <form className="search-form">
                                                 <div className="input-append">
@@ -65,8 +67,10 @@ class Header extends React.Component {
                                                 </div>
                                             </form>
                                         </htv-search-bar>
-                                    </div>
+                                    </div> */}
+
                                     <DateTime />
+                                    
                                     <LoginRegister />
                                 </div>
                             </div>
