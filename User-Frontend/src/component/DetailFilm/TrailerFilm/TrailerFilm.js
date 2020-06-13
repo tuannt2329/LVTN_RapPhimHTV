@@ -21,7 +21,6 @@ class TrailerFilm extends React.Component {
   }
 
   render() {
-    console.log(this.props.films)
     const styleVideo = {
       width: '100%',
       height: '100%',

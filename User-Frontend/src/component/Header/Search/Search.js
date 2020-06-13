@@ -31,7 +31,6 @@ class Search extends React.Component {
                     res.data.film.map((item) => {
                         // tenphimArray.push(item.TenFilm, item.DaoDien)
                         tenphimArray.push(item.TenFilm)
-                        console.log('vv', tenphimArray)
                     })
                     this.setState({ tenphims: tenphimArray })
                 } else {
