@@ -1,15 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-var list = [];
-var stt = [];
-var strghe = "";
-var tongtien = 0
+
 class successPayment extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +62,7 @@ class successPayment extends React.Component {
   }
 
   render() {
-    if (!this.state.ve) {
+    if (this.state.ve) {
       let timechieu = this.state.ve.ThoiGianChieu.substring(11, this.state.ve.ThoiGianChieu.length - 5) + " "
       timechieu += this.state.ve.ThoiGianChieu.substring(8, this.state.ve.ThoiGianChieu.length - 14) + '/'
       timechieu += this.state.ve.ThoiGianChieu.substring(5, this.state.ve.ThoiGianChieu.length - 17) + '/'
