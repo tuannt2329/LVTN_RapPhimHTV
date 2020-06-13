@@ -1,18 +1,20 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import TrailerFilm from '../TrailerFilm/TrailerFilm';
+import axios from "axios";
 class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.setStateFilms = this.setStateFilms.bind(this)
     this.state = {
       films: [],
-      counter: 0
+      counter: 0,
+      following: [],
+      theodoi: "Theo dõi"
     }
   }
-
+  
   setStateFilms = (data) => {
-    console.log(data)
     this.setState({ films: data, counter: 1 })
   }
 
@@ -20,9 +22,50 @@ class Detail extends React.Component {
     sessionStorage.setItem("tenphim", tenphim);
   }
 
+  handleOnclickFollow = async (tenphim) => {
+    if (localStorage.getItem('user')) {
+      if(this.state.theodoi === "Theo dõi") {
+        const following = this.state.films[0].TheoDoi
+        await following.push(JSON.parse(localStorage.getItem('user')).email)
+        this.setState({following: following, theodoi: "Bỏ theo dõi"})
+      } else {
+        const following = this.state.films[0].TheoDoi
+        for( var i = 0; i < following.length; i++) { 
+          if ( following[i] === JSON.parse(localStorage.getItem('user')).email) {
+            following.splice(i, 1)
+            await this.setState({following: following, theodoi: "Theo dõi"})
+
+          }
+        }
+      }
+      const following = {
+        TenFilm: this.state.films[0].TenFilm,
+        TheoDoi: this.state.following
+      }
+      axios.put('http://localhost:8000/film/updatefilm', following)
+        .then((res) => {
+          if (!res.data.error) {
+            console.log(res.data)
+            
+          } else {
+            return window.alert(res.data.error)
+          }
+        });
+    } else {
+      return window.alert("bạn cần đăng nhập trước để theo dõi phim")
+    }
+  }
+
   render() {
     if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
+      if (localStorage.getItem('user')) {
+        for ( var i = 0; i < this.props.films[0].TheoDoi.length; i++) { 
+          if ( this.props.films[0].TheoDoi[i] === JSON.parse(localStorage.getItem('user')).email) {
+            this.setState({theodoi: "Bỏ theo dõi"})
+          }
+        }
+      }
     }
     return (
 
@@ -171,7 +214,7 @@ class Detail extends React.Component {
                     </div>
                     <div className="detail-info-row">
                       <label>Khởi chiếu:&nbsp;</label>
-                      <div className="detail-info-right">{item.NgayChieu.substring(0, item.NgayChieu.length - 14)} -> {item.NgayKetThuc.substring(0, item.NgayKetThuc.length - 14)}</div>
+                      <div className="detail-info-right">{item.NgayChieu.substring(0, item.NgayChieu.length - 14)} - {item.NgayKetThuc.substring(0, item.NgayKetThuc.length - 14)}</div>
                     </div>
                   </div>
                 </div>
@@ -185,6 +228,12 @@ class Detail extends React.Component {
                         Đặt vé
                       </button>
                     </Link>
+                    &nbsp; &nbsp; &nbsp;
+                    <button id="rating-click"
+                        type="submit"
+                        className="btn btn-primary btn-sm" onClick={this.handleOnclickFollow.bind(this, item.TenFilm)}>
+                        {this.state.theodoi}
+                      </button>
                   </div>
                 </div>
               </div>
