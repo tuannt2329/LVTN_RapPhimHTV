@@ -29,7 +29,6 @@ const handler = ({ model }, _) => async (req, res) => {
     if (error) {
        res.send({cancle : error});
     } else {
-<<<<<<< HEAD
       try {
         let param = {
           TenFilm : vexemphim.TenFilm,
@@ -71,9 +70,6 @@ const handler = ({ model }, _) => async (req, res) => {
       } catch (error) {
         res.send({ error })
       }
-=======
-        res.redirect("http://conallserver.ddns.net:3000/successpayment");
->>>>>>> 46a0863... test 2
     }
   });
 
