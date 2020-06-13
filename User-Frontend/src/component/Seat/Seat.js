@@ -459,11 +459,11 @@ class Seat extends React.Component {
                       <div className="col-md-12">
                         <div className="ticket-detail">
                           <h2 className="ticket-title upper-text">{item.TenFilm}</h2>
-                          <div className="ticket-icon">
+                          {/* <div className="ticket-icon">
                             <span><i className="icon-c16" />
                               <span className="notice">(*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên</span>
                             </span>
-                          </div>
+                          </div> */}
                           <div className="ticket-info">
                           <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>

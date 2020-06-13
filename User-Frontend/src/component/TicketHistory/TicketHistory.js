@@ -90,7 +90,7 @@ class TicketHistory extends React.Component {
                 <div className="col-md-4" >
                   {this.state.image.map(items =>
                     (item["TenFilm"] === items["TenFilm"]) ?
-                      <img style={{ width: 399, height: 291 }}
+                      <img style={{ width: 425, height: 317 }}
                         key={index + 100}
                         src={"http://localhost:8000/images/" + items["AnhBia"]} alt={items.TenFilm}
                         className="lazy loaded" />
@@ -109,17 +109,17 @@ class TicketHistory extends React.Component {
                               <p><b>Rạp: &nbsp;</b>RẠP HTV Thủ đức</p>
                               <p><b>id: &nbsp;</b>{item['_id']}</p>
                               <p><b>Phim &nbsp;</b>{item['TenFilm']}</p>
-                              <p className="  "><b>Ngày chiếu: &nbsp;</b>{item['ThoiGianChieu'].split('T')[0]}</p>
-                              <p className="  "><b>Thời gian chiếu: &nbsp;</b>{thoigianchieu.substring(0, thoigianchieu.length - 5)}</p>
-                              <p className="  "><b>Phòng chiếu: &nbsp;</b>{item['TenPhong']}</p>
-                              <p className="  "><b>Chỗ ngồi: &nbsp;</b>{tenghe.substring(0, tenghe.length - 2)}</p>
-                              <p className="  "><b>Thời gian đặt vé: &nbsp;</b>{thoigiandat}</p>
-                              <p className="  "><b>Thời gian xác nhận: </b>{thoigianxacnhan}</p>
+                              <p><b>Ngày chiếu: &nbsp;</b>{item['ThoiGianChieu'].split('T')[0]}</p>
+                              <p><b>Thời gian chiếu: &nbsp;</b>{thoigianchieu.substring(0, thoigianchieu.length - 5)}</p>
+                              <p><b>Phòng chiếu: &nbsp;</b>{item['TenPhong']}</p>
+                              <p><b>Chỗ ngồi: &nbsp;</b>{tenghe.substring(0, tenghe.length - 2)}</p>
+                              <p><b>Thời gian đặt vé: &nbsp;</b>{thoigiandat}</p>
+                              <p><b>Thời gian xác nhận: </b>{thoigianxacnhan}</p>
                             </div>
                             <div className="ticket-price-total">
                               <p>
                                 <htv-summary-ticket>
-                                  <span className="  ">Giá vé:  {Number(item['GiaVe']).toLocaleString('en')} đồng</span>
+                                  <span>Giá vé:  {Number(item['GiaVe']).toLocaleString('en')} đồng</span>
                                 </htv-summary-ticket></p>
                             </div>
                           </div>
@@ -152,9 +152,32 @@ class TicketHistory extends React.Component {
   render() {
     const hStyle = { color: 'blue' };
     return (
-      <div className="container">
-        <center><h2 className="font-header-ticket-history"><br />LỊCH SỬ ĐẶT VÉ</h2></center>
-        {this.renderVe()}
+      // <div className="container">
+      //   <center><h2 className="font-header-ticket-history"><br />LỊCH SỬ ĐẶT VÉ</h2></center>
+      //   {this.renderVe()}
+      // </div>
+
+      <div className="block-wrapper">
+        <div className="container">
+          <div className="row">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <a href="/">Trang chủ</a>
+              </li>
+              <li className="breadcrumb-item">
+                <a href="/updateinfouser">Thành viên</a>
+              </li>
+              <li className="breadcrumb-item active">Lịch sử đặt vé</li>
+            </ol>
+          </div>
+
+          <div className="row">
+            <div className="container">
+              <center><h2 className="font-header-ticket-history">LỊCH SỬ ĐẶT VÉ</h2></center>
+              {this.renderVe()}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

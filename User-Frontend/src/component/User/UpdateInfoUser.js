@@ -97,7 +97,7 @@ class UpdateInfoUser extends React.Component {
             <div className="row">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <a href="#">Trang chủ</a>
+                  <a href="/">Trang chủ</a>
                 </li>
                 <li className="breadcrumb-item">
                   <a href="#">Thành viên</a>
