@@ -104,7 +104,7 @@ class Detail extends React.Component {
                         {/* Video Trailer Film */}
                         <div className="rating-bt">
                           <div className="btn-xemtrailer-detailfilm">
-                            <TrailerFilm />
+                            <TrailerFilm films={item}/>
                           </div>
                         </div>
 

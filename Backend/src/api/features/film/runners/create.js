@@ -20,7 +20,7 @@ const handler = ({ model }, _) => (req, res) => {
     let TongChi = '0'
   
     const {TenFilm, DaoDien, TheLoai, TenNuocSX,
-           TomTat, NgayChieu, NgayKetThuc} = req.body
+           TomTat, NgayChieu, NgayKetThuc, Trailer} = req.body
            
     //const AnhBia = "htv/website/images/" + req.file.path.split('\\')[6]
     //const AnhBia = "http://192.168.1.8:8000/images/" + req.file.filename;
@@ -51,7 +51,9 @@ const handler = ({ model }, _) => (req, res) => {
     res.send({ error: 'AnhBia is required.' })
     } else if (NgayChieu >= NgayKetThuc) {
     res.send({ error: 'NgayChieu must < NgayKetThuc.' })
-    } else {
+    } else if (!Trailer) {
+      res.send({ error: 'Trailer link is required.' })
+      } else {
       const data = {
         TenFilm, DaoDien, TheLoai, TenNuocSX, TomTat, NgayChieu,
         NgayKetThuc, AnhBia, TongThu, TongChi
@@ -75,7 +77,8 @@ const handler = ({ model }, _) => (req, res) => {
                 TongChi: TongChi,
                 NgayChieu: NgayChieu,
                 NgayKetThuc: NgayKetThuc,
-                AnhBia: AnhBia
+                AnhBia: AnhBia,
+                Trailer: Trailer
                }
               })
 
