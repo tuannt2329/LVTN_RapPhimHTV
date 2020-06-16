@@ -14,9 +14,12 @@ import AllUsers from './components/ManageUser/AllUsers/AllUsers';
 import AllFilms from './components/ManageFilm/AllFilms/AllFilms';
 import AddFilm from './components/ManageFilm/AddFilm/AddFilm';
 import UpdateFilm from './components/ManageFilm/UpdateFilm/UpdateFilm';
+
 import AllFilmsShedule from './components/ManageSchedule/AllFilms/AllFilms';
+import AllSchedule from './components/ManageSchedule/AllSchedule/AllSchedule';
 import DetailShedule from './components/ManageSchedule/DetailShedule/DetailShedule';
 import AddShedule from './components/ManageSchedule/AddShedule/AddShedule';
+
 import AllTickets from './components/ManageTicket/AllTickets/AllTicket'
 import DetailTicket from './components/ManageTicket/DetailTicket/DetailTicket'
 import TicketHistory from './components/ManageTicket/LichSuVe/LichSuVe'
@@ -44,9 +47,11 @@ class RouterWeb extends React.Component {
                 <Route exact path='/allfilms' component={AllFilms}/>
                 <Route exact path='/addfilm' component={AddFilm}/>
                 <Route exact path='/updatefilm' component={UpdateFilm}/>
+
                 <Route exact path='/allfilmsshedule' component={AllFilmsShedule}/>
                 <Route exact path='/detailshedule' component={DetailShedule}/>
                 <Route exact path='/addshedule' component={AddShedule}/>
+                <Route exact path='/allschedule' component={AllSchedule}/>
 
                 <Route exact path='/alltickets' component={AllTickets}/>
                 <Route exact path='/ticketshistory' component={TicketHistory}/>
