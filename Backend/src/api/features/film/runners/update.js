@@ -5,7 +5,7 @@ const handler = ({ model }, _) => async (req, res) => {
   const {TenFilm, DaoDien, TheLoai, TenNuocSX,
           TomTat, NgayChieu, NgayKetThuc} = req.body
   if(!req.body.TheoDoi) {
-    if(req.body.LuotLike < 0) {
+    if(req.body.LuotLike < 0 || !req.body.LuotLike) {
       if(req.body.TongThu) {
         TongThu = req.body.TongThu
       }
