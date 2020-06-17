@@ -6,10 +6,6 @@ import {
   Route,
   Link
 } from "react-router-dom";
-var list = [];
-var stt = [];
-var strghe = "";
-var tongtien = 0
 class successPayment extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +35,7 @@ class successPayment extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.ve) {
+    if (this.state.ve.payed === false) {
       axios.post('http://localhost:8000/ticket/createticket', this.state.ve)
         .then((res) => {
           if (!res.data.error) {
@@ -71,7 +67,7 @@ class successPayment extends React.Component {
   }
 
   render() {
-    if (!this.state.ve) {
+    if (this.state.ve) {
       let timechieu = this.state.ve.ThoiGianChieu.substring(11, this.state.ve.ThoiGianChieu.length - 5) + " "
       timechieu += this.state.ve.ThoiGianChieu.substring(8, this.state.ve.ThoiGianChieu.length - 14) + '/'
       timechieu += this.state.ve.ThoiGianChieu.substring(5, this.state.ve.ThoiGianChieu.length - 17) + '/'
@@ -91,7 +87,15 @@ class successPayment extends React.Component {
           </div>
           <div className="row">
             <div className="container">
-              <center><h2 className="font-header-ticket-history header-successPayment">Thanh toán thành công</h2></center>
+              <center>
+                {
+                  this.state.ve.payed === true ?
+                    <h2 className="font-header-ticket-history header-successPayment">Thanh toán thành công</h2>
+                  :
+                    <h2 className="font-header-ticket-history header-successPayment">Đặt vé thành công</h2>
+                }
+                
+              </center>
             </div>
           </div>
           <div className="row">
@@ -127,7 +131,12 @@ class successPayment extends React.Component {
                         <div className="ticket-price-total">
                           <p>
                             <htv-summary-ticket>
-                              <span>Đã mua thành công</span>
+                              {
+                                this.state.ve.payed === true ?
+                                  <center><span>Đã thanh toán</span></center> 
+                                :
+                                  <center><span>Chưa thanh toán</span></center> 
+                              }
                             </htv-summary-ticket></p>
                         </div>
                         <div className="ticket-button">

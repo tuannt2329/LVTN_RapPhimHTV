@@ -1,3 +1,10 @@
+const mongoose = require('mongoose')
+const TicketSchema = require('../../ticket/ticket-schema')
+const ticketsSC = mongoose.model('ticket', TicketSchema)
+const FilmSchema = require('../../film/film-schema')
+const filmsSC = mongoose.model('film', FilmSchema)
+const SendEmail = require('../../user/send-email')
+
 const paypal = require('paypal-rest-sdk')
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
@@ -18,11 +25,52 @@ const handler = ({ model }, _) => async (req, res) => {
     }]
   };
 
-  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+  paypal.payment.execute(paymentId, execute_payment_json, async (error, payment) => {
     if (error) {
        res.send({cancle : error});
     } else {
-        res.redirect("http://localhost:3000/successpayment");
+      try {
+        let param = {
+          TenFilm : vexemphim.TenFilm,
+          TenPhong: vexemphim.TenPhong,
+          TenGhe: vexemphim.TenGhe,
+          ThoiGianChieu: vexemphim.ThoiGianChieu
+        }
+        const ticket = await ticketsSC.find(param)
+        if (ticket.length != 0) {
+          res.send({ error: 'ticket exist!' })
+        } else {
+          const result = await ticketsSC.create(vexemphim)
+          if(result) {
+            if(vexemphim.payed === true) {
+              var content = 'You have successfully bought tickets of HTV cinema'
+              var subject = 'Successful ticket purchase'
+            } else {
+              content = 'You have successfully booked tickets of HTV cinema'
+              subject = 'Successful ticket booked'
+            }
+            const tfilm = {TenFilm: vexemphim.TenFilm }
+            const films = await filmsSC.find(tfilm)
+            if (films) {
+              const result = await filmsSC.updateMany(
+                { TenFilm: vexemphim.TenFilm },
+                { $set: { 
+                    TongThu: vexemphim.GiaVe + films[0].TongThu
+                  }
+                })
+
+              const a = await sendEmail(vexemphim.email, subject, content)
+              // res.send({ content: subject })
+              res.redirect("http://localhost:3000/successpayment");
+            } else {
+              return res.send({ error: 'film don\'t exist!' })
+            }
+          }
+        }
+      } catch (error) {
+        res.send({ error })
+      }
+
     }
   });
 

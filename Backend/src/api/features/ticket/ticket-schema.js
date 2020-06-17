@@ -40,5 +40,9 @@ module.exports = new Schema({
   GiaVe: {
     type: Number,
     default: 0
+  },
+  payed: {
+      type: Boolean,
+      default:false
   }
 })

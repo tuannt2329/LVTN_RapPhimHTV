@@ -1,7 +1,7 @@
 const sendEmail = require('../../user/send-email')
 
 const handler = ({ model }, _) => async (req, res) => {
-  const {email, TenFilm, TenPhong, TenGhe, ThoiGianChieu, GiaVe } = req.body
+  const {email, TenFilm, TenPhong, TenGhe, ThoiGianChieu, GiaVe, payed } = req.body
   if (!email) {
     res.send({ error: 'email is required.' })
   } else if (!TenFilm) {
@@ -30,9 +30,13 @@ const handler = ({ model }, _) => async (req, res) => {
         const result = await model.create(req.body)
 
         if(result) {
-          const content = 'You have successfully bought tickets of HTV cinema'
-          const subject = 'Successful ticket purchase'
-          
+          if(payed === true) {
+            var content = 'You have successfully bought tickets of HTV cinema'
+            var subject = 'Successful ticket purchase'
+          } else {
+            content = 'You have successfully booked tickets of HTV cinema'
+            subject = 'Successful ticket booked'
+          }
           const a = await sendEmail(email, subject, content)
           res.send({ content: subject })
       }

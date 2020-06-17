@@ -26,11 +26,13 @@ const handler = ({ model }, _) => async (req, res) => {
       } else {
         const films = await filmsSC.find({TenFilm})
         if(films) {
-          for(let z = 1; z < films[0].TheoDoi.length; z++) {
-            const content = 'phim ' + TenFilm + ' bạn đang theo dõi đã có lịch chiếu mới!\n' +
-                    "mời bạn bấm vào link bên dưới để biết thêm chi tiết\n" + 'httvcinemas.live'
-            const subject = 'phim bạn đang theo dõi đã có lịch chiếu mới'
-            await SendEmail(films[0].TheoDoi[z], subject, content)
+          for(let z = 0; z < films[0].TheoDoi.length; z++) {
+            if(films[0].TheoDoi[z] !== "") {
+              const content = 'phim ' + TenFilm + ' bạn đang theo dõi đã có lịch chiếu mới!\n' +
+                      "mời bạn bấm vào link bên dưới để biết thêm chi tiết\n" + 'httvcinemas.live'
+              const subject = 'phim bạn đang theo dõi đã có lịch chiếu mới'
+              await SendEmail(films[0].TheoDoi[z], subject, content)
+            }
           }
         }
         const result = await model.insertMany(req.body)

@@ -119,6 +119,12 @@ class AllTickets extends Component {
                                                             <a href='/detailticket' onClick={this.handleOnclickFilm.bind(this, item._id)}>
                                                                 <center><dt>{item._id}</dt></center>
                                                             </a>
+                                                            {
+                                                                item.payed === true ? 
+                                                                    <center><p>Đã thanh toán</p></center> 
+                                                                :
+                                                                    <center><p>Chưa thanh toán</p></center>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,6 +140,12 @@ class AllTickets extends Component {
                                                         <div className="carousel-item carousel-item-next carousel-item-left">
                                                             <a href='/detailticket'  onClick={this.handleOnclickFilm.bind(this, item._id)}>
                                                                 <center><dt>{item._id}</dt></center>
+                                                                {
+                                                                    item.payed === true ? 
+                                                                        <center><p>Đã thanh toán</p></center> 
+                                                                    :
+                                                                        <center><p>Chưa thanh toán</p></center>
+                                                                }
                                                             </a>
                                                         </div>
                                                     </div>
