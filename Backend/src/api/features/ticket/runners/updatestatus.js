@@ -41,7 +41,8 @@ const handler = ({ model }, _) => async (req, res) => {
           {$set: {
             status: true,
             ThoiGianXacNhan: ThoiGianXacNhan,
-            NguoiXacNhan: NguoiXacNhan
+            NguoiXacNhan: NguoiXacNhan,
+            payed: true
             }
           })
 

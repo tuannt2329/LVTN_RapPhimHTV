@@ -6,7 +6,7 @@ class TrailerFilm extends React.Component {
     super(props);
 
     this.state = {
-      inputValue: "https://www.youtube.com/embed/WhWc3b3KhnY",
+      inputValue: this.props.films.Trailer,
       url: ""
     }
   }

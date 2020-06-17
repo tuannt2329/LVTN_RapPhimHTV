@@ -10,6 +10,7 @@ class TabMovie extends React.Component {
   constructor(props) {
     super(props)
     console.log('from hommmmeeee', props.films)
+    // console.log('from ', this.props.match.params.id)
     this.setStateFilms = this.setStateFilms.bind(this)
     this.state = {
       films: [],

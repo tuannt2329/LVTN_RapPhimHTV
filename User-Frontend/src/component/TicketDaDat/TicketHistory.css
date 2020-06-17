@@ -10,7 +10,7 @@
 
 .ticket-wrap {
     /* margin-top: 100px;   */
-    padding: 0 3% 0 3%;  /*padding 5th6*/
+    /* padding: 0 3% 0 3%; */  /*padding 5th6*/  
     width: 100%;
     height: 100%;
     /* position: fixed;   //ảnh hưởng footer */
@@ -87,7 +87,8 @@
 
 .font-header-ticket-history {
     font: inherit;
-    padding: 20px 0px 20px 0px; 
+    /* padding: 20px 0px 20px 0px;  */
+    padding: 0 0px 20px 0px; 
     font-weight: 500;
     position: relative;
     text-decoration: none;
@@ -100,4 +101,13 @@
     width: 100%;
     padding: 0 10px 0 ;
     margin-bottom: 15px;
+}
+
+.header-successPayment{
+    margin-top: -1%;
+}
+
+.chuacove-Payment{
+    margin-bottom: 32%;
+    padding-bottom: 10%;
 }

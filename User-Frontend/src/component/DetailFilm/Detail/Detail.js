@@ -1,28 +1,98 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import TrailerFilm from '../TrailerFilm/TrailerFilm';
+import axios from "axios";
 class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.setStateFilms = this.setStateFilms.bind(this)
     this.state = {
       films: [],
-      counter: 0
+      counter: 0,
+      following: [],
+      theodoi: "Theo dõi",
+      like: "Like",
+      countLike: 0
     }
   }
-
+  
   setStateFilms = (data) => {
-    console.log(data)
-    this.setState({ films: data, counter: 1 })
+    this.setState({ films: data, counter: 1, countLike: data[0].LuotLike })
   }
 
   handleOnclickFilm = (tenphim) => {
     sessionStorage.setItem("tenphim", tenphim);
   }
 
+  handleOnclickFollow = async (tenphim) => {
+    if (localStorage.getItem('user')) {
+      if(this.state.theodoi === "Theo dõi") {
+        let following = this.state.films[0].TheoDoi
+        await following.push(JSON.parse(localStorage.getItem('user')).email)
+        this.setState({following: following, theodoi: "Bỏ theo dõi"})
+      } else {
+        let following = this.state.films[0].TheoDoi
+        for( var i = 0; i < following.length; i++) { 
+          if ( following[i] === JSON.parse(localStorage.getItem('user')).email) {
+            following.splice(i, 1)
+            await this.setState({following: following, theodoi: "Theo dõi"})
+
+          }
+        }
+      }
+      const following = {
+        TenFilm: this.state.films[0].TenFilm,
+        TheoDoi: this.state.following
+      }
+      axios.put('http://localhost:8000/film/updatefilm', following)
+        .then((res) => {
+          if (!res.data.error) {
+            console.log(res.data)
+            
+          } else {
+            return window.alert(res.data.error)
+          }
+        });
+    } else {
+      return window.alert("bạn cần đăng nhập trước để theo dõi phim")
+    }
+  }
+
+  handleOnclickLike = async (tenphim) => {
+    if(this.state.like === "Like") {
+      let countLike = this.state.countLike
+      countLike++
+      await this.setState({countLike: countLike, like: "Dislike"})
+    } else {
+      let countLike = this.state.countLike
+      countLike--
+      await this.setState({countLike: countLike, like: "Like"})
+    }
+    const like = {
+      TenFilm: this.state.films[0].TenFilm,
+      LuotLike: this.state.countLike
+    }
+    axios.put('http://localhost:8000/film/updatefilm', like)
+      .then((res) => {
+        if (!res.data.error) {
+          console.log(res.data)
+        } else {
+          return window.alert(res.data.error)
+        }
+      });
+    
+  }
+
   render() {
     if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
+      if (localStorage.getItem('user')) {
+        for ( var i = 0; i < this.props.films[0].TheoDoi.length; i++) { 
+          if ( this.props.films[0].TheoDoi[i] === JSON.parse(localStorage.getItem('user')).email) {
+            this.setState({theodoi: "Bỏ theo dõi"})
+          }
+        }
+      }
     }
     return (
 
@@ -61,7 +131,7 @@ class Detail extends React.Component {
                         {/* Video Trailer Film */}
                         <div className="rating-bt">
                           <div className="btn-xemtrailer-detailfilm">
-                            <TrailerFilm />
+                            <TrailerFilm films={item}/>
                           </div>
                         </div>
 
@@ -129,16 +199,9 @@ class Detail extends React.Component {
                     <span className="like">
                       <div className="fb-like fb_iframe_widget">
                         <span>
-                          <iframe
-                            src="https://www.facebook.com/v2.9/plugins/like.php?action=like&app_id=1427253957539434&channel=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D46%23cb%3Dfab96241442294%26domain%3Dwww.galaxycine.vn%26origin%3Dhttps%253A%252F%252Fwww.galaxycine.vn%252Ff1666ba3d43588%26relation%3Dparent.parent&container_width=0&href=https%3A%2F%2Fwww.galaxycine.vn%2Fdat-ve%2Fvo-dien-sat-nhan&layout=button_count&locale=vi_VN&sdk=joey&share=true&show_faces=false&size=small"
-                            style={{
-                              border: "none",
-                              visibility: "visible",
-                              width: "138px",
-                              height: "20px",
-                            }}
-                            className
-                          />
+                          <button onClick={this.handleOnclickLike.bind(this, item.TenFilm)}>{this.state.like}</button>
+                          &nbsp;
+                          <label>{this.state.countLike}</label>
                         </span>
                       </div>
                     </span>
@@ -171,7 +234,7 @@ class Detail extends React.Component {
                     </div>
                     <div className="detail-info-row">
                       <label>Khởi chiếu:&nbsp;</label>
-                      <div className="detail-info-right">{item.NgayChieu.substring(0, item.NgayChieu.length - 14)} -> {item.NgayKetThuc.substring(0, item.NgayKetThuc.length - 14)}</div>
+                      <div className="detail-info-right">{item.NgayChieu.substring(0, item.NgayChieu.length - 14)} - {item.NgayKetThuc.substring(0, item.NgayKetThuc.length - 14)}</div>
                     </div>
                   </div>
                 </div>
@@ -185,6 +248,12 @@ class Detail extends React.Component {
                         Đặt vé
                       </button>
                     </Link>
+                    &nbsp; &nbsp; &nbsp;
+                    <button id="rating-click"
+                        type="submit"
+                        className="btn btn-primary btn-sm" onClick={this.handleOnclickFollow.bind(this, item.TenFilm)}>
+                        {this.state.theodoi}
+                      </button>
                   </div>
                 </div>
               </div>

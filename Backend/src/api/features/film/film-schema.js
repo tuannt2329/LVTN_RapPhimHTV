@@ -100,5 +100,13 @@ module.exports = new Schema({
       message: props => `Input: ${props.value} is not valid!`
     },
     required: [true, 'The loai is required']
+  },
+  Trailer: {
+    type: String,
+    default: ""
+  },
+  TheoDoi: {
+    type: [String],
+    default: []
   }
 })

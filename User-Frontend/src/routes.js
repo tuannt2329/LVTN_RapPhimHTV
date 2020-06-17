@@ -10,6 +10,7 @@ import TicketHistory from './component/TicketHistory/TicketHistory';
 import TicketDaDat from './component/TicketDaDat/TicketDaDat'
 import TabMovie from './component/Home/TabMovie/TabMovie';
 import successPayment from './component/successPayment/successPayment'
+import Film from './component/Film/Film';
 class RouterWeb extends React.Component {
     render(){
         return(
@@ -26,6 +27,7 @@ class RouterWeb extends React.Component {
                 <Route exact path='/tabmovie' component={TabMovie}/>
 
                 <Route exact path='/successpayment' component={successPayment}/>
+                <Route exact path='/film/:id' component={Film}/>
             </Switch>
         )
     }

@@ -26,6 +26,7 @@ class AddFilm extends Component {
         this.onChangeNgayKetThuc = this.onChangeNgayKetThuc.bind(this);
         this.onChangeTongChi = this.onChangeTongChi.bind(this);
         this.onChangeAnhBia = this.onChangeAnhBia.bind(this);
+        this.onChangeTrailer = this.onChangeTrailer.bind(this);
     }
 
     onChangeTenFilm = (e) => {
@@ -100,6 +101,14 @@ class AddFilm extends Component {
         });
     }
 
+    onChangeTrailer = (e) => {
+        var film = this.state.Film;
+        film["Trailer"] = e.target.value;
+        this.setState({
+            Film: film
+        });
+    }
+
     onSubmit = (e) => {
         e.preventDefault();
         console.log(document);
@@ -113,6 +122,7 @@ class AddFilm extends Component {
         fd.append('NgayChieu', this.state.Film.NgayChieu);
         fd.append('NgayKetThuc', this.state.Film.NgayKetThuc);
         fd.append('TongChi', this.state.Film.TongChi);
+        fd.append('Trailer', this.state.Film.Trailer);
         const film = this.state.Film;
         if(film.NgayChieu <= film.NgayKetThuc) {
             axios.post('http://localhost:8000/film/createfilm', fd)
@@ -130,7 +140,6 @@ class AddFilm extends Component {
     }
 
     render() {
-        console.log(this.state.Film);
         return (
             <div>
                 <Menu />
@@ -199,6 +208,13 @@ class AddFilm extends Component {
                                                             <label htmlFor="inputSkills" className="col-sm-2 col-form-label">Tóm tắt</label>
                                                             <div className="col-sm-10">
                                                                 <textarea className="form-control" id="inputExperience" placeholder="Summary" defaultValue={""} onChange={this.onChangeTomTat} />
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="form-group row">
+                                                            <label htmlFor="inputSkills" className="col-sm-2 col-form-label">Link Trailer</label>
+                                                            <div className="col-sm-10">
+                                                                <input type="text" className="form-control" id="inputName2" placeholder="Link trailer" onChange={this.onChangeTrailer}/>
                                                             </div>
                                                         </div>
 

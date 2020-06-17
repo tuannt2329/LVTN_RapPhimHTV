@@ -811,6 +811,7 @@ i {
     cursor: pointer; }
 
 ul.search-list {
+  border-radius: 5px 5px 0 0;    /**/
   width: 287px;
   padding: 0;
   position: absolute;
@@ -826,7 +827,7 @@ ul.search-list {
     border-left: 3px solid #286ffc;
     border-bottom: 1px dotted #ced0da;
     cursor: pointer;
-    color: #43464b;
+    color: #43464b; 
     position: relative;
     z-index: 2;
     font-size: 14px;
