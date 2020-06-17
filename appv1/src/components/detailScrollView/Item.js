@@ -8,8 +8,13 @@ import {
   Image,
   Dimensions,
   StatusBar,
+  Modal,
+  Alert,
   KeyboardAvoidingView,
 } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {WebView} from 'react-native-webview';
+
 import * as Animatable from 'react-native-animatable';
 import {Header} from '@react-navigation/stack';
 import TriggeringView from './TriggeringView';
@@ -17,6 +22,7 @@ import HeaderImageScrollView from './ImageHeaderScrollView';
 import * as Constant from '../../constants';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../../constants/index.style';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
@@ -112,14 +118,28 @@ const styles = StyleSheet.create({
   sectionLarge: {
     height: 600,
   },
+  btnCloseModal: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 40,
+  },
 });
 
 class Item extends Component {
   constructor() {
     super();
-    this.state = {showNavTitle: false};
+    this.state = {showNavTitle: false, modal: false};
   }
-
+  onCloseModal = () => {
+    this.setState({
+      modal: false,
+    });
+  };
+  openModal = () => {
+    this.setState({modal: true});
+  };
   render() {
     const {film} = this.props;
     const date = film.NgayChieu.split('T')[0]
@@ -130,6 +150,111 @@ class Item extends Component {
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle="light-content" />
+        <Modal
+          animationType={'slide'}
+          transparent={true}
+          visible={this.state.modal}
+          backdropOpacity={0.9}
+          animationIn="zoomInDown"
+          animationOut="zoomOutUp"
+          animationInTiming={300}
+          animationOutTiming={300}
+          backdropTransitionInTiming={300}
+          backdropTransitionOutTiming={300}
+          //
+          onRequestClose={() => {
+            Alert.alert(
+              'Hủy Quá Trình Đặt Vé.',
+              'Trở về ?',
+              [
+                // {
+                //   text: 'Ok',
+                //   onPress: () => setModal(false),
+                // },
+                {
+                  text: 'Không',
+                  style: 'cancel',
+                },
+              ],
+              {cancelable: false},
+            );
+          }}
+          style={{
+            margin: 0,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {/*
+                  View cho phần modal bị transparent 50% phía trên
+              */}
+          <View style={{flex: 1}} />
+          {/*
+                  view cho phần modal không transparent
+                    50 % phía dưới
+              */}
+          <View
+            style={{
+              flex: 5,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              elevation: 10,
+              paddingBottom: 0,
+            }}>
+            {/*
+                    View Button X đóng modal
+                  */}
+            <View
+              style={{
+                flex: 0.5,
+                alignContent: 'center',
+                width: '15%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                borderColor: 'red',
+                // borderTopWidth: 6,
+                borderBottomWidth: 1,
+
+                marginBottom: 0,
+
+                elevation: 20,
+                borderRadius: 25,
+                overflow: 'hidden',
+              }}>
+              <AntDesign
+                // name="closecircle"
+                name="circledown"
+                size={40}
+                color="red"
+                style={styles.btnCloseModal}
+                onPress={() => {
+                  this.onCloseModal();
+                }}
+              />
+            </View>
+            <View
+              style={{
+                flex: 5,
+                alignContent: 'center',
+                width: '100%',
+                justifyContent: 'center',
+                backgroundColor: 'white',
+                alignItems: 'stretch',
+                borderWidth: 2,
+                borderTopEndRadius: 20,
+                borderTopStartRadius: 20,
+              }}>
+              <WebView
+                source={{uri: film.Trailer}}
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                startInLoadingState={true}
+                style={{flex: 1}}
+              />
+            </View>
+          </View>
+        </Modal>
         <HeaderImageScrollView
           maxHeight={MAX_HEIGHT}
           minHeight={MIN_HEIGHT}
@@ -174,6 +299,30 @@ class Item extends Component {
               <Text style={styles.name}>{film.TenFilm}</Text>
               {'\n'}Khởi chiếu: {date}
             </Text>
+            <View style={styles.keywords}>
+              <TouchableOpacity
+                style={styles.title}
+                onPress={() => this.openModal()}>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  <Text style={styles.keyword}>Trailer</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.title}>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  <Text style={styles.keyword}>Theo dõi</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </TriggeringView>
           <View style={styles.section}>
             {/*<LinearGradient*/}

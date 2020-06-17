@@ -454,7 +454,7 @@ function DetailFilm({route, navigation}) {
                     name="circledown"
                     size={40}
                     color="red"
-                    style={styless.btnCloseModal}
+                    style={styles.btnCloseModal}
                     onPress={() => {
                       setModal(false);
                     }}

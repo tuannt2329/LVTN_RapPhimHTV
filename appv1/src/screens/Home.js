@@ -34,7 +34,7 @@ function Home({navigation}) {
         });
     };
     getList();
-  }, [count]);
+  }, []);
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*<CustomHeader*/}
@@ -82,7 +82,7 @@ function Home({navigation}) {
           <Button
             gradient
             onPress={() =>
-              navigation.navigate('ListFilmSort', {
+              navigation.navigate('ListFilmSearchName', {
                 data: film,
               })
             }>

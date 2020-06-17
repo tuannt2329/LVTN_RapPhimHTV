@@ -8,5 +8,5 @@ export const FORGOT = 'FORGOT';
 export const RESET_REGISTER = 'RESET_REGISTER';
 // export const API = 'http://192.168.1.14:8000/';
 export const API = 'http://192.168.1.41:8000/';
-// export const API = 'http://192.168.43.251:8000/';
+// export const API = 'http://192.168.0.103:8000/';
 // export const API = 'http://192.56.1.10:8000/';

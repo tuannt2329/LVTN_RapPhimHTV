@@ -71,6 +71,7 @@ import ListFilmSort from '../screens/ListFilmSort';
 import ListFilmSearch from '../screens/ListFilmSearch';
 import DemoAnt from '../screens/DemoAnt';
 import Ticket from '../screens/Ticket';
+import ListFilmSearchName from '../screens/ListFilmSearchName';
 
 const showHeader = () => ({
   headerShown: false,
@@ -279,6 +280,15 @@ const Screens = ({navigation, style}) => {
             headerStyleInterpolator: forFadeHeader,
           }}>
           {props => <DemoAnt {...props} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="ListFilmSearchName"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}
+          component={ListFilmSearchName}>
+          {/* {props => <ListFilmSearchName {...props} />} */}
         </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
