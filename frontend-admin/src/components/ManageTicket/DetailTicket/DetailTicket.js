@@ -17,7 +17,7 @@ class DetailTicket extends Component {
         const email = {
           email: res.data.ticket[0]["email"]
         }
-        axios.post("http://localhost:8000/user/find", email)
+        axios.post("http://conallserver.ddns.net:8000/user/find", email)
         .then((res1) => {
           const user = res1.data.user
           this.setState({user});
