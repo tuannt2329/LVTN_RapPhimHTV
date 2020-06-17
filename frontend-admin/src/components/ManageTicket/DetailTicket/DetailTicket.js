@@ -14,6 +14,15 @@ class DetailTicket extends Component {
     axios.post("http://localhost:8000/ticket/find", id)
       .then((res) => {
         this.setStateFilms(res.data.ticket);
+        const email = {
+          email: res.data.ticket[0]["email"]
+        }
+        axios.post("http://localhost:8000/user/find", email)
+        .then((res1) => {
+          const user = res1.data.user
+          this.setState({user});
+        
+          });
       });
   }
 
@@ -22,7 +31,7 @@ class DetailTicket extends Component {
   }
 
   onSubmit = (e) => {
-    if (window.confirm("Do you really want to submit?")) {
+    if (window.confirm("Do you really want to get Ticket?")) {
       e.preventDefault();
 
       var thoigianthuc = new Date();
@@ -60,7 +69,7 @@ class DetailTicket extends Component {
       axios.put('http://localhost:8000/ticket/updateStatus', ticket)
       .then((res) => {
         if (!res.data.error) {
-          window.alert("submit successful!");
+          window.alert("get Ticket successful!");
           return window.location = "/alltickets";
         } else {
           return window.alert(res.data.error)
@@ -119,12 +128,26 @@ class DetailTicket extends Component {
                           <div className="tab-content">
                             <div className="active tab-pane" id="settings">
                               <form className="form-horizontal" onSubmit={this.onSubmit.bind(this)}>
-                              <div className="form-group row">
+                                <div className="form-group row">
                                   <label htmlFor="inputFilmName" className="col-sm-2 col-form-label">email</label>
                                   <div className="col-sm-10">
                                     <input type="text" className="form-control" id="inputFilmName" placeholder="email" defaultValue={this.state.ve[0].email} disabled/>
                                   </div>
                                 </div>
+                                {this.state.user ? 
+                                  <div className="form-group row">
+                                    <label htmlFor="inputFilmName" className="col-sm-2 col-form-label">Họ tên:</label>
+                                    <div className="col-sm-10">
+                                      <input type="text" className="form-control" id="inputFilmName" placeholder="fullname" defaultValue={this.state.user[0].lastName + " " + this.state.user[0].firstName} disabled/>
+                                    </div>
+                                  </div>
+                                :
+                                  <div className="form-group row">
+                                    
+                                  </div>
+                                }
+                                
+
                                 <div className="form-group row">
                                   <label htmlFor="inputFilmName" className="col-sm-2 col-form-label">id phim</label>
                                   <div className="col-sm-10">
@@ -173,11 +196,20 @@ class DetailTicket extends Component {
                                     <input type="text" className="form-control" id="inputFilmName" placeholder="Giá vé" defaultValue={Number(this.state.ve[0].GiaVe).toLocaleString('en') + ' đồng'} disabled/>
                                   </div>
                                 </div>
-
+                                <center>
+                                <div className="form-group row">
+                                  {
+                                    this.state.ve[0].payed === true ?
+                                      <label htmlFor="inputFilmName" className="col-sm-12">Đã thanh toán</label>
+                                    :
+                                    <label htmlFor="inputFilmName" className="col-sm-12">Chưa thanh toán</label>
+                                  }
+                                </div>
+                                </center>
                                 <div className="row">
                                   <div className="col-12">
                                     <a href="/alltickets" className="btn btn-secondary">Cancel</a>
-                                    <button type="submit" className="btn btn-success float-right">Submit</button>
+                                    <button type="submit" className="btn btn-success float-right">Get ticket</button>
                                   </div>
                                 </div>
                               </form>

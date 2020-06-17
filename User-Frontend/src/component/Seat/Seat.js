@@ -29,7 +29,8 @@ class Seat extends React.Component {
       TenPhong: null,
       Ghe: [],
       choosing: [],
-      TongTienVe: 0
+      TongTienVe: 0,
+      paymentmethods: "payonline"
     }
     this.getGhebyPhong = this.getGhebyPhong.bind(this);
     this.updateStatusGhe = this.updateStatusGhe.bind(this)
@@ -329,33 +330,52 @@ class Seat extends React.Component {
           thoigianxacthuc += "0";
         }
         thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
-        var ve = {
-          email: JSON.parse(localStorage.getItem('user'))['email'],
-          TenFilm: this.state.TenFilm,
-          TenPhong: this.state.TenPhong,
-          TenGhe: this.state.choosing,
-          ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
-          ThoiGianDat: thoigianxacthuc,
-          GiaVe: this.state.TongTienVe
-        }
-        sessionStorage.setItem('ve', JSON.stringify(ve))
-        axios.post('http://localhost:8000/paypal/pay', ve)
-        .then((res) => {
-          if(!res.data.error) {
-            return window.location = res.data.result
-          } else {
-            return window.alert(res.data.error)
+
+        if(this.state.paymentmethods === "payonline") {
+          let ve = {
+            email: JSON.parse(localStorage.getItem('user'))['email'],
+            TenFilm: this.state.TenFilm,
+            TenPhong: this.state.TenPhong,
+            TenGhe: this.state.choosing,
+            ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+            ThoiGianDat: thoigianxacthuc,
+            GiaVe: this.state.TongTienVe,
+            payed: true
           }
-        })
-       
+          sessionStorage.setItem('ve', JSON.stringify(ve))
+          axios.post('http://localhost:8000/paypal/pay', ve)
+          .then((res) => {
+            if(!res.data.error) {
+              return window.location = res.data.result
+            } else {
+              return window.alert(res.data.error)
+            }
+          })
+        } else {
+          let ve = {
+            email: JSON.parse(localStorage.getItem('user'))['email'],
+            TenFilm: this.state.TenFilm,
+            TenPhong: this.state.TenPhong,
+            TenGhe: this.state.choosing,
+            ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+            ThoiGianDat: thoigianxacthuc,
+            GiaVe: this.state.TongTienVe,
+            payed: false
+          }
+          sessionStorage.setItem('ve', JSON.stringify(ve))
+          return window.location = '/successpayment';
+        }
       } else {
         return window.location = '/login';
       } 
     }
   }
 
+  onChangePay = (e) => {
+    this.setState({paymentmethods: e.target.value})
+  }
+
   render() {
-    console.log(this.state)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -477,6 +497,12 @@ class Seat extends React.Component {
                               </htv-summary-ticket></p>
                           </div>
                           <div className="ticket-button">
+                            <select id="cars" onChange={this.onChangePay}>
+                              <option value="payonline">Thanh toán trực tuyến</option>
+                              <option value="payoffline">Thanh toán tại quầy</option>
+                            </select>
+                            <br/>
+                            <br/>
                             <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
                             <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
                               <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
