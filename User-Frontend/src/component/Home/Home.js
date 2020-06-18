@@ -18,7 +18,7 @@ class Home extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    axios.post("http://conallserver.ddns.net:8000/film/find")
+    axios.post("http://htvcinemas.live:8000/film/find")
       .then(async(res) => {
         await this.setStateFilms(res.data);
       })

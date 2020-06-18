@@ -30,7 +30,7 @@ class ForgotPassword extends React.Component {
         verificationCode: this.state.maxacnhan
       }
     
-      axios.put('http://conallserver.ddns.net:8000/user/updateInfo', account)
+      axios.put('http://htvcinemas.live:8000/user/updateInfo', account)
       .then((res) => {
         if (!res.data.error) {
           window.alert(res.data.content)
@@ -56,7 +56,7 @@ class ForgotPassword extends React.Component {
       email: this.state.email
     }
 
-    axios.post('http://conallserver.ddns.net:8000/user/verification', email)
+    axios.post('http://htvcinemas.live:8000/user/verification', email)
     .then((res) => {
       if (res.data.error) {
         window.alert(res.data.error)
