@@ -11,7 +11,7 @@ class DetailTicketHistory extends Component {
 
   UNSAFE_componentWillMount() {
     const id = {_id: sessionStorage.getItem('id')};
-    axios.post("http://conallserver.ddns.net:8000/ticket/find", id)
+    axios.post("http://htvcinemas.live:8000/ticket/find", id)
       .then((res) => {
         this.setStateFilms(res.data.ticket);
       });

@@ -44,7 +44,7 @@ class Detail extends React.Component {
         TenFilm: this.state.films[0].TenFilm,
         TheoDoi: this.state.following
       }
-      axios.put('http://localhost:8000/film/updatefilm', following)
+      axios.put('http://htvcinemas.live:8000/film/updatefilm', following)
         .then((res) => {
           if (!res.data.error) {
             console.log(res.data)
@@ -72,7 +72,7 @@ class Detail extends React.Component {
       TenFilm: this.state.films[0].TenFilm,
       LuotLike: this.state.countLike
     }
-    axios.put('http://localhost:8000/film/updatefilm', like)
+    axios.put('http://htvcinemas.live:8000/film/updatefilm', like)
       .then((res) => {
         if (!res.data.error) {
           console.log(res.data)
@@ -106,7 +106,7 @@ class Detail extends React.Component {
                   <div className="detail-feat-img">
                     <img style={{ height: '380px', objectFit: "cover" }}
                       // src="htv/website/images/detail-film-VoDienSatNhan.jpg"
-                      src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia}
+                      src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                       className="loading"
                       data-was-processed="true" />
                   </div>

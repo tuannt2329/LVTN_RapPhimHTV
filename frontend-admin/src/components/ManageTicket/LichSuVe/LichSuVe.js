@@ -21,7 +21,7 @@ class TicketsHistory extends Component {
         const status = {
             status: true
         }
-        axios.post("http://conallserver.ddns.net:8000/ticket/find", status)
+        axios.post("http://htvcinemas.live:8000/ticket/find", status)
             .then((res) => {
                 if(!res.data.error) {
                     this.setStateFilms(res.data)

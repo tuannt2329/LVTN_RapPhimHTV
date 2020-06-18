@@ -38,7 +38,7 @@ class Login extends React.Component {
       password: this.state.password
     }
     
-    axios.post('http://conallserver.ddns.net:8000/user/login', account)
+    axios.post('http://htvcinemas.live:8000/user/login', account)
       .then((res) => {
         if (!res.data.error) {
           if(res.data.user["role"] === "admin") {

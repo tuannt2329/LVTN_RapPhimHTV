@@ -31,7 +31,7 @@ class Navbar extends React.Component {
         const theloaiphim = {
             TheLoai: theloai
         };
-        axios.post("http://conallserver.ddns.net:8000/film/find", theloaiphim)
+        axios.post("http://htvcinemas.live:8000/film/find", theloaiphim)
             .then((res) => {
                 if (!res.data.error) {
                     console.log("theloai", res.data.film);
@@ -85,7 +85,7 @@ class Navbar extends React.Component {
                                                         <article className="article-movie-header">
                                                             <img style={{ width: '100%', height: '100%' }}
                                                                 key={index}
-                                                                src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia} />
+                                                                src={"http://htvcinemas.live:8000/images/" + item.AnhBia} />
 
                                                             <a style={{ width: '100%' }}
                                                                 href="/detailfilm"
@@ -125,7 +125,7 @@ class Navbar extends React.Component {
                                                         <article className="article-movie-header">
                                                             <img style={{ width: '100%', height: '100%' }}
                                                                 key={index}
-                                                                src={"http://conallserver.ddns.net:8000/images/" + item.AnhBia} />
+                                                                src={"http://htvcinemas.live:8000/images/" + item.AnhBia} />
                                                             <a style={{ width: '100%' }}
                                                                 href="/detailfilm"
                                                                 onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
