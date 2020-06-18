@@ -1,8 +1,8 @@
 const paypal = require('paypal-rest-sdk')
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
-  'client_id': 'ASsxfaXEA2Mq0vB7OHm_s09c1MxhwC94RBJGfWV7svB4LDTlwzvcIkWusD823DFsj9juI4xTOSwzeplP',
-  'client_secret': 'EMOhuFU0ZHg1mxge3sYSfY-FuYjZVXtYjdN94il7sSpQ608gHY1y7L5UOxESIE7MT3j571Dh9qF_KWI0'
+  'client_id': 'Aa3-sGq2onRdaY8_VswCwdsEifJitfgsRrEgnTx4VvL5OnDqrAs7_Zu5kcjwfebsXiOEikxS-c3A2e7t',
+  'client_secret': 'EO0hwI31fDEYY9WKzT3FKzkO8lFpTa3hviVE0iD1M3yAFV0Bgw9AcBDW-kJOsDkd54KIOVjuczvIDxEt'
 });
 
 const handler = ({ model }, _) => async (req, res) => {
@@ -12,8 +12,8 @@ const handler = ({ model }, _) => async (req, res) => {
         "payment_method": "paypal"
     },
     "redirect_urls": {
-        "return_url": "http://localhost:8000/paypal/success",
-        "cancel_url": "http://localhost:3000"
+        "return_url": "http://htvcinemas.live:8000/paypal/success",
+        "cancel_url": "http://htvcinemas.live:3000"
     },
     "transactions": [{
         "item_list": {
