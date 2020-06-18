@@ -12,10 +12,11 @@ class Detail extends React.Component {
       following: [],
       theodoi: "Theo dõi",
       like: "Like",
-      countLike: 0
+      countLike: 0,
+      show: false
     }
   }
-  
+
   setStateFilms = (data) => {
     this.setState({ films: data, counter: 1, countLike: data[0].LuotLike })
   }
@@ -26,16 +27,16 @@ class Detail extends React.Component {
 
   handleOnclickFollow = async (tenphim) => {
     if (localStorage.getItem('user')) {
-      if(this.state.theodoi === "Theo dõi") {
+      if (this.state.theodoi === "Theo dõi") {
         let following = this.state.films[0].TheoDoi
         await following.push(JSON.parse(localStorage.getItem('user')).email)
-        this.setState({following: following, theodoi: "Bỏ theo dõi"})
+        this.setState({ following: following, theodoi: "Bỏ theo dõi" })
       } else {
         let following = this.state.films[0].TheoDoi
-        for( var i = 0; i < following.length; i++) { 
-          if ( following[i] === JSON.parse(localStorage.getItem('user')).email) {
+        for (var i = 0; i < following.length; i++) {
+          if (following[i] === JSON.parse(localStorage.getItem('user')).email) {
             following.splice(i, 1)
-            await this.setState({following: following, theodoi: "Theo dõi"})
+            await this.setState({ following: following, theodoi: "Theo dõi" })
 
           }
         }
@@ -48,7 +49,7 @@ class Detail extends React.Component {
         .then((res) => {
           if (!res.data.error) {
             console.log(res.data)
-            
+
           } else {
             return window.alert(res.data.error)
           }
@@ -59,14 +60,14 @@ class Detail extends React.Component {
   }
 
   handleOnclickLike = async (tenphim) => {
-    if(this.state.like === "Like") {
+    if (this.state.like === "Like") {
       let countLike = this.state.countLike
       countLike++
-      await this.setState({countLike: countLike, like: "Dislike"})
+      await this.setState({ countLike: countLike, like: "Dislike", show: true })
     } else {
       let countLike = this.state.countLike
       countLike--
-      await this.setState({countLike: countLike, like: "Like"})
+      await this.setState({ countLike: countLike, like: "Like", show: false })
     }
     const like = {
       TenFilm: this.state.films[0].TenFilm,
@@ -80,16 +81,16 @@ class Detail extends React.Component {
           return window.alert(res.data.error)
         }
       });
-    
+
   }
 
   render() {
     if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
       if (localStorage.getItem('user')) {
-        for ( var i = 0; i < this.props.films[0].TheoDoi.length; i++) { 
-          if ( this.props.films[0].TheoDoi[i] === JSON.parse(localStorage.getItem('user')).email) {
-            this.setState({theodoi: "Bỏ theo dõi"})
+        for (var i = 0; i < this.props.films[0].TheoDoi.length; i++) {
+          if (this.props.films[0].TheoDoi[i] === JSON.parse(localStorage.getItem('user')).email) {
+            this.setState({ theodoi: "Bỏ theo dõi" })
           }
         }
       }
@@ -131,7 +132,7 @@ class Detail extends React.Component {
                         {/* Video Trailer Film */}
                         <div className="rating-bt">
                           <div className="btn-xemtrailer-detailfilm">
-                            <TrailerFilm films={item}/>
+                            <TrailerFilm films={item} />
                           </div>
                         </div>
 
@@ -195,16 +196,43 @@ class Detail extends React.Component {
                     <span>
                       <img src='htv/website/images/ic-clock.jpg' className="ic-clock"></img>
                       <i></i>&nbsp; 180 phút
-                          </span>
+                          </span>&nbsp;&nbsp;
+
                     <span className="like">
-                      <div className="fb-like fb_iframe_widget">
+                      <div >
                         <span>
-                          <button onClick={this.handleOnclickLike.bind(this, item.TenFilm)}>{this.state.like}</button>
-                          &nbsp;
-                          <label>{this.state.countLike}</label>
+                          <button type="submit" className="inlineBlock _2tga _89n_ _8j9v"
+                            title="Thích Phim" onClick={this.handleOnclickLike.bind(this, item.TenFilm)}>
+
+                            <span className="_3jn- inlineBlock _2v7">
+                              {
+                                this.state.show === false
+                                  ?
+                                  <div className="_49vg">
+                                    {/* ic like */}
+                                    <img className="_1pbs inlineBlock img"
+                                      src="https://static.xx.fbcdn.net/rsrc.php/v3/y1/r/M-ZBUCzfbNp.png"
+                                      title="Nhấn vào để thích phim" width={16} height={16} />
+                                  </div>
+                                  :
+                                  <div className="_5n2y">
+                                    {/* ic tick */}
+                                    <img className="_1pbs inlineBlock img"
+                                      src="https://static.xx.fbcdn.net/rsrc.php/v3/yr/r/VD7zCGNYDhP.png" alt=""
+                                      title="Nhấn để bỏ thích phim"
+                                      width={16} height={16} />
+                                  </div>
+                              }
+
+                            </span>
+                            <span className="_49vh _2pi7">Thích</span>
+                            <span className="_5n6h _2pih" id="u_0_3">{this.state.countLike}</span>
+                          </button>
                         </span>
                       </div>
                     </span>
+
+
                   </div>
 
                   <div className="detail-info">
@@ -250,10 +278,10 @@ class Detail extends React.Component {
                     </Link>
                     &nbsp; &nbsp; &nbsp;
                     <button id="rating-click"
-                        type="submit"
-                        className="btn btn-primary btn-sm" onClick={this.handleOnclickFollow.bind(this, item.TenFilm)}>
-                        {this.state.theodoi}
-                      </button>
+                      type="submit"
+                      className="btn btn-primary btn-sm" onClick={this.handleOnclickFollow.bind(this, item.TenFilm)}>
+                      {this.state.theodoi}
+                    </button>
                   </div>
                 </div>
               </div>

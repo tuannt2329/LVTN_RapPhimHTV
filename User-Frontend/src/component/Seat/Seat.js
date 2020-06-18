@@ -44,7 +44,7 @@ class Seat extends React.Component {
     this.isLocalStorage();
 
     var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
-    
+
     axios.post("http://localhost:8000/film/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data.film)
@@ -67,18 +67,18 @@ class Seat extends React.Component {
     var tenfilm = { TenFilm: this.state.TenFilm };
     var today = new Date()
     let date = today.getFullYear() + '-0' + (today.getMonth() + 1)
-    if(today.getDate() < 10) {
+    if (today.getDate() < 10) {
       date += '-0' + today.getDate()
     } else {
       date += '-' + today.getDate()
     }
-    const time= today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
+    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
     const datetime = date + 'T' + time
     axios.post('http://localhost:8000/schedule/find', tenfilm)
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
-            if(res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
+            if (res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
               var lichchieu = (res.data.schedule[lc]["ThoiGianChieu"]).split("T");
               var i = 0;
               for (const n in list) {
@@ -96,13 +96,13 @@ class Seat extends React.Component {
             for (const lc1 in res.data.schedule) {
               var lichchieu1 = (res.data.schedule[lc1]["ThoiGianChieu"]).split("T");
               if (lichchieu1[0] === list[n].NgayChieu) {
-                if(lichchieu1[0] === date && lichchieu1[1] < time) {
+                if (lichchieu1[0] === date && lichchieu1[1] < time) {
                   continue
                 }
                 a.push(lichchieu1[1]);
               }
             }
-            
+
             list[n]["GioChieu"] = a;
           }
           this.setState({ LichChieu: list });
@@ -124,37 +124,37 @@ class Seat extends React.Component {
   }
 
   HandleClickNgay = (ngaychieu) => {
-    this.setState({GioChieu: 'CHỌN SUẤT CHIẾU'})
+    this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU' })
     this.setState({ NgayChieu: ngaychieu.target.value });
   }
 
   updateStatusGhe = (lichchieu) => {
     axios.post('http://localhost:8000/ticket/find', lichchieu)
-    .then((res) => {
-      if(!res.data.error) {
-        let ghedadat = []
-        for (var t in res.data.ticket) {
-          for(var r in res.data.ticket[t].TenGhe) {
-            ghedadat.push(res.data.ticket[t].TenGhe[r])
+      .then((res) => {
+        if (!res.data.error) {
+          let ghedadat = []
+          for (var t in res.data.ticket) {
+            for (var r in res.data.ticket[t].TenGhe) {
+              ghedadat.push(res.data.ticket[t].TenGhe[r])
+            }
+          }
+          var gheghe = this.state.Ghe
+          for (var i in gheghe) {
+            for (var z in ghedadat) {
+              if (gheghe[i].TenGhe === ghedadat[z]) {
+                gheghe[i].status = true
+              }
+            }
+          }
+          this.setState({ Ghe: gheghe })
+        } else {
+          if (res.data.error !== 'ticket don\'t exist!') {
+            return window.alert(res.data.error)
           }
         }
-        var gheghe = this.state.Ghe
-        for (var i in gheghe) {
-          for (var z in ghedadat) {
-            if(gheghe[i].TenGhe === ghedadat[z]) {
-              gheghe[i].status = true
-            } 
-          }
-        }
-        this.setState({Ghe: gheghe})
-      } else {
-        if(res.data.error !== 'ticket don\'t exist!') {
-          return window.alert(res.data.error)
-        }
-      }
-    })
+      })
   }
-  
+
   HandleClickGio = (giochieu) => {
     stt = []
     strghe = ""
@@ -177,7 +177,7 @@ class Seat extends React.Component {
   }
 
   renderGhe = () => {
-    if(this.state.choosing.length !== 0) {
+    if (this.state.choosing.length !== 0) {
     }
     var arr = [];
     this.state.Ghe.forEach((item, index) => {
@@ -266,43 +266,43 @@ class Seat extends React.Component {
     });
     if (status === 'single ' || status === "single choosing") {
       const ticketType = {
-      LoaiVe: 'VIP'
+        LoaiVe: 'VIP'
       }
       axios.post('http://localhost:8000/giave/find', ticketType)
-      .then((res) => {
-        if(!res.data.error) {
-          if(status === 'single ') {
-            tongtien += res.data.loaive[0]['GiaVe']
+        .then((res) => {
+          if (!res.data.error) {
+            if (status === 'single ') {
+              tongtien += res.data.loaive[0]['GiaVe']
+            } else {
+              tongtien -= res.data.loaive[0]['GiaVe']
+            }
+            this.setState({ TongTienVe: tongtien })
           } else {
-            tongtien -= res.data.loaive[0]['GiaVe']
+            return window.alert(res.data.error)
           }
-          this.setState({TongTienVe:tongtien})
-        } else {
-          return window.alert(res.data.error)
-        }
-      })
+        })
     } else {
       if (status === 'couple ' || status === "couple choosing") {
         const ticketType = {
           LoaiVe: 'COUPLE'
         }
         axios.post('http://localhost:8000/giave/find', ticketType)
-        .then((res) => {
-          if(!res.data.error) {
-            if(status === 'couple ') {
-              tongtien += res.data.loaive[0]['GiaVe']
+          .then((res) => {
+            if (!res.data.error) {
+              if (status === 'couple ') {
+                tongtien += res.data.loaive[0]['GiaVe']
+              } else {
+                tongtien -= res.data.loaive[0]['GiaVe']
+              }
+              this.setState({ TongTienVe: tongtien })
             } else {
-              tongtien -= res.data.loaive[0]['GiaVe']
+              return window.alert(res.data.error)
             }
-            this.setState({TongTienVe:tongtien})
-          } else {
-            return window.alert(res.data.error)
-          }
-        })
+          })
       }
-      
+
     }
-    
+
   }
 
   handleOnclickXacNhanDatVe = () => {
@@ -331,7 +331,7 @@ class Seat extends React.Component {
         }
         thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
 
-        if(this.state.paymentmethods === "payonline") {
+        if (this.state.paymentmethods === "payonline") {
           let ve = {
             email: JSON.parse(localStorage.getItem('user'))['email'],
             TenFilm: this.state.TenFilm,
@@ -344,13 +344,13 @@ class Seat extends React.Component {
           }
           sessionStorage.setItem('ve', JSON.stringify(ve))
           axios.post('http://localhost:8000/paypal/pay', ve)
-          .then((res) => {
-            if(!res.data.error) {
-              return window.location = res.data.result
-            } else {
-              return window.alert(res.data.error)
-            }
-          })
+            .then((res) => {
+              if (!res.data.error) {
+                return window.location = res.data.result
+              } else {
+                return window.alert(res.data.error)
+              }
+            })
         } else {
           let ve = {
             email: JSON.parse(localStorage.getItem('user'))['email'],
@@ -367,12 +367,12 @@ class Seat extends React.Component {
         }
       } else {
         return window.location = '/login';
-      } 
+      }
     }
   }
 
   onChangePay = (e) => {
-    this.setState({paymentmethods: e.target.value})
+    this.setState({ paymentmethods: e.target.value })
   }
 
   render() {
@@ -387,7 +387,7 @@ class Seat extends React.Component {
                     <section className="booking-ticket">
                       <h2 className="booking-title">Chọn ghế: &nbsp;<span className="select-seat" /></h2>
                       <div className="seat-map-wrapper">
-                        
+
                         <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 first-col">
                           <htv-select>
                             <div className="btn-select-sex login location">
@@ -413,7 +413,7 @@ class Seat extends React.Component {
                                     item.GioChieu.map((gc) =>
                                       <option value={gc}>{gc.substring(0, gc.length - 5)}</option>
                                     )
-                                  : null
+                                    : null
                                 )}
                               </select>
                             </div>
@@ -428,12 +428,12 @@ class Seat extends React.Component {
                               <div className="tbl-wrap">
                                 <table>
                                   <tbody>
-                                  {this.renderGhe()}
-                                   
-                                    
+                                    {this.renderGhe()}
+
+
                                     <tr>
-                                      <td/>
-                                      <td/>
+                                      <td />
+                                      <td />
                                       <td colSpan={2} className="road" ></td>
                                       <td colSpan={2} className="road" ></td>
                                       <td colSpan={2} className="road" ></td>
@@ -442,8 +442,8 @@ class Seat extends React.Component {
                                       <td colSpan={2} className="road" ></td>
                                       <td colSpan={2} className="road" ></td>
                                       <td colSpan={2} className="road" ></td>
-                                      <td/>
-                                      <td/>
+                                      <td />
+                                      <td />
                                     </tr>
                                   </tbody>
                                 </table>
@@ -485,7 +485,7 @@ class Seat extends React.Component {
                             </span>
                           </div> */}
                           <div className="ticket-info">
-                          <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
+                            <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>
                             <p className="  "><b>Combo: &nbsp;</b></p>
                             <p className="  "><b>Ghế: {strghe}&nbsp;</b></p>
@@ -496,17 +496,49 @@ class Seat extends React.Component {
                                 <span className="  ">{Number(this.state.TongTienVe).toLocaleString('en')} đồng</span>
                               </htv-summary-ticket></p>
                           </div>
+
+                          <div className="ticket-price-totalz">
+                            <p>Chọn hình thức thanh toán</p>
+                          </div>
+
+                          <div className="require-col" onChange={this.onChangePay}>
+                            <label className="gender">
+                              <input type="radio"
+                                name="gender"
+                                title="Chọn hình thức thanh toán trực tuyến"
+                                value="payonline" />
+                              <span className="gender-name" >Trực tuyến</span>
+                              <span className="gender-shape" />
+                            </label>
+
+                            <label className="gender input_taiquay" >
+                              <input type="radio"
+                                name="gender"
+                                title="Chọn hình thức thanh toán tại quầy"
+                                value="payoffline" />
+                              <span className="gender-name">Tại quầy</span>
+                              <span className="gender-shape" />
+                            </label>
+                          </div>
+
                           <div className="ticket-button">
-                            <select id="cars" onChange={this.onChangePay}>
-                              <option value="payonline">Thanh toán trực tuyến</option>
-                              <option value="payoffline">Thanh toán tại quầy</option>
-                            </select>
-                            <br/>
-                            <br/>
                             <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
                             <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
                               <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
                           </div>
+
+                          {/* <div className="ticket-button">
+                            <select id="cars" onChange={this.onChangePay}>
+                              <option value="payonline">Thanh toán trực tuyến</option>
+                              <option value="payoffline">Thanh toán tại quầy</option>
+                            </select>
+                            <br />
+                            <br />
+                            <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
+                            <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
+                              <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
+                          </div> */}
+
                         </div>
                       </div>
                     </article>
