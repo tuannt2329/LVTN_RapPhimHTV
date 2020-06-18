@@ -391,3 +391,69 @@ body{
 b, strong {
     font-weight: 500;
 }
+
+/* .header-nav-wrapper .primary-nav-wrapper.desktop .search {
+  padding: 0px 0px 0px 75px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+} */
+
+/* Button Like Detail Film */
+._2tga._8j9v {
+  border-radius: 3px;
+  font-size: 11px;
+  height: 20px;
+  padding: 0 6px;
+}
+.inlineBlock {
+  display: inline-block;
+  zoom: 1;
+}
+._89n_ {
+  background: #1877f2;
+  border: 0;
+}
+._2tga {
+  /* background: #4267b2; */
+  /* border: 1px solid #4267b2; */
+  color: #fff;
+  cursor: pointer;
+  /* font-family: Helvetica, Arial, sans-serif; */
+  /* -webkit-font-smoothing: antialiased; */
+  margin: 0;
+  position: relative;
+  -webkit-user-select: none;
+  white-space: nowrap;
+}
+._8f1i {
+  background-color: rgba(9, 30, 66);
+  border-radius: inherit;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.inlineBlock {
+  display: inline-block;
+  zoom: 1;
+}
+#facebook ._2tga span._49vh, #facebook ._2tga span._5n6h, ._49vh, ._5n6h {
+  font-family: Helvetica, Arial, sans-serif;
+  vertical-align: middle;
+}
+._49vh {
+  font-weight: bold;
+}
+._2pi7 {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+._2pih {
+  padding-right: 4px;
+}
+._2tga._8j9v{
+  font-size: 11px;
+}
