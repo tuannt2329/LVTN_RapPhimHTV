@@ -117,6 +117,16 @@ class TicketDaDat extends React.Component {
                                 <htv-summary-ticket>
                                   <span>Giá vé:  {Number(item['GiaVe']).toLocaleString('en')} đồng</span>
                                 </htv-summary-ticket></p>
+                                {
+                                  item['payed'] === true ? 
+                                    <htv-summary-ticket>
+                                      <span>Đã thanh toán</span> 
+                                    </htv-summary-ticket>
+                                  :
+                                    <htv-summary-ticket>
+                                      <span>Chưa thanh toán</span>
+                                    </htv-summary-ticket>
+                                }
                             </div>
                           </div>
                         </div>
