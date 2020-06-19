@@ -33,38 +33,48 @@ const handler = ({ model }, _) => async (req, res) => {
         let param = {
           TenFilm : vexemphim.TenFilm,
           TenPhong: vexemphim.TenPhong,
-          TenGhe: vexemphim.TenGhe,
-          ThoiGianChieu: vexemphim.ThoiGianChieu
+          ThoiGianChieu: vexemphim.ThoiGianChieu,
         }
         const ticket = await ticketsSC.find(param)
-        if (ticket.length != 0) {
-          res.send({ error: 'ticket exist!' })
-        } else {
-          const result = await ticketsSC.create(vexemphim)
-          if(result) {
-            if(vexemphim.payed === true) {
-              var content = 'You have successfully bought tickets of HTV cinema'
-              var subject = 'Successful ticket purchase'
-            } else {
-              content = 'You have successfully booked tickets of HTV cinema'
-              subject = 'Successful ticket booked'
-            }
-            const tfilm = {TenFilm: vexemphim.TenFilm }
-            const films = await filmsSC.find(tfilm)
-            if (films) {
-              const result = await filmsSC.updateMany(
-                { TenFilm: vexemphim.TenFilm },
-                { $set: { 
-                    TongThu: vexemphim.GiaVe + films[0].TongThu
-                  }
-                })
 
-              const a = await sendEmail(vexemphim.email, subject, content)
-              // res.send({ content: subject })
-              res.redirect("http://localhost:3000/successpayment");
-            } else {
-              return res.send({ error: 'film don\'t exist!' })
+        if (ticket.length != 0) {
+          for (let i = 0; i < ticket.length; i++) {
+            for (let z = 0; z < vexemphim.TenGhe.length; z++) {
+              for(let y = 0; y < ticket[i].TenGhe.length; y++) {
+                if(ticket[i].TenGhe[y] === vexemphim.TenGhe[z]) {
+                  return res.send({ error: 'ticket exist!' })
+                }
+              }
             }
+          }
+        } 
+        console.log(ticket)
+        console.log("AAAAAAAAAAa")
+
+        const result = await ticketsSC.create(vexemphim)
+        if(result) {
+          if(vexemphim.payed === true) {
+            var content = 'You have successfully bought tickets of HTV cinema'
+            var subject = 'Successful ticket purchase'
+          } else {
+            content = 'You have successfully booked tickets of HTV cinema'
+            subject = 'Successful ticket booked'
+          }
+          const tfilm = {TenFilm: vexemphim.TenFilm }
+          const films = await filmsSC.find(tfilm)
+          if (films) {
+            const result = await filmsSC.updateMany(
+              { TenFilm: vexemphim.TenFilm },
+              { $set: { 
+                  TongThu: vexemphim.GiaVe + films[0].TongThu
+                }
+              })
+
+            const a = await sendEmail(vexemphim.email, subject, content)
+            // res.send({ content: subject })
+            res.redirect("http://localhost:3000/successpayment");
+          } else {
+            return res.send({ error: 'film don\'t exist!' })
           }
         }
       } catch (error) {
