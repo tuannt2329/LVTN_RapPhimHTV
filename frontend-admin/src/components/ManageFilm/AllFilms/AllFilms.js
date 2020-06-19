@@ -62,7 +62,6 @@ class AllFilms extends Component {
       currentdate.getMinutes() +
       ":" +
       currentdate.getSeconds();
-    console.log(datetime);
     return (
       <div>
         <Menu />
@@ -93,7 +92,8 @@ class AllFilms extends Component {
                       <div className="row">
                         {this.state.films
                           .filter(
-                            (a) => Date.parse(a.NgayChieu) <=Date.parse(Date())
+                            (a) => (Date.parse(a.NgayChieu) <= Date.parse(Date())
+                               && (Date.parse(Date()) < (Date.parse(a["NgayKetThuc"]))))
                           )
                           .map((item, index) =>
                             index === 0 ? (
