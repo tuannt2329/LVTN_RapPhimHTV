@@ -55,7 +55,6 @@ class AllFilms extends Component {
   }
 
   handle = () => {
-    console.log("chya ham handle");
     if (this.state.films.length > 0 || this.state.films !== "undefined") {
       this.state.films.map((val) => {
         this.setState({
@@ -75,23 +74,24 @@ class AllFilms extends Component {
   };
 
   clickEvent = (id) => {
-    console.log("inside clickEvent", id);
     this.setState({
       eventInfo: id,
       isOpen: !this.state.isOpen,
     });
   };
   clickEventAdd = (e) => {
-    // console.log(e.);
+    var cDate = ''
+    if (e)
+    cDate = new Date(e.slots[0]);
     this.setState({
       isOpenAdd: !this.state.isOpenAdd,
+      clickDate: cDate
     });
   };
   UNSAFE_componentWillMount() {
     this.isLocalStorage();
     axios.post("http://htvcinemas.live:8000/schedule/find").then(async (res) => {
       await this.setStateFilms(res.data.schedule);
-      console.log(res.data.schedule);
       this.handle();
     });
   }
@@ -133,6 +133,7 @@ class AllFilms extends Component {
         ) : null}
         {this.state.isOpenAdd === true ? (
           <ModalAdd
+            date={this.state.clickDate}
             show={this.state.isOpenAdd}
             clickEvent={() => this.clickEventAdd()}
           ></ModalAdd>
