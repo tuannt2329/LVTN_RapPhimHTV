@@ -58,8 +58,9 @@ class successPayment extends React.Component {
                 }
               });
           } else {
-            if (res.data.error != 'ticket exist!') {
-              return window.alert(res.data.error)
+            if (res.data.error === 'ticket exist!') {
+              window.alert(res.data.error)
+              return window.location = '/seat'
             }
           }
         });
