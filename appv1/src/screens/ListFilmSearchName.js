@@ -1,25 +1,43 @@
 import Autocomplete from 'react-native-autocomplete-input';
 import React, {Component} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Image,
+  Dimensions,
+} from 'react-native';
+import * as types from '../constants';
 
 const API = 'https://swapi.co/api';
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {CommonActions} from '@react-navigation/native';
 
 class AutocompleteExample extends Component {
-  static renderFilm(film) {
+  static renderFilm(film, navigation) {
     const {TenFilm} = film;
     // const roman = episode_id < ROMAN.length ? ROMAN[episode_id] : episode_id;
-
     return (
       <View>
         {/* <Text style={styles.titleText}>
           {roman}. {title}
         </Text>
         <Text style={styles.directorText}>({director})</Text> */}
-        <Text style={styles.openingText}>
-          {TenFilm}
-          {film.DaoDien}
-        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            // console.log('a');
+            navigation.navigate('DetailFilm', {film: film});
+          }}>
+          <Image
+            source={{uri: `${types.API}/images/${film.AnhBia}`}}
+            style={styles.image}
+          />
+          <Text style={styles.openingText}>{TenFilm}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -30,20 +48,65 @@ class AutocompleteExample extends Component {
       films: [],
       query: '',
     };
+    this.props.navigation.setOptions({
+      title: 'Nội Dung Phim',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={async () =>
+            await this.props.navigation.dispatch(
+              CommonActions.reset({
+                index: 1,
+                routes: [{name: 'Home'}],
+              }),
+            )
+          }>
+          {/* <Image
+            source={require('../assets/imgs/home.png')}
+            style={{height: 30, width: 50}}
+            resizeMode="contain"
+          /> */}
+          <AntDesign name={'home'} size={40} color="black" />
+        </TouchableOpacity>
+      ),
+    });
   }
 
   componentDidMount() {
-    this.setState({films: this.props.route.params.data});
+    const getFilmLoad = async () => {
+      let popo = await fetch(`${types.API}film/find/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      let popores = await popo.json();
+      await this.setState({films: popores.film});
+    };
+    getFilmLoad();
   }
 
   findFilm(query) {
-    if (query === '') {
-      return [];
-    }
+    try {
+      if (query === '') {
+        return [];
+      }
 
-    const {films} = this.state;
-    const regex = new RegExp(`${query.trim()}`, 'i');
-    return films.filter(film => film.TenFilm.search(regex) >= 0);
+      // const {films} = this.state;
+      // const regex = new RegExp(`${query.trim()}`, 'i');
+      // return films.filter(film => film.TenFilm.search(regex) >= 0);
+
+      const inputValue = query.toLowerCase().trim();
+      const inputLength = inputValue.length;
+
+      const {films} = this.state;
+      return inputLength === 0 || query === ''
+        ? []
+        : films.filter(ser => ser.TenFilm.toLowerCase().includes(inputValue));
+    } catch (e) {}
   }
 
   render() {
@@ -52,39 +115,51 @@ class AutocompleteExample extends Component {
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
 
     return (
-      <View>
-        <Text style={styles.itemText}>{films.length}</Text>
-        <View style={styles.container}>
-          <Autocomplete
-            autoCapitalize="none"
-            autoCorrect={false}
-            containerStyle={styles.autocompleteContainer}
-            data={
-              films.length === 1 && comp(query, films[0].TenFilm) ? [] : films
-            }
-            defaultValue={query}
-            onChangeText={text => this.setState({query: text})}
-            placeholder="Enter Star Wars film title"
-            renderItem={({item}) => (
-              <View>
+      <View style={styles.container}>
+        {/* <ScrollView
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps={'handled'}> */}
+        {films.length > 0 ? (
+          <Text style={styles.itemText}>Có {films.length} phim phù hợp</Text>
+        ) : null}
+
+        <ScrollView keyboardShouldPersistTaps={'always'}>
+          <SafeAreaView style={{flex: 1}}>
+            <Autocomplete
+              autoCapitalize="none"
+              autoCorrect={true}
+              containerStyle={styles.autocompleteContainer}
+              data={
+                films.length === 1 && comp(query, films[0].TenFilm) ? [] : films
+              }
+              keyExtractor={(item, i) => {
+                return i;
+              }}
+              defaultValue={query}
+              value={query}
+              onChangeText={text => this.setState({query: text})}
+              placeholder="Nhập tên phim..."
+              renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() => this.setState({query: item.TenFilm})}>
+                  onPress={() => {
+                    console.log('a', item.TenFilm);
+                    this.setState({query: item.TenFilm});
+                  }}>
                   <Text style={styles.itemText}>{item.TenFilm}</Text>
                 </TouchableOpacity>
-              </View>
-            )}
-          />
+              )}
+            />
+          </SafeAreaView>
+
           <View style={styles.descriptionContainer}>
             {films.length > 0 ? (
-              AutocompleteExample.renderFilm(films[0])
+              AutocompleteExample.renderFilm(films[0], this.props.navigation)
             ) : (
               // <Text>asd</Text>
-              <Text style={styles.infoText}>
-                Enter Title of a Star Wars movie
-              </Text>
+              <Text style={styles.infoText}>Nhập tên bộ phim để tìm kiếm</Text>
             )}
           </View>
-        </View>
+        </ScrollView>
       </View>
     );
   }
@@ -97,12 +172,14 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   autocompleteContainer: {
-    flex: 1,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 1,
+    // flex: 1,
+    // left: 0,
+    // position: 'absolute',
+    // right: 0,
+    // top: 0,
+    // zIndex: 1,
+    borderColor: 'red',
+    borderWidth: 3,
   },
   itemText: {
     fontSize: 15,
@@ -132,6 +209,16 @@ const styles = StyleSheet.create({
   },
   openingText: {
     textAlign: 'center',
+    fontWeight: 'bold',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 20,
+  },
+  image: {
+    height: 250,
+    width: Dimensions.get('window').width,
+    alignSelf: 'stretch',
+    resizeMode: 'cover',
   },
 });
 

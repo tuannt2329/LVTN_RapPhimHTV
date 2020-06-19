@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import Toptab from '../tab/indexTopTab';
 import Slider from '../tab/Slider';
@@ -7,34 +7,42 @@ import * as types from '../constants';
 import Carousell from '../components/Carousel';
 import Button from '../components/button';
 import DotIndicator from '../components/indicator/DotIndicator';
+import {useIsFocused} from '@react-navigation/native';
 
 function Home({navigation}) {
   const [film, setFilm] = useState(null);
   // biến count để ngăn chặn rerender vì hàm không dùng unmount
   const [count, setCount] = useState(0);
+  const isFocused = useIsFocused();
 
-  useEffect(() => {
-    const getList = () => {
-      fetch(`${types.API}film/find/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
+  const getList = () => {
+    fetch(`${types.API}film/find/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+      .then(res => res.json())
+      .then(res => {
+        setFilm(res.film);
+        console.log('list film from home');
       })
-        .then(res => res.json())
-        .then(res => {
-          setFilm(res.film);
-          console.log('list film from home', film);
-        })
-        .catch(e => {
-          console.log('catch get list film from home');
-          console.log(e);
-        });
-    };
+      .catch(e => {
+        console.log('catch get list film from home');
+        console.log(e);
+      });
+  };
+  useEffect(() => {
+    //Update the state you want to be updated
+    console.log('force update')
+    getList();
+  }, [isFocused]);
+  useEffect(() => {
     getList();
   }, []);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*<CustomHeader*/}
@@ -82,7 +90,7 @@ function Home({navigation}) {
           <Button
             gradient
             onPress={() =>
-              navigation.navigate('ListFilmSearchName', {
+              navigation.navigate('Demo', {
                 data: film,
               })
             }>

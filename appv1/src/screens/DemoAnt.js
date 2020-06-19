@@ -3,7 +3,8 @@ import {Text, Modal, View} from 'react-native';
 import {WebView} from 'react-native-webview';
 import * as types from '../constants';
 
-function DemoAnt(props) {
+function DemoAnt({navigation, route}) {
+  const {data} = route.params;
   var thoigianthuc = new Date();
   var thoigianxacthuc = thoigianthuc.getFullYear() + '-';
   if (thoigianthuc.getMonth() + 1 < 10) {
@@ -30,6 +31,7 @@ function DemoAnt(props) {
   const [url, setUrl] = useState(null);
   const [show, setShow] = useState(false);
   useEffect(() => {
+    console.log(data)
     fetch(`${types.API}paypal/pay/`, {
       method: 'POST',
       headers: {
@@ -39,9 +41,9 @@ function DemoAnt(props) {
       body: JSON.stringify({
         email: 'tranlamviet17@gmail.com',
         TenFilm: 'Bloodshot',
-        TenPhong: '1',
-        TenGhe: ['A01'],
-        ThoiGianChieu: '2020-06-15T09:00:00.000Z',
+        TenPhong: '2',
+        TenGhe: ['A04'],
+        ThoiGianChieu: '2020-06-24T14:52:00.000Z',
         ThoiGianDat: '2020-06-15T09:00:00.000Z',
         GiaVe: 55000,
       }),
@@ -58,13 +60,15 @@ function DemoAnt(props) {
       });
   }, []);
   function _onNavigationStateChange(data) {
-    if (data.error) {
-      console.log('Loi Roi');
+    console.log(data.url);
+    if (data.url === 'http://localhost:3000/successpayment') {
       setShow(false);
-    } else {
-      console.log('sucesss');
     }
   }
+  function onMessage(e){
+    // let { data } = e.nativeEvent; // data you will receive from html
+    console.log(e.nativeEvent);
+   }
   return (
     <View>
       <Modal
@@ -79,6 +83,7 @@ function DemoAnt(props) {
           javaScriptEnabled={true}
           domStorageEnabled={true}
           startInLoadingState={false}
+          onMessage={(event) => onMessage(event)}
           onHttpError={syntheticEvent => {
             const {nativeEvent} = syntheticEvent;
             console.warn(

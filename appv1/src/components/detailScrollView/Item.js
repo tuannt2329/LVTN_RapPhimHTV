@@ -23,6 +23,7 @@ import * as Constant from '../../constants';
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../../constants/index.style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import * as types from '../../constants';
 
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
 class Item extends Component {
   constructor() {
     super();
-    this.state = {showNavTitle: false, modal: false};
+    this.state = {showNavTitle: false, modal: false, isFollow: null};
   }
   onCloseModal = () => {
     this.setState({
@@ -140,6 +141,46 @@ class Item extends Component {
   openModal = () => {
     this.setState({modal: true});
   };
+  pressLike = () => {};
+  pressFollow = () => {
+    if (this.props.user !== null) {
+      let followArray = this.props.film.TheoDoi;
+
+      if (this.state.isFollow === false) {
+        followArray.push(this.props.user.user.email);
+        this.setState({isFollow: true});
+      } else {
+        followArray.map((value, index) => {
+          if (value === this.props.user.user.email) {
+            followArray.splice(index, 1);
+            this.setState({isFollow: false});
+          }
+        });
+      }
+      let popo = fetch(`${types.API}film/updatefilm/`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          TenFilm: this.props.film.TenFilm,
+          TheoDoi: followArray,
+        }),
+      });
+    } else {
+      Alert.alert('Cần Đăng Nhập', 'Bạn phải đăng nhập để theo dõi');
+    }
+  };
+  UNSAFE_componentWillMount() {
+    if (this.props.user !== null) {
+      if (this.props.film.TheoDoi) {
+        this.props.film.TheoDoi.includes(this.props.user.user.email)
+          ? this.setState({isFollow: true})
+          : this.setState({isFollow: false});
+      }
+    }
+  }
   render() {
     const {film} = this.props;
     const date = film.NgayChieu.split('T')[0]
@@ -147,6 +188,7 @@ class Item extends Component {
       .split('-')
       .reverse()
       .join('-');
+
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle="light-content" />
@@ -312,14 +354,32 @@ class Item extends Component {
                   <Text style={styles.keyword}>Trailer</Text>
                 </LinearGradient>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.title}>
+              <TouchableOpacity
+                style={styles.title}
+                onPress={() => this.pressLike()}>
                 <LinearGradient
                   start={{x: 0.0, y: 0.25}}
                   end={{x: 0.5, y: 1.0}}
                   locations={[0.2, 0.5, 0.6]}
                   colors={['#4c669f', '#3b5998', '#192f6a']}
                   style={styles.keywordContainer}>
-                  <Text style={styles.keyword}>Theo dõi</Text>
+                  <Text style={styles.keyword}>Like</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.title}
+                onPress={() => this.pressFollow()}>
+                <LinearGradient
+                  start={{x: 0.0, y: 0.25}}
+                  end={{x: 0.5, y: 1.0}}
+                  locations={[0.2, 0.5, 0.6]}
+                  colors={['#4c669f', '#3b5998', '#192f6a']}
+                  style={styles.keywordContainer}>
+                  {this.state.isFollow === true ? (
+                    <Text style={styles.keyword}> Bo Theo dõi</Text>
+                  ) : (
+                    <Text style={styles.keyword}>Theo dõi</Text>
+                  )}
                 </LinearGradient>
               </TouchableOpacity>
             </View>

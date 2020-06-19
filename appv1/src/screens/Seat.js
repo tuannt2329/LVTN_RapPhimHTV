@@ -10,6 +10,7 @@ import {
   Alert,
   TouchableHighlight,
 } from 'react-native';
+import {WebView} from 'react-native-webview';
 import {CommonActions} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';

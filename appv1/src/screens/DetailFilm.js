@@ -50,6 +50,7 @@ function DetailFilm({route, navigation}) {
   const [time, setTime] = useState(null);
   const [ok, setOK] = useState(false);
   const [show, setShow] = useState(false);
+  const [filmLoad, setFilmLoad] = useState(null);
   // xu ly luu ngay gio : theo định dạng
   //  { ngay : gio }
 
@@ -116,14 +117,6 @@ function DetailFilm({route, navigation}) {
 
   // unmount
   useEffect(() => {
-    //month day year
-    // const startDate = new Date(film.NgayChieu).toLocaleDateString('en-GB');
-    // console.log(startDate);
-    // setStart(startDate);
-    // const endDate = new Date(film.NgayKetThuc).toLocaleDateString('en-GB');
-    // console.log(endDate);
-    // setEnd(endDate);
-
     const getList = async () => {
       await fetch(`${types.API}schedule/find/`, {
         method: 'POST',
@@ -186,7 +179,21 @@ function DetailFilm({route, navigation}) {
           console.log(e);
         });
     };
-
+    const getFilmLoad = async () => {
+      let popo = await fetch(`${types.API}film/find/`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          TenFilm: film.TenFilm,
+        }),
+      });
+      let popores = await popo.json();
+      await setFilmLoad(popores.film[0]);
+    };
+    getFilmLoad();
     if (Date.parse(film.NgayChieu) < Date.parse(Date())) {
       const callhihi = async () => {
         let t = await fetch(`${types.API}schedule/find/`, {
@@ -303,7 +310,7 @@ function DetailFilm({route, navigation}) {
     };
     process();
   }, [haveSchedule]);
-  
+
   useEffect(() => {
     async function a() {
       if (ok) {
@@ -364,7 +371,7 @@ function DetailFilm({route, navigation}) {
   return (
     <View flex={1}>
       <View flex={8}>
-        <Item film={film} />
+        {filmLoad !== null ? <Item user={user} film={filmLoad} /> : null}
       </View>
       <View
         flex={1}
@@ -391,7 +398,7 @@ function DetailFilm({route, navigation}) {
               //
               onRequestClose={() => {
                 Alert.alert(
-                  'Hủy Quá Trình Đặt Vé.',
+                  'Hủy Quá Trình Đặt Vé',
                   'Trở về ?',
                   [
                     {
