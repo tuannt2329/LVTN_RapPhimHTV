@@ -62,7 +62,6 @@ class AllFilms extends Component {
       currentdate.getMinutes() +
       ":" +
       currentdate.getSeconds();
-    console.log(datetime);
     return (
       <div>
         <Menu />
