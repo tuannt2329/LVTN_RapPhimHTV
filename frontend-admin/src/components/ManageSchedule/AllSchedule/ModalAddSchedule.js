@@ -13,6 +13,7 @@ class ModalAddSchedule extends React.Component {
       Film: {},
       listName: [],
       value: null,
+      clickDate: this.props.date
     };
     this.onChangeGioChieu = this.onChangeGioChieu.bind(this);
     this.onChangeGioKetThuc = this.onChangeGioKetThuc.bind(this);
@@ -28,8 +29,31 @@ class ModalAddSchedule extends React.Component {
       });
     });
   }
+
+  componentDidMount() {
+    this.onSetState()
+  }
+  onSetState = () => {
+    if(this.state.clickDate) {
+      let cDate = this.state.clickDate.getFullYear()
+      if ((this.state.clickDate.getMonth() + 1) < 10) {
+        cDate += '-0' + (this.state.clickDate.getMonth() + 1)
+      } else {
+        cDate += '-' + (this.state.clickDate.getMonth() + 1)
+      }
+      if (this.state.clickDate.getDate() < 10) {
+        cDate += '-0' + this.state.clickDate.getDate()
+      } else {
+        cDate += '-' + this.state.clickDate.getDate()
+      }
+      let film = this.state.Film
+      film["ThoiGianKetThuc"] = cDate
+      film["ThoiGianChieu"] = cDate
+      this.setState({Film: film})
+    }
+  }
+
   handleClose = (event) => {
-    console.log("chay cai ham handle close");
     this.setState({
       show: false,
     });
@@ -148,13 +172,25 @@ class ModalAddSchedule extends React.Component {
       Film: film,
     });
     this.setState({ value: event.target.value });
-    console.log(event.target.value);
   };
   render() {
     // Render nothing if the "show" prop is false
     if (!this.state.show) {
       return null;
     } else {
+      if(this.state.clickDate) {
+        var cDate = this.state.clickDate.getFullYear()
+        if ((this.state.clickDate.getMonth() + 1) < 10) {
+          cDate += '-0' + (this.state.clickDate.getMonth() + 1)
+        } else {
+          cDate += '-' + (this.state.clickDate.getMonth() + 1)
+        }
+        if (this.state.clickDate.getDate() < 10) {
+          cDate += '-0' + this.state.clickDate.getDate()
+        } else {
+          cDate += '-' + this.state.clickDate.getDate()
+        }
+      }
       return (
         <div>
           <Modal
@@ -254,6 +290,7 @@ class ModalAddSchedule extends React.Component {
                                       type="date"
                                       className="form-control"
                                       id="{index}"
+                                      defaultValue={cDate}
                                       onChange={this.onChangeNgayChieu.bind(
                                         this
                                       )}
