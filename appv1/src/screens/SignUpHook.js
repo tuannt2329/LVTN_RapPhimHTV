@@ -147,7 +147,16 @@ function SignUpHook({navigation}) {
   function toggleSwitch() {
     setShowPassword(!showPassword);
   }
-
+  function validateEmail(email) {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (reg.test(email) === false) {
+      console.log('Email is Not Correct');
+      return false;
+    } else {
+      console.log('Email is Correct');
+      return true;
+    }
+  }
   //
   function doSignUp() {
     console.log('stt button ', email, lastName);
@@ -163,8 +172,10 @@ function SignUpHook({navigation}) {
       firstName === null
     ) {
       setError('Nhập hết các thông tin');
-    } else if (pass.length < 7) {
+    } else if (pass.length < 6) {
       setError('Mật khẩu phải tối thiểu 6 ký tự');
+    } else if (validateEmail(email) === false) {
+      setError('Email không hợp lệ');
     } else {
       // dispatch(LoginAction.signup(email, pass, firstName, lastName, gender));
       setLoading(true);

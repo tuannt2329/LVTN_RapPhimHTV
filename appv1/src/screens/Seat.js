@@ -342,8 +342,8 @@ function Seat({route, navigation}) {
           <Text style={{fontWeight: 'bold'}}> {schedule.TenFilm}</Text>
         </View>
         <View style={{flex: 1}}>
-          <Text>
-            Suất chiếu
+          <Text style={{fontWeight: 'bold'}}>
+            Ngày chiếu: \n
             {schedule.ThoiGianChieu.split('T')[0]
               .slice(0, 10)
               .split('-')

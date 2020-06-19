@@ -136,6 +136,7 @@ class Item extends Component {
   onCloseModal = () => {
     this.setState({
       modal: false,
+      like: false,
     });
   };
   openModal = () => {
@@ -376,7 +377,7 @@ class Item extends Component {
                   colors={['#4c669f', '#3b5998', '#192f6a']}
                   style={styles.keywordContainer}>
                   {this.state.isFollow === true ? (
-                    <Text style={styles.keyword}> Bo Theo dõi</Text>
+                    <Text style={styles.keyword}>Bỏ Theo dõi</Text>
                   ) : (
                     <Text style={styles.keyword}>Theo dõi</Text>
                   )}
