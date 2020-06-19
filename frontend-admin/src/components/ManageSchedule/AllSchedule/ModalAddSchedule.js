@@ -23,9 +23,12 @@ class ModalAddSchedule extends React.Component {
   UNSAFE_componentWillMount() {
     axios.post("http://htvcinemas.live:8000/film/find").then(async (res) => {
       await res.data.film.map(async (val) => {
-        await this.setState({
-          listName: [...this.state.listName, val.TenFilm],
-        });
+        if ((Date.parse(val["NgayChieu"]) <= Date.parse(Date())) 
+         && (Date.parse(Date()) < (Date.parse(val["NgayKetThuc"])))) {
+          await this.setState({
+            listName: [...this.state.listName, val.TenFilm],
+          });
+        }
       });
     });
   }
