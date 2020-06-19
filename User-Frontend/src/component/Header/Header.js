@@ -52,7 +52,7 @@ class Header extends React.Component {
                                 </div>
                             </div>
                             <div className="col-md-8 col-sm-8 col-xs-8">
-                                <div className="primary-nav-wrapper hidden-xs hidden-sm">
+                                <div className="primary-nav-wrapper">
                                     <Search />
                                     {/* <div className="search">
                                         <htv-search-bar>
@@ -82,7 +82,7 @@ class Header extends React.Component {
                 </div>
 
                 {/* Icon navicon reponsive mobile */}
-                <div className="navicon fixed-mobile"><a href="#" className="nav-toggle"><span /></a></div>
+                {/* <div className="navicon fixed-mobile"><a href="#" className="nav-toggle"><span /></a></div> */}
 
 
                 <NavbarHTV films={this.state.films} theloai={this.state.theloai2} />

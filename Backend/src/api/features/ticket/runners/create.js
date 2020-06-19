@@ -19,27 +19,32 @@ const handler = ({ model }, _) => async (req, res) => {
       let param = {
         TenFilm : TenFilm,
         TenPhong: TenPhong,
-        TenGhe: TenGhe,
         ThoiGianChieu: ThoiGianChieu
       }
       const ticket = await model.find(param)
-
       if (ticket.length != 0) {
-        res.send({ error: 'ticket exist!' })
-      } else {
-        const result = await model.create(req.body)
-
-        if(result) {
-          if(payed === true) {
-            var content = 'You have successfully bought tickets of HTV cinema'
-            var subject = 'Successful ticket purchase'
-          } else {
-            content = 'You have successfully booked tickets of HTV cinema'
-            subject = 'Successful ticket booked'
+        for (let i = 0; i < ticket.length; i++) {
+          for (let z = 0; z < TenGhe.length; z++) {
+            for(let y = 0; y < ticket[i].TenGhe.length; y++) {
+              if(ticket[i].TenGhe[y] === TenGhe[z]) {
+                return res.send({ error: 'ticket exist!' })
+              }
+            }
           }
-          const a = await sendEmail(email, subject, content)
-          res.send({ content: subject })
-      }
+        }
+      } 
+      const result = await model.create(req.body)
+
+      if(result) {
+        if(payed === true) {
+          var content = 'You have successfully bought tickets of HTV cinema'
+          var subject = 'Successful ticket purchase'
+        } else {
+          content = 'You have successfully booked tickets of HTV cinema'
+          subject = 'Successful ticket booked'
+        }
+        const a = await sendEmail(email, subject, content)
+        res.send({ content: subject })
       }
     } catch (error) {
       res.send({ error })
