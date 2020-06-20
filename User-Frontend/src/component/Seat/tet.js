@@ -124,9 +124,9 @@ class Seat extends React.Component {
   }
 
   HandleClickNgay = (ngaychieu) => {
-    console.log("xx", ngaychieu.target)
+    console.log("xx", ngaychieu)
     this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU' })
-    this.setState({ NgayChieu: ngaychieu.target.value });
+    this.setState({ NgayChieu: ngaychieu });
   }
 
   updateStatusGhe = (lichchieu) => {
@@ -402,11 +402,11 @@ class Seat extends React.Component {
 
                                   {this.state.LichChieu.map((item, index) =>
                                     <li className="padding-time" style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}
-                                      onClick={this.HandleClickNgay.bind(this)}>
-                                      <a id="showtime-tab-1"
+                                      >
+                                      <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                         className="tab--control js__tab_time_control not_active added-transaction-id">
                                         <span className="week">Thứ ...</span>
-                                        <span className="day" value={item.NgayChieu}
+                                        <span className="day" value={item.NgayChieu} 
                                         >{item.NgayChieu} </span>
                                       </a>
                                     </li>
