@@ -124,6 +124,7 @@ class Seat extends React.Component {
   }
 
   HandleClickNgay = (ngaychieu) => {
+    console.log("xx", ngaychieu.target)
     this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU' })
     this.setState({ NgayChieu: ngaychieu.target.value });
   }
@@ -386,6 +387,114 @@ class Seat extends React.Component {
                   <div className="col-md-12">
                     <section className="booking-ticket">
                       <h2 className="booking-title">Chọn ghế: &nbsp;<span className="select-seat" /></h2>
+                      <div className="row padding-pickday">
+                        <div className="lich-chieu-phim showtimes flex-viewport">
+                          <h3 id="mua_ve">Lịch Chiếu</h3>
+                          <div className="list--times ">
+                            <div className="flexslider carousel">
+                              <div className="flex-viewport" style={{ overflow: 'hidden', position: 'relative' }}>
+                                <ul className="tab--showtimes-controls slides"
+                                // style={{
+                                //   width: '2800%', transitionDuration: '0s',
+                                //   transform: 'translate3d(-10px, 0px, 0px)'
+                                // }}
+                                >
+
+                                  {this.state.LichChieu.map((item, index) =>
+                                    <li className="padding-time" style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}
+                                      onClick={this.HandleClickNgay.bind(this)}>
+                                      <a id="showtime-tab-1"
+                                        className="tab--control js__tab_time_control not_active added-transaction-id">
+                                        <span className="week">Thứ ...</span>
+                                        <span className="day" value={item.NgayChieu}
+                                        >{item.NgayChieu} </span>
+                                      </a>
+                                    </li>
+                                  )}
+                                </ul>
+                              </div>
+
+                              {/* <ol className="flex-control-nav flex-control-paging">
+                                <li>
+                                  <a href="#" className>1</a></li>
+                                <li>
+                                  <a href="#" className="flex-active">14</a>
+                                </li>
+                              </ol> */}
+
+                              {/* <ul className="flex-direction-nav">
+                                <li className="flex-nav-prev">
+                                  <a className="flex-prev" href="#">Previous</a></li>
+                                <li className="flex-nav-next">
+                                  <a className="flex-next flex-disabled" href="#" tabIndex={-1}>Next</a>
+                                </li>
+                              </ul> */}
+
+                            </div>
+                            <div className="loading-rap hide">
+                              <span className="cssload-loader loading"><span className="cssload-loader-inner" /></span>
+                            </div>
+
+                            <div className="tab--showtimes-contents">
+                              <div className="tab--content js__tab_time_content conatiner-rap js__active">
+                                <ul className="list--showtimes-cinema">
+                                  <li className="item--showtimes-cinema date_2020-06-20 date_2020-06-21 hide-date"
+                                    data-date="2020-06-20" style={{ display: 'list-item' }}>
+                                 
+
+                                    <div className="date_2020-06-20 hide-date" style={{ display: 'block' }}>
+                                      <ul className="list--film-type">
+                                        <li className="item--film-type">
+                                          {/* <div className="type">
+                                            <span>2D<br />SUB</span>
+                                            <span className="film-rating">C13</span>
+                                          </div> */}
+
+                                          <ul className="times date_2020-06-20 hide-date" style={{ display: 'block' }}>
+
+                                            <li onChange={this.HandleClickGio}>
+                                              {this.state.LichChieu.map((item, index) =>
+                                                (item.NgayChieu === this.state.NgayChieu) ?
+                                                  item.GioChieu.map((gc) =>
+
+                                                    <a value={gc} className="time added-transaction-id">
+                                                      {gc.substring(0, gc.length - 5)}</a>
+
+                                                  )
+                                                  : null
+                                              )}
+                                            </li>
+                                            {/* <li><a className="time added-transaction-id" >16:20</a></li>
+                                            <li><a className="time added-transaction-id" >21:30</a></li> */}
+
+                                          </ul>
+                                        </li>
+                                      </ul>
+                                    </div>
+
+                                    {/* <div className="date_2020-06-21 hide-date" style={{ display: 'none' }}>
+                                          <ul className="list--film-type">
+                                            <li className="item--film-type">
+                                              <div className="type">
+                                                <span>2D<br />SUB</span>
+                                                <span className="film-rating">C13</span>
+                                              </div>
+                                              <ul className="times date_2020-06-21 hide-date" style={{ display: 'none' }}>
+                                                <li><a className="time" >12:25</a></li>
+                                                <li><a className="time" >16:40</a></li>
+                                                <li><a className="time" >20:45</a></li>
+                                              </ul>
+                                            </li>
+                                          </ul>
+                                        </div> */}
+
+                                  </li>
+                                </ul>
+                              </div>{/* .tab- -content */}
+                            </div>{/* .tab- -showtimes-contents */}
+                          </div>{/* .list- -times */}
+                        </div>
+                      </div>
                       <div className="seat-map-wrapper">
                         <div className="row padding-pickday">
                           <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 first-col">

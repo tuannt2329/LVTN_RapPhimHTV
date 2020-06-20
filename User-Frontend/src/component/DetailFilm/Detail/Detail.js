@@ -269,7 +269,7 @@ class Detail extends React.Component {
 
                 <div className="muave-detail">
                   <div className="btn-muave-detailfilm">
-                    <Link to={{ pathname: "/seat", film: item, reload: "abc" }}>
+                    <Link to={{ pathname: "/tet", film: item, reload: "abc" }}>
                       <button id="rating-click"
                         type="submit"
                         className="btn btn-primary btn-sm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
