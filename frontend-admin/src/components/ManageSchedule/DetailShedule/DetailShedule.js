@@ -14,7 +14,7 @@ class DetailShedule extends Component {
 
   UNSAFE_componentWillMount() {
     var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-    axios.post("http://htvcinemas.live:8000/schedule/find", TenFilm)
+    axios.post("http://localhost:8000/schedule/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data.schedule);
       });
@@ -62,7 +62,7 @@ class DetailShedule extends Component {
       let count = 0;
       this.state.Film.map( async (item) => {
         const film = item;
-        await axios.put('http://htvcinemas.live:8000/schedule/updateSchedule', film)
+        await axios.put('http://localhost:8000/schedule/updateSchedule', film)
         .then((res) => {
           if (!res.data.error) {
             count++;
@@ -81,11 +81,11 @@ class DetailShedule extends Component {
   handleOnclickDelete = (film) => {
     if (window.confirm("Do you really want to delete?")) {
       var film = film;
-      axios.put("http://htvcinemas.live:8000/schedule/deleteSchedule", film)
+      axios.put("http://localhost:8000/schedule/deleteSchedule", film)
         .then((res) => {
           if (!res.data.error) {
             console.log(res.data)
-            axios.put("http://htvcinemas.live:8000/ghe/updateStatus", film)
+            axios.put("http://localhost:8000/ghe/updateStatus", film)
             .then((res1) => {
               console.log(res1.data)
               if (!res1.data.error) {

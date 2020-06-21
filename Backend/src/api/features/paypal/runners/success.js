@@ -70,7 +70,7 @@ const handler = ({ model }, _) => async (req, res) => {
 
             const a = await sendEmail(vexemphim.email, subject, content)
             // res.send({ content: subject })
-            res.redirect("http://htvcinemas.live/successpayment");
+            res.redirect("http://localhost/successpayment");
           } else {
             return res.send({ error: 'film don\'t exist!' })
           }

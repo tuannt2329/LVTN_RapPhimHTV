@@ -11,13 +11,13 @@ class DetailTicket extends Component {
 
   UNSAFE_componentWillMount() {
     const id = {_id: sessionStorage.getItem('id')};
-    axios.post("http://htvcinemas.live:8000/ticket/find", id)
+    axios.post("http://localhost:8000/ticket/find", id)
       .then((res) => {
         this.setStateFilms(res.data.ticket);
         const email = {
           email: res.data.ticket[0]["email"]
         }
-        axios.post("http://htvcinemas.live:8000/user/find", email)
+        axios.post("http://localhost:8000/user/find", email)
         .then((res1) => {
           const user = res1.data.user
           this.setState({user});
@@ -66,7 +66,7 @@ class DetailTicket extends Component {
         ThoiGianXacNhan: thoigianxacthuc,
         NguoiXacNhan: JSON.parse(sessionStorage.getItem('user'))["email"]
       }
-      axios.put('http://htvcinemas.live:8000/ticket/updateStatus', ticket)
+      axios.put('http://localhost:8000/ticket/updateStatus', ticket)
       .then((res) => {
         if (!res.data.error) {
           window.alert("get Ticket successful!");
