@@ -105,9 +105,29 @@ class Seat extends React.Component {
 
             list[n]["GioChieu"] = a;
           }
+          console.log(list)
+          list.sort(this.dynamicsort("NgayChieu"))
+          for(let i = 0; i < list.length; i++) {
+            list[i].GioChieu.sort()
+          }
           this.setState({ LichChieu: list });
         }
       });
+  }
+
+  dynamicsort = (property) => {
+    return function (a, b){
+        // a should come before b in the sorted order
+        if(a[property] < b[property]){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a[property] > b[property]){
+                return 1;
+        // a and b are the same
+        }else{
+                return 0;
+        }
+    }
   }
 
   getGhebyPhong = (lichchieu) => {
@@ -115,7 +135,9 @@ class Seat extends React.Component {
     axios.post('http://localhost:8000/ghe/find', tenphong)
       .then((res) => {
         if (!res.data.error) {
-          this.setState({ Ghe: res.data.ghe });
+          let tGhe = res.data.ghe
+          tGhe.sort(this.dynamicsort("TenGhe"))
+          this.setState({ Ghe: tGhe });
           this.updateStatusGhe(lichchieu)
         } else {
           return window.alert(res.data.error)
@@ -163,7 +185,6 @@ class Seat extends React.Component {
     stt = []
     strghe = ""
     tongtien = 0
-    console.log("giochieu", giochieu)
     this.setState({ GioChieu: giochieu, choosing: [], TongTienVe: 0 });
 
     var lichchieu = {
@@ -384,7 +405,16 @@ class Seat extends React.Component {
   }
 
   render() {
-    console.log('dd', this.state.GioChieu)
+    let thu = []
+    for(let i = 0; i < this.state.LichChieu.length; i++) {
+      let date = new Date(this.state.LichChieu[i].NgayChieu)
+      if(date.getDay() + 1 === 1) {
+        thu.push("Chủ nhật")
+      } else {
+        thu.push(date.getDay() + 1)  
+      }
+    }
+    
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -408,7 +438,12 @@ class Seat extends React.Component {
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id js__active">
-                                          <span className="week">Thứ ...</span>
+                                          {
+                                            (thu[index] !== "Chủ nhật") ? 
+                                            <span className="week">Thứ {thu[index]}</span>
+                                          :
+                                            <span className="week">{thu[index]}</span>
+                                          }
                                           <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
                                         </a>
                                       </li>
@@ -417,7 +452,12 @@ class Seat extends React.Component {
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id">
-                                          <span className="week">Thứ ...</span>
+                                          {
+                                            (thu[index] !== "Chủ nhật") ? 
+                                            <span className="week">Thứ {thu[index]}</span>
+                                          :
+                                            <span className="week">{thu[index]}</span>
+                                          }
                                           <span className="day" value={item.NgayChieu}
                                           >{item.NgayChieu} </span>
                                         </a>

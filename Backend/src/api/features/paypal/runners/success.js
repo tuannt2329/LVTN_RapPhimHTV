@@ -48,8 +48,6 @@ const handler = ({ model }, _) => async (req, res) => {
             }
           }
         } 
-        console.log(ticket)
-        console.log("AAAAAAAAAAa")
 
         const result = await ticketsSC.create(vexemphim)
         if(result) {
