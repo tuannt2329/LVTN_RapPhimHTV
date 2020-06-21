@@ -45,7 +45,7 @@ class Seat extends React.Component {
 
     var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
 
-    axios.post("http://htvcinemas.live:8000/film/find", TenFilm)
+    axios.post("http://localhost:8000/film/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data.film)
       })
@@ -74,7 +74,7 @@ class Seat extends React.Component {
     }
     const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
     const datetime = date + 'T' + time
-    axios.post('http://htvcinemas.live:8000/schedule/find', tenfilm)
+    axios.post('http://localhost:8000/schedule/find', tenfilm)
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
@@ -105,39 +105,17 @@ class Seat extends React.Component {
 
             list[n]["GioChieu"] = a;
           }
-          console.log(list)
-          list.sort(this.dynamicsort("NgayChieu"))
-          for(let i = 0; i < list.length; i++) {
-            list[i].GioChieu.sort()
-          }
           this.setState({ LichChieu: list });
         }
       });
   }
 
-  dynamicsort = (property) => {
-    return function (a, b){
-        // a should come before b in the sorted order
-        if(a[property] < b[property]){
-                return -1;
-        // a should come after b in the sorted order
-        }else if(a[property] > b[property]){
-                return 1;
-        // a and b are the same
-        }else{
-                return 0;
-        }
-    }
-  }
-
   getGhebyPhong = (lichchieu) => {
     const tenphong = { TenPhong: this.state.TenPhong };
-    axios.post('http://htvcinemas.live:8000/ghe/find', tenphong)
+    axios.post('http://localhost:8000/ghe/find', tenphong)
       .then((res) => {
         if (!res.data.error) {
-          let tGhe = res.data.ghe
-          tGhe.sort(this.dynamicsort("TenGhe"))
-          this.setState({ Ghe: tGhe });
+          this.setState({ Ghe: res.data.ghe });
           this.updateStatusGhe(lichchieu)
         } else {
           return window.alert(res.data.error)
@@ -155,7 +133,7 @@ class Seat extends React.Component {
   }
 
   updateStatusGhe = (lichchieu) => {
-    axios.post('http://htvcinemas.live:8000/ticket/find', lichchieu)
+    axios.post('http://localhost:8000/ticket/find', lichchieu)
       .then((res) => {
         if (!res.data.error) {
           let ghedadat = []
@@ -185,21 +163,18 @@ class Seat extends React.Component {
     stt = []
     strghe = ""
     tongtien = 0
+    console.log("giochieu", giochieu)
     this.setState({ GioChieu: giochieu, choosing: [], TongTienVe: 0 });
 
     var lichchieu = {
       TenFilm: this.state.TenFilm,
       ThoiGianChieu: this.state.NgayChieu + "T" + giochieu
     }
-    axios.post('http://htvcinemas.live:8000/schedule/find', lichchieu)
+    axios.post('http://localhost:8000/schedule/find', lichchieu)
       .then((res) => {
         if (!res.data.error) {
           this.setState({ TenPhong: res.data.schedule[0]["TenPhong"] });
-          if (localStorage.getItem('user') && this.state.choosing) {
-            this.getGhebyPhong(lichchieu)
-          } else {
-            return window.alert("Bạn cần đăng nhập trước khi chọn ghế")
-          }
+          this.getGhebyPhong(lichchieu)
         } else {
           return window.alert(res.data.error)
         }
@@ -260,7 +235,7 @@ class Seat extends React.Component {
                   }
                 }
                 count++;
-                if (count === 4) return (<td className="road" colSpan={3}></td>)
+                if(count === 4) return (<td className="road" colSpan={3}></td>)
                 return (
                   <td colSpan={2} className={status} key={index} onClick={this.handleGheOnclick.bind(this, item["TenGhe"], status)}>{item["TenGhe"]}</td>
                 );
@@ -301,7 +276,7 @@ class Seat extends React.Component {
       const ticketType = {
         LoaiVe: 'VIP'
       }
-      axios.post('http://htvcinemas.live:8000/giave/find', ticketType)
+      axios.post('http://localhost:8000/giave/find', ticketType)
         .then((res) => {
           if (!res.data.error) {
             if (status === 'single ') {
@@ -319,7 +294,7 @@ class Seat extends React.Component {
         const ticketType = {
           LoaiVe: 'COUPLE'
         }
-        axios.post('http://htvcinemas.live:8000/giave/find', ticketType)
+        axios.post('http://localhost:8000/giave/find', ticketType)
           .then((res) => {
             if (!res.data.error) {
               if (status === 'couple ') {
@@ -375,9 +350,8 @@ class Seat extends React.Component {
             GiaVe: this.state.TongTienVe,
             payed: true
           }
-        
           sessionStorage.setItem('ve', JSON.stringify(ve))
-          axios.post('http://htvcinemas.live:8000/paypal/pay', ve)
+          axios.post('http://localhost:8000/paypal/pay', ve)
             .then((res) => {
               if (!res.data.error) {
                 return window.location = res.data.result
@@ -400,7 +374,7 @@ class Seat extends React.Component {
           return window.location = '/successpayment';
         }
       } else {
-        return window.alert("Bạn cần đăng nhập trước khi đặt vé")
+        return window.location = '/login';
       }
     }
   }
@@ -410,16 +384,7 @@ class Seat extends React.Component {
   }
 
   render() {
-    let thu = []
-    for(let i = 0; i < this.state.LichChieu.length; i++) {
-      let date = new Date(this.state.LichChieu[i].NgayChieu)
-      if(date.getDay() + 1 === 1) {
-        thu.push("Chủ nhật")
-      } else {
-        thu.push(date.getDay() + 1)  
-      }
-    }
-    
+    console.log('dd', this.state.GioChieu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -436,20 +401,22 @@ class Seat extends React.Component {
                           <div className="list--times ">
                             <div className="flexslider carousel">
                               <div className="flex-viewport" style={{ overflow: 'hidden', position: 'relative' }}>
-                                <ul className="tab--showtimes-controls slides">
+                                <ul className="tab--showtimes-controls slides"
+                                // style={{
+                                //   width: '2800%', transitionDuration: '0s',
+                                //   transform: 'translate3d(-10px, 0px, 0px)'
+                                // }}
+                                >
+
                                   {this.state.LichChieu.map((item, index) =>
                                     (item.NgayChieu === this.state.NgayChieu) ?
                                       <li className="padding-time"
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id js__active">
-                                          {
-                                            (thu[index] !== "Chủ nhật") ? 
-                                            <span className="week">Thứ {thu[index]}</span>
-                                          :
-                                            <span className="week">{thu[index]}</span>
-                                          }
-                                          <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
+                                          <span className="week">Thứ ...</span>
+                                          <span className="day" value={item.NgayChieu}
+                                          >{item.NgayChieu} </span>
                                         </a>
                                       </li>
                                       :
@@ -457,23 +424,35 @@ class Seat extends React.Component {
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id">
-                                          {
-                                            (thu[index] !== "Chủ nhật") ? 
-                                            <span className="week">Thứ {thu[index]}</span>
-                                          :
-                                            <span className="week">{thu[index]}</span>
-                                          }
+                                          <span className="week">Thứ ...</span>
                                           <span className="day" value={item.NgayChieu}
                                           >{item.NgayChieu} </span>
                                         </a>
                                       </li>
+
                                   )}
-                                </ul>
+                                </ul>{/* js__active */}
                               </div>
+
+                              {/* <ol className="flex-control-nav flex-control-paging">
+                                <li>
+                                  <a href="#" className>1</a></li>
+                                <li>
+                                  <a href="#" className="flex-active">14</a>
+                                </li>
+                              </ol> */}
+
+                              {/* <ul className="flex-direction-nav">
+                                <li className="flex-nav-prev">
+                                  <a className="flex-prev" href="#">Previous</a></li>
+                                <li className="flex-nav-next">
+                                  <a className="flex-next flex-disabled" href="#" tabIndex={-1}>Next</a>
+                                </li>
+                              </ul> */}
+
                             </div>
                             <div className="loading-rap hide">
-                              <span className="cssload-loader loading">
-                                <span className="cssload-loader-inner" /></span>
+                              <span className="cssload-loader loading"><span className="cssload-loader-inner" /></span>
                             </div>
 
                             <div className="tab--showtimes-contents">
@@ -481,6 +460,7 @@ class Seat extends React.Component {
                                 <ul className="list--showtimes-cinema">
                                   <li className="item--showtimes-cinema date_2020-06-20 date_2020-06-21 hide-date"
                                     data-date="2020-06-20" style={{ display: 'list-item' }}>
+
                                     <div className="info">
                                       <div className="inside">
                                         <h4 className="title">HTV Thủ Đức</h4>
@@ -494,7 +474,13 @@ class Seat extends React.Component {
                                     <div className="date_2020-06-20 hide-date" style={{ display: 'block' }}>
                                       <ul className="list--film-type">
                                         <li className="item--film-type">
+                                          {/* <div className="type">
+                                            <span>2D<br />SUB</span>
+                                            <span className="film-rating">C13</span>
+                                          </div> */}
+
                                           <ul className="times date_2020-06-20 hide-date" style={{ display: 'block' }}>
+
                                             {this.state.LichChieu.map((item, index) =>
                                               (item.NgayChieu === this.state.NgayChieu) ?
                                                 item.GioChieu.map((gc) =>
@@ -506,7 +492,7 @@ class Seat extends React.Component {
                                                         {gc.substring(0, gc.length - 5)}
                                                       </a>
                                                     </li>
-                                                    :
+                                                  :
                                                     <li onClick={this.HandleClickGio.bind(this, gc)}  >
                                                       <a className="time added-transaction-id"
                                                         value={gc}
@@ -517,18 +503,71 @@ class Seat extends React.Component {
                                                 )
                                                 : null
                                             )}
+
                                           </ul>
                                         </li>
                                       </ul>
                                     </div>
+
+                                    {/* <div className="date_2020-06-21 hide-date" style={{ display: 'none' }}>
+                                          <ul className="list--film-type">
+                                            <li className="item--film-type">
+                                              <div className="type">
+                                                <span>2D<br />SUB</span>
+                                                <span className="film-rating">C13</span>
+                                              </div>
+                                              <ul className="times date_2020-06-21 hide-date" style={{ display: 'none' }}>
+                                                <li><a className="time" >12:25</a></li>
+                                                <li><a className="time" >16:40</a></li>
+                                                <li><a className="time" >20:45</a></li>
+                                              </ul>
+                                            </li>
+                                          </ul>
+                                        </div> */}
+
                                   </li>
                                 </ul>
-                              </div>
-                            </div>
-                          </div>
+                              </div>{/* .tab- -content */}
+                            </div>{/* .tab- -showtimes-contents */}
+                          </div>{/* .list- -times */}
                         </div>
                       </div>
                       <div className="seat-map-wrapper">
+                        {/* <div className="row padding-pickday">
+                          <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 first-col">
+                            <htv-select>
+                              <div className="btn-select-sex login location">
+                                <select id="date"
+                                  onChange={this.HandleClickNgay} onClick={this.HandleClickNgay}>
+                                  <option value="" disabled selected tabIndex="6">Chọn ngày chiếu</option>
+                                  {this.state.LichChieu.map((item, index) =>
+                                    <option value={item.NgayChieu}>{item.NgayChieu}</option>
+                                  )}
+                                </select>
+                              </div>
+                            </htv-select>
+                          </div>
+
+
+                          <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 second-col">
+                            <htv-select>
+                              <div className="btn-select-sex login location">
+                                <select id="time"
+                                  onChange={this.HandleClickGio} >
+                                  <option value="" disabled selected tabIndex="6">Chọn suất chiếu</option>
+                                  {this.state.LichChieu.map((item, index) =>
+                                    (item.NgayChieu === this.state.NgayChieu) ?
+                                      item.GioChieu.map((gc) =>
+                                        <option value={gc}>{gc.substring(0, gc.length - 5)}</option>
+                                      )
+                                      : null
+                                  )}
+                                </select>
+                              </div>
+                            </htv-select>
+                          </div>
+                        </div> */}
+
                         <div className="col-md-12">
                           <div className="cinema-wrap">
                             <div className="" />
@@ -538,6 +577,7 @@ class Seat extends React.Component {
                                 <table>
                                   <tbody>
                                     {this.renderGhe()}
+
 
                                     <tr>
                                       <td />
@@ -582,11 +622,16 @@ class Seat extends React.Component {
                     || (Date.parse(item["NgayChieu"]) > Date.parse(Date()))) ?
                     <article className="row">
                       <div style={{ textAlign: 'center' }} className="col-md-12">
-                        <img src={"http://htvcinemas.live:8000/images/" + item.AnhBia} className="loading" data-was-processed="true" />
+                        <img src={"http://localhost:8000/images/" + item.AnhBia} className="loading" data-was-processed="true" />
                       </div>
                       <div className="col-md-12">
                         <div className="ticket-detail">
                           <h2 className="ticket-title upper-text">{item.TenFilm}</h2>
+                          {/* <div className="ticket-icon">
+                            <span><i className="icon-c16" />
+                              <span className="notice">(*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên</span>
+                            </span>
+                          </div> */}
                           <div className="ticket-info">
                             <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>
@@ -629,6 +674,18 @@ class Seat extends React.Component {
                             <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
                               <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
                           </div>
+
+                          {/* <div className="ticket-button">
+                            <select id="cars" onChange={this.onChangePay}>
+                              <option value="payonline">Thanh toán trực tuyến</option>
+                              <option value="payoffline">Thanh toán tại quầy</option>
+                            </select>
+                            <br />
+                            <br />
+                            <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
+                            <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
+                              <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
+                          </div> */}
 
                         </div>
                       </div>
