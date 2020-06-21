@@ -252,7 +252,7 @@ class AddFilm extends Component {
                                                         <div className="row">
                                                             <div className="col-12">
                                                                 <a href="/allfilms" className="btn btn-secondary">Cancel</a>
-                                                                <button type="submit" className="btn btn-success float-right">Thêm</button>
+                                                                <button type="submit" className="btn btn-success float-right">Add</button>
                                                             </div>
                                                         </div>
                                                     </form>

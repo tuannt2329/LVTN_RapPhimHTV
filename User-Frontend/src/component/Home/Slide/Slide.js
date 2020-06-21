@@ -28,6 +28,14 @@ class Slide extends React.Component {
     if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
     }
+    let count = 0
+    for(let i = 0; i < this.state.films.length; i++) {
+      if((Date.parse(this.state.films[i]["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(this.state.films[i]["NgayKetThuc"])))
+      || (Date.parse(this.state.films[i]["NgayChieu"]) > Date.parse(Date()))) {
+        count++
+        break
+      }
+    }
     return (
       <div id="main-carousel" data-ride="carousel" data-interval={3000} className="carousel slide">
         <ol className="carousel-indicators hidden-sm hidden-xs">
@@ -35,7 +43,7 @@ class Slide extends React.Component {
           {this.state.films.map((item, index) =>
             ((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))
               || (Date.parse(item["NgayChieu"]) > Date.parse(Date()))) ?
-              (index === 0) ?
+              (index === count) ?
                 <li data-target="#main-carousel" data-slide-to={0} className="active" />
                 :
                 <li data-target="#main-carousel" data-slide-to={index} />
@@ -48,7 +56,7 @@ class Slide extends React.Component {
           {this.state.films.map((item, index) =>
             ((Date.parse(item["NgayChieu"]) <= Date.parse(Date())) && (Date.parse(Date()) < (Date.parse(item["NgayKetThuc"])))
               || (Date.parse(item["NgayChieu"]) > Date.parse(Date()))) ?
-              (index === 0) ?
+              (index === count) ?
                 <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)} className="item active">
                   <img style={{ width: 1688, height: 505 }}
                     key={index}

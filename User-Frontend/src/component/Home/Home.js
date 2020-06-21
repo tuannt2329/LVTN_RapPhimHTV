@@ -11,10 +11,25 @@ class Home extends React.Component {
     }
   }
 
-  setStateFilms = async (data) => {
-   await this.setState({ films: data.film })
-   await console.log('state', this.state.films);
-   await this.setState({ show: true })
+  dynamicsort = (property) => {
+    return function (a, b){
+        // a should come before b in the sorted order
+        if(a[property] < b[property]){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a[property] > b[property]){
+                return 1;
+        // a and b are the same
+        }else{
+                return 0;
+        }
+    }
+  }
+
+  setStateFilms = (data) => {
+    let filmarr = data.film
+    filmarr.sort(this.dynamicsort("TenFilm"))
+    this.setState({ films: filmarr, show: true })
   }
 
   UNSAFE_componentWillMount() {
@@ -27,6 +42,7 @@ class Home extends React.Component {
 
 
   render() {
+    console.log(this.state.films)
     return (
       <div>
         {this.state.show === true ?

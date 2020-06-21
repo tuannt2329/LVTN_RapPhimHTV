@@ -21,10 +21,27 @@ class AllUsers extends Component {
     });
   }
 
+  dynamicsort = (property) => {
+    return function (a, b){
+        // a should come before b in the sorted order
+        if(a[property] < b[property]){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a[property] > b[property]){
+                return 1;
+        // a and b are the same
+        }else{
+                return 0;
+        }
+    }
+  }
+
   setStateFilms = (data) => {
+    let userarr = data
+    userarr.sort(this.dynamicsort("email"))
     this.setState({
-      admin: data.filter((a) => a.role === "admin"),
-      users: data.filter((b) => b.role === "user"),
+      admin: userarr.filter((a) => a.role === "admin"),
+      users: userarr.filter((b) => b.role === "user"),
     });
   };
 
