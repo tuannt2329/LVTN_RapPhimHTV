@@ -26,7 +26,7 @@ class FilmByCountry extends React.Component {
 
     UNSAFE_componentWillMount() {
         let TenNuocSX = { TenNuocSX: this.props.match.params.id.slice(1, this.props.match.params.id.length) };
-        axios.post("http://localhost:8000/film/find", TenNuocSX)
+        axios.post("http://htvcinemas.live:8000/film/find", TenNuocSX)
             .then(async (res) => {
                 await console.log('aaaaaaaa', res.data)
                 await this.setStateFilms(res.data);
@@ -49,7 +49,7 @@ class FilmByCountry extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.props.match.params.id !== prevProps.match.params.id) {
             let TenNuocSX = { TenNuocSX: this.props.match.params.id.slice(1, this.props.match.params.id.length) };
-            axios.post("http://localhost:8000/film/find", TenNuocSX)
+            axios.post("http://htvcinemas.live:8000/film/find", TenNuocSX)
                 .then(async (res) => {
                     await this.setStateFilms(res.data);
                 })
@@ -96,7 +96,7 @@ class FilmByCountry extends React.Component {
                                                                     <div className="article-movie-home">
                                                                         <img style={{ height: 264 }}
                                                                             key={index}
-                                                                            src={"http://localhost:8000/images/" + item.AnhBia}
+                                                                            src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                                                                             className="lazy loaded" />
                                                                         <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                             <div className="decription-hover overlay">
@@ -144,7 +144,7 @@ class FilmByCountry extends React.Component {
                                                                     <div className="article-movie-home">
                                                                         <img style={{ height: 264 }}
                                                                             key={index}
-                                                                            src={"http://localhost:8000/images/" + item.AnhBia}
+                                                                            src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                                                                             className="lazy loaded" />
                                                                         <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                             <div className="decription-hover overlay">

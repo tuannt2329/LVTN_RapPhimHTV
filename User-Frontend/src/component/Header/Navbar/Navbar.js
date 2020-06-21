@@ -47,7 +47,7 @@ class Navbar extends React.Component {
         const tennuocsxphim = {
             TenNuocSX: tennuocsx
         };
-        axios.post("http://localhost:8000/film/find", tennuocsxphim)
+        axios.post("http://htvcinemas.live:8000/film/find", tennuocsxphim)
             .then((res) => {
                 if (!res.data.error) {
                     console.log("tennuocsx", res.data.film);
