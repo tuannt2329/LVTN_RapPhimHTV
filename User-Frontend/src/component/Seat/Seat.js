@@ -195,7 +195,11 @@ class Seat extends React.Component {
       .then((res) => {
         if (!res.data.error) {
           this.setState({ TenPhong: res.data.schedule[0]["TenPhong"] });
-          this.getGhebyPhong(lichchieu)
+          if (localStorage.getItem('user') && this.state.choosing) {
+            this.getGhebyPhong(lichchieu)
+          } else {
+            return window.alert("Bạn cần đăng nhập trước khi chọn ghế")
+          }
         } else {
           return window.alert(res.data.error)
         }
@@ -395,7 +399,7 @@ class Seat extends React.Component {
           return window.location = '/successpayment';
         }
       } else {
-        return window.location = '/login';
+        return window.alert("Bạn cần đăng nhập trước khi đặt vé")
       }
     }
   }
