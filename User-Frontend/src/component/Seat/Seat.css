@@ -571,13 +571,15 @@ input[type="radio"i] {
   /* min-height: 350px; */
 }
 
-.padding-time{
+.padding-time {
   padding-right: 10%;
 }
+
 /**/
-.flex-viewport{
+.flex-viewport {
   padding: 2% 2% 2% 2%;
 }
+
 /* .showtimes:before{top: 0;background: url(../images/bg-cinema-top.png)top center;} */
 /* 
 .showtimes:after {
@@ -811,7 +813,7 @@ input[type="radio"i] {
 
 .showtimes .list--showtimes-cinema .item--showtimes-cinema .info .btn--location {
   color: #ffffff;
-  background: #ff9125;
+  background: #42af33;
   font-size: 12px;
   display: block;
   height: 30px;
@@ -829,7 +831,7 @@ input[type="radio"i] {
 }
 
 .showtimes .list--showtimes-cinema .item--showtimes-cinema .info .btn--location:hover {
-  background: #42af33;
+  background: #ff9125;
 }
 
 .showtimes .list--showtimes-cinema .item--showtimes-cinema .info .btn--location .fa {
@@ -964,6 +966,11 @@ input[type="radio"i] {
   color: #fff;
 }
 
+.showtimes .list--showtimes-cinema .list--film-type .item--film-type .times .time.js__active_button {
+  background: #ff9125;
+  color: #fff;
+}
+
 .showtimes .tab--showtimes-contents .tab--content {
   display: none
 }
@@ -1000,6 +1007,35 @@ input[type="radio"i] {
     position: relative;
     top: 0;
     margin: 0 auto 20px
+  }
+}
+
+@media (max-width: 991px) {
+  .showtimes .list--showtimes-cinema .list--film-type .item--film-type {
+    position: relative;
+    padding-top: 10%;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    min-height: 120px;
+    padding: center;
+  }
+
+  .showtimes .list--showtimes-cinema .list--film-type .item--film-type .times .time {
+    display: block;
+    font-size: 20px;
+    color: #97a5be;
+    width: 100px;
+    line-height: 43px;
+    text-align: center;
+    background: #10171e;
+    border: 2px solid #121c26;
+    margin-right: 12px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    transition: 0.4s ease all;
+    -moz-transition: 0.4s ease all;
+    -webkit-transition: 0.4s ease all;
   }
 }
 
