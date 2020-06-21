@@ -163,7 +163,7 @@ class Seat extends React.Component {
     stt = []
     strghe = ""
     tongtien = 0
-    console.log("chán", giochieu)
+    console.log("giochieu", giochieu)
     this.setState({ GioChieu: giochieu, choosing: [], TongTienVe: 0 });
 
     var lichchieu = {

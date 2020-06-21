@@ -92,7 +92,7 @@ class Seat extends React.Component {
             }
           }
           for (const n in list) {
-            var a = [""];
+            var a = [];
             for (const lc1 in res.data.schedule) {
               var lichchieu1 = (res.data.schedule[lc1]["ThoiGianChieu"]).split("T");
               if (lichchieu1[0] === list[n].NgayChieu) {
@@ -124,8 +124,12 @@ class Seat extends React.Component {
   }
 
   HandleClickNgay = (ngaychieu) => {
-    this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU' })
-    this.setState({ NgayChieu: ngaychieu.target.value });
+    stt = []
+    strghe = ""
+    tongtien = 0
+    console.log("xx", ngaychieu)
+    this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU', Ghe: [], choosing: [], TongTienVe: 0 })
+    this.setState({ NgayChieu: ngaychieu });
   }
 
   updateStatusGhe = (lichchieu) => {
@@ -159,11 +163,12 @@ class Seat extends React.Component {
     stt = []
     strghe = ""
     tongtien = 0
-    this.setState({ GioChieu: giochieu.target.value, choosing: [], TongTienVe: 0 });
+    console.log("giochieu", giochieu)
+    this.setState({ GioChieu: giochieu, choosing: [], TongTienVe: 0 });
 
     var lichchieu = {
       TenFilm: this.state.TenFilm,
-      ThoiGianChieu: this.state.NgayChieu + "T" + giochieu.target.value
+      ThoiGianChieu: this.state.NgayChieu + "T" + giochieu
     }
     axios.post('http://localhost:8000/schedule/find', lichchieu)
       .then((res) => {
@@ -177,6 +182,7 @@ class Seat extends React.Component {
   }
 
   renderGhe = () => {
+    let count = 0;
     if (this.state.choosing.length !== 0) {
     }
     var arr = [];
@@ -228,6 +234,8 @@ class Seat extends React.Component {
                     }
                   }
                 }
+                count++;
+                if (count === 4) return (<td className="road" colSpan={3}></td>)
                 return (
                   <td colSpan={2} className={status} key={index} onClick={this.handleGheOnclick.bind(this, item["TenGhe"], status)}>{item["TenGhe"]}</td>
                 );
@@ -376,6 +384,7 @@ class Seat extends React.Component {
   }
 
   render() {
+    console.log('dd', this.state.GioChieu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -386,42 +395,95 @@ class Seat extends React.Component {
                   <div className="col-md-12">
                     <section className="booking-ticket">
                       <h2 className="booking-title">Chọn ghế: &nbsp;<span className="select-seat" /></h2>
-                      <div className="seat-map-wrapper">
-                        <div className="row padding-pickday">
-                          <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 first-col">
-                            <htv-select>
-                              <div className="btn-select-sex login location">
-                                <select id="date"
-                                  onChange={this.HandleClickNgay} onClick={this.HandleClickNgay}>
-                                  <option value="" disabled selected tabIndex="6">Chọn ngày chiếu</option>
-                                  {this.state.LichChieu.map((item, index) =>
-                                    <option value={item.NgayChieu}>{item.NgayChieu}</option>
-                                  )}
-                                </select>
-                              </div>
-                            </htv-select>
-                          </div>
-
-
-                          <div className="col-md-4 col-sm-4 col-xs-12 col-xs-6 second-col">
-                            <htv-select>
-                              <div className="btn-select-sex login location">
-                                <select id="time"
-                                  onChange={this.HandleClickGio} >
-                                  <option value="" disabled selected tabIndex="6">Chọn suất chiếu</option>
+                      <div className="row padding-pickday">
+                        <div className="lich-chieu-phim showtimes flex-viewport">
+                          <h3 id="mua_ve">Lịch Chiếu</h3>
+                          <div className="list--times ">
+                            <div className="flexslider carousel">
+                              <div className="flex-viewport" style={{ overflow: 'hidden', position: 'relative' }}>
+                                <ul className="tab--showtimes-controls slides">
                                   {this.state.LichChieu.map((item, index) =>
                                     (item.NgayChieu === this.state.NgayChieu) ?
-                                      item.GioChieu.map((gc) =>
-                                        <option value={gc}>{gc.substring(0, gc.length - 5)}</option>
-                                      )
-                                      : null
+                                      <li className="padding-time"
+                                        style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
+                                        <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
+                                          className="tab--control js__tab_time_control not_active added-transaction-id js__active">
+                                          <span className="week">Thứ ...</span>
+                                          <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
+                                        </a>
+                                      </li>
+                                      :
+                                      <li className="padding-time"
+                                        style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
+                                        <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
+                                          className="tab--control js__tab_time_control not_active added-transaction-id">
+                                          <span className="week">Thứ ...</span>
+                                          <span className="day" value={item.NgayChieu}
+                                          >{item.NgayChieu} </span>
+                                        </a>
+                                      </li>
                                   )}
-                                </select>
+                                </ul>
                               </div>
-                            </htv-select>
+                            </div>
+                            <div className="loading-rap hide">
+                              <span className="cssload-loader loading">
+                                <span className="cssload-loader-inner" /></span>
+                            </div>
+
+                            <div className="tab--showtimes-contents">
+                              <div className="tab--content js__tab_time_content conatiner-rap js__active">
+                                <ul className="list--showtimes-cinema">
+                                  <li className="item--showtimes-cinema date_2020-06-20 date_2020-06-21 hide-date"
+                                    data-date="2020-06-20" style={{ display: 'list-item' }}>
+                                    <div className="info">
+                                      <div className="inside">
+                                        <h4 className="title">HTV Thủ Đức</h4>
+                                        <p>Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh Số 01, Võ Văn Ngân, Tỉnh Thủ Đức. </p>
+                                      </div>
+                                      <a href="https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+H%E1%BB%8Dc+S%C6%B0+Ph%E1%BA%A1m+K%E1%BB%B9+Thu%E1%BA%ADt+TP.+H%E1%BB%93+Ch%C3%AD+Minh/@10.8507786,106.7696897,17z/data=!3m1!4b1!4m5!3m4!1s0x3175270ad28d48ab:0xa6c02de0a7c40d6c!8m2!3d10.8507786!4d106.7718784?hl=vi-VN"
+                                        target="_blank" className="btn--location added-transaction-id">
+                                        <i className="fa fa-map-marker" />XEM VỊ TRÍ</a>
+                                    </div>
+
+                                    <div className="date_2020-06-20 hide-date" style={{ display: 'block' }}>
+                                      <ul className="list--film-type">
+                                        <li className="item--film-type">
+                                          <ul className="times date_2020-06-20 hide-date" style={{ display: 'block' }}>
+                                            {this.state.LichChieu.map((item, index) =>
+                                              (item.NgayChieu === this.state.NgayChieu) ?
+                                                item.GioChieu.map((gc) =>
+                                                  (gc === this.state.GioChieu) ?
+                                                    <li onClick={this.HandleClickGio.bind(this, gc)}  >
+                                                      <a className="time added-transaction-id js__active_button"
+                                                        value={gc}
+                                                      >
+                                                        {gc.substring(0, gc.length - 5)}
+                                                      </a>
+                                                    </li>
+                                                    :
+                                                    <li onClick={this.HandleClickGio.bind(this, gc)}  >
+                                                      <a className="time added-transaction-id"
+                                                        value={gc}
+                                                      >
+                                                        {gc.substring(0, gc.length - 5)}
+                                                      </a>
+                                                    </li>
+                                                )
+                                                : null
+                                            )}
+                                          </ul>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
                           </div>
                         </div>
-
+                      </div>
+                      <div className="seat-map-wrapper">
                         <div className="col-md-12">
                           <div className="cinema-wrap">
                             <div className="" />
@@ -431,7 +493,6 @@ class Seat extends React.Component {
                                 <table>
                                   <tbody>
                                     {this.renderGhe()}
-
 
                                     <tr>
                                       <td />
@@ -481,11 +542,6 @@ class Seat extends React.Component {
                       <div className="col-md-12">
                         <div className="ticket-detail">
                           <h2 className="ticket-title upper-text">{item.TenFilm}</h2>
-                          {/* <div className="ticket-icon">
-                            <span><i className="icon-c16" />
-                              <span className="notice">(*) Phim chỉ dành cho khán giả từ 16 tuổi trở lên</span>
-                            </span>
-                          </div> */}
                           <div className="ticket-info">
                             <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>
@@ -528,18 +584,6 @@ class Seat extends React.Component {
                             <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
                               <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
                           </div>
-
-                          {/* <div className="ticket-button">
-                            <select id="cars" onChange={this.onChangePay}>
-                              <option value="payonline">Thanh toán trực tuyến</option>
-                              <option value="payoffline">Thanh toán tại quầy</option>
-                            </select>
-                            <br />
-                            <br />
-                            <a className="btn primary-arrow primary-arrow-left" href='/detailfilm'>Quay lại</a>
-                            <a onClick={this.handleOnclickXacNhanDatVe} className="btn primary-arrow primary-arrow-right right">
-                              <i className="fa fa-pulse fa-spinner" />Tiếp tục</a>
-                          </div> */}
 
                         </div>
                       </div>
