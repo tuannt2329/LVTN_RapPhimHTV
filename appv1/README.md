@@ -28,3 +28,8 @@ Nếu quá trình chạy có lỗi, thử cách phổ biến nhất:
 
 **Tạo file apk**
 ...
+ react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+
+ cd android gradlew assembleRelease
+
+ trong file xml network configuration sua domain thanh domain can fetch (http)
