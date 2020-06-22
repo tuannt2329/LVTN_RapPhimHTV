@@ -12,7 +12,9 @@ class Navbar extends React.Component {
         this.setStateFilms = this.setStateFilms.bind(this)
         this.state = {
             films: [],
-            counter: 0, theloai1: null,
+            counter: 0, 
+            theloai1: null,
+            tennuocsx1: null
         }
     }
 
@@ -20,8 +22,8 @@ class Navbar extends React.Component {
         console.log(data)
         this.setState({ films: data, counter: 1 })
     }
-    setStateType = (data) => {
-        this.setState({ theloai1: data })
+    setStateType = async (data1, data2) => {
+        await this.setState({ theloai1: data1, tennuocsx1: data2 })
     }
     handleOnclickFilm = (tenphim) => {
         sessionStorage.setItem("tenphim", tenphim);
@@ -41,12 +43,27 @@ class Navbar extends React.Component {
             })
     }
 
+    findByTenNuocSX = (tennuocsx) => {
+        const tennuocsxphim = {
+            TenNuocSX: tennuocsx
+        };
+        axios.post("http://localhost:8000/film/find", tennuocsxphim)
+            .then((res) => {
+                if (!res.data.error) {
+                    console.log("tennuocsx", res.data.film);
+                } else {
+                    return window.alert(res.data.error);
+                }
+            })
+    }
+
     render() {
         if (this.props.films[0] && this.state.counter === 0) {
             this.setStateFilms(this.props.films)
         }
-        if (this.props.theloai[0] && this.state.theloai1 === null)
-            this.setStateType(this.props.theloai)
+        if ((this.props.theloai[0] && this.state.theloai1 === null)
+            && (this.props.tennuocsx[0] && this.state.tennuocsx1 === null))
+            this.setStateType(this.props.theloai, this.props.tennuocsx)
 
 
         return (
@@ -191,12 +208,19 @@ class Navbar extends React.Component {
                                     </div>
                                 </li>
                                 <li className="sub-nav">
-                                    <a>Điện ảnh</a>
+                                    <a>Nước sản xuất</a>
                                     <div id="sub-menu">
                                         <ul>
-                                            <li><a href="/">Đạo diễn</a></li>
+                                            {/* <li><a href="/">Đạo diễn</a></li>
                                             <li><a href="/">Diễn viên</a></li>
-                                            <li><a href="/">Tin tức phim</a></li>
+                                            <li><a href="/">Tin tức phim</a></li> */}
+                                            {
+                                                this.state.tennuocsx1 !== null ? this.state.tennuocsx1.map(i => (
+                                                    <li>
+                                                        <Link to={`/filmbycountry/:${i}`} onClick={this.findByTenNuocSX.bind(this, i)}>{i}</Link>
+                                                    </li>
+                                                )) : null
+                                            }
                                         </ul>
                                     </div>
                                 </li>

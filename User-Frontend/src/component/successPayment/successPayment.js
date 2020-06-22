@@ -1,11 +1,5 @@
 import React from 'react';
 import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
 class successPayment extends React.Component {
   constructor(props) {
     super(props);
@@ -24,46 +18,45 @@ class successPayment extends React.Component {
     if (JSON.parse(sessionStorage.getItem('ve'))) {
       const ve = JSON.parse(sessionStorage.getItem('ve'));
       this.setStateFilms(ve)
-      const tenfilm = { TenFilm: ve.TenFilm }
+      const tenfilm = {TenFilm: ve.TenFilm}
       axios.post('http://localhost:8000/film/find', tenfilm)
-        .then((res) => {
-          if (!res.data.error) {
-            this.setState({ films: res.data.film, AnhBia: res.data.film[0].AnhBia })
-          }
-        })
+      .then((res) => {
+        if(!res.data.error) {
+          this.setState({films: res.data.film, AnhBia: res.data.film[0].AnhBia})
+        }
+      })
     }
   }
 
   componentDidMount() {
-    if (this.state.ve.payed === false) {
+    if(this.state.ve.payed === false) {
+
       axios.post('http://localhost:8000/ticket/createticket', this.state.ve)
-        .then((res) => {
-          if (!res.data.error) {
-            const tongthu = {
-              TenFilm: this.state.films[0].TenFilm,
-              TongThu: this.state.ve.GiaVe + this.state.films[0].TongThu,
-              DaoDien: this.state.films[0].DaoDien,
-              TheLoai: this.state.films[0].TheLoai,
-              TenNuocSX: this.state.films[0].TenNuocSX,
-              TomTat: this.state.films[0].TomTat,
-              TongChi: this.state.films[0].TongChi,
-              NgayChieu: this.state.films[0].NgayChieu,
-              NgayKetThuc: this.state.films[0].NgayKetThuc
-            }
-            axios.put('http://localhost:8000/film/updatefilm', tongthu)
-              .then((res1) => {
-                if (!res1.data.error) {
-                } else {
-                  return window.alert(res1.data.error)
-                }
-              });
-          } else {
-            if (res.data.error === 'ticket exist!') {
+          .then((res) => {
+            if (!res.data.error) {
+              const tongthu = {
+                TenFilm: this.state.films[0].TenFilm,
+                TongThu: this.state.ve.GiaVe + this.state.films[0].TongThu,
+                DaoDien: this.state.films[0].DaoDien,
+                TheLoai: this.state.films[0].TheLoai,
+                TenNuocSX: this.state.films[0].TenNuocSX,
+                TomTat: this.state.films[0].TomTat,
+                TongChi: this.state.films[0].TongChi,
+                NgayChieu: this.state.films[0].NgayChieu,
+                NgayKetThuc: this.state.films[0].NgayKetThuc
+              }
+              axios.put('http://localhost:8000/film/updatefilm', tongthu)
+                .then((res1) => {
+                  if (!res1.data.error) {
+                  } else {
+                    return window.alert(res1.data.error)
+                  }
+                });
+            } else {
               window.alert(res.data.error)
               return window.location = '/seat'
             }
-          }
-        });
+          })
     }
   }
 

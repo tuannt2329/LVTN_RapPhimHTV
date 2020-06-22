@@ -12,6 +12,8 @@ class Header extends React.Component {
             films: [],
             theloai: [],
             theloai2: [],
+            tennuocsx: [],
+            tennuocsx2: [],
         }
     }
 
@@ -25,11 +27,14 @@ class Header extends React.Component {
                 res.data.film.filter(item =>
                     Date.parse(item["NgayKetThuc"]) > Date.parse(Date())).forEach(element => {
                         this.setState({
-                            theloai: [...this.state.theloai, element.TheLoai]
+                            theloai: [...this.state.theloai, element.TheLoai],
+                            tennuocsx: [...this.state.tennuocsx, element.TenNuocSX]
                         })
                     });
             }).then(r => this.setState({
                 theloai2: [... new Set(this.state.theloai)]
+            })).then( r=> this.setState({
+                tennuocsx2: [...new Set(this.state.tennuocsx)]
             }));
     }
 
@@ -85,7 +90,7 @@ class Header extends React.Component {
                 {/* <div className="navicon fixed-mobile"><a href="#" className="nav-toggle"><span /></a></div> */}
 
 
-                <NavbarHTV films={this.state.films} theloai={this.state.theloai2} />
+                <NavbarHTV films={this.state.films} theloai={this.state.theloai2} tennuocsx={this.state.tennuocsx2} />
 
 
             </div>

@@ -20,8 +20,25 @@ class AllFilms extends Component {
     });
   }
 
+  dynamicsort = (property) => {
+    return function (a, b){
+        // a should come before b in the sorted order
+        if(a[property] < b[property]){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a[property] > b[property]){
+                return 1;
+        // a and b are the same
+        }else{
+                return 0;
+        }
+    }
+  }
+
   setStateFilms = (data) => {
-    this.setState({ films: data.film });
+    let filmarr = data.film
+    filmarr.sort(this.dynamicsort("TenFilm"))
+    this.setState({ films: filmarr });
   };
 
   isLocalStorage = () => {
