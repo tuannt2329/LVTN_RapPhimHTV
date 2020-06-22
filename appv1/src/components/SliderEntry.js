@@ -43,7 +43,7 @@ class SliderEntry extends Component {
 
   render() {
     const {
-      data: {TenFilm, LuotXem},
+      data: {TenFilm, LuotLike},
       even,
     } = this.props;
     const film = this.props.data;
@@ -83,7 +83,7 @@ class SliderEntry extends Component {
           <Text
             style={[styles.subtitle, even ? styles.subtitleEven : {}]}
             numberOfLines={1}>
-            Lượt Xem {LuotXem}
+            Lượt thích {LuotLike}
           </Text>
           {/* <Text style={{flexDirection: 'row', textAlign:'right'}}>dat ve</Text> */}
         </View>

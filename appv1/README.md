@@ -1,6 +1,7 @@
 # Ứng dụng đặt vé version 1 -- android only
 
 Installation:
+NOTE: chỉnh sửa: phần paypal đang gán địa chỉ ip cứng
 ~~~~
 Bạn cần một AVD ( cài bên ngoài or dùng của android studio )
 Mở project

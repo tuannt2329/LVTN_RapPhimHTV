@@ -129,20 +129,65 @@ const styles = StyleSheet.create({
 });
 
 class Item extends Component {
-  constructor() {
-    super();
-    this.state = {showNavTitle: false, modal: false, isFollow: null};
+  constructor(props) {
+    super(props);
+    this.state = {
+      showNavTitle: false,
+      modal: false,
+      isFollow: null,
+      numLike: 0,
+      like: false,
+      LuotLike: this.props.film.LuotLike,
+      iconLike: 'like1',
+    };
   }
   onCloseModal = () => {
     this.setState({
       modal: false,
-      like: false,
     });
   };
   openModal = () => {
     this.setState({modal: true});
   };
-  pressLike = () => {};
+  pressLike = async () => {
+    if (this.state.like === false) {
+      console.log('like');
+      await this.setState({
+        like: true,
+        LuotLike: this.state.LuotLike + 1,
+        iconLike: 'check',
+      });
+    } else {
+      console.log('unlike');
+      await this.setState({
+        like: false,
+        LuotLike: this.state.LuotLike - 1,
+        iconLike: 'like1',
+      });
+    }
+    const putUpdate = async () => {
+      await fetch(`${types.API}film/updatefilm/`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          TenFilm: this.props.film.TenFilm,
+          LuotLike: this.state.LuotLike,
+        }),
+      })
+        .then(res => res.json())
+        .then(a => {
+          if (a.error) {
+            console.log('err');
+          } else {
+            console.log('ok');
+          }
+        });
+    };
+    putUpdate();
+  };
   pressFollow = () => {
     if (this.props.user !== null) {
       let followArray = this.props.film.TheoDoi;
@@ -364,7 +409,15 @@ class Item extends Component {
                   locations={[0.2, 0.5, 0.6]}
                   colors={['#4c669f', '#3b5998', '#192f6a']}
                   style={styles.keywordContainer}>
-                  <Text style={styles.keyword}>Like</Text>
+                  <Text style={styles.keyword}>
+                    <AntDesign
+                      // name="closecircle"
+                      name={this.state.iconLike}
+                      size={20}
+                      color="white"
+                    />
+                    Thích {this.state.LuotLike}
+                  </Text>
                 </LinearGradient>
               </TouchableOpacity>
               <TouchableOpacity

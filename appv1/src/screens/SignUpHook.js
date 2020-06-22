@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import SafeAreaView from 'react-native-safe-area-view';
-import CustomHeader from '../components/CustomHeader';
 import {
   Animated,
   Dimensions,
@@ -84,24 +83,7 @@ function SignUpHook({navigation}) {
       toValue: IMAGE_HEIGHT,
     }).start();
   };
-  // handle req
-  // nếu signup thành công chuyển về trang chủ, gọi reset store
-  // useEffect(() => {
-  //   console.log('errrrrrrrrrrrorrr effect', statuss);
-  //   if (statuss === 'SIGN_UP_ERROR') {
-  //     setError('Email đã được sử dụng');
-  //   }
-  //   if (statuss === 'SIGN_UP_DONE') {
-  //     navigation.dispatch(
-  //       CommonActions.reset({
-  //         index: 1,
-  //         routes: [{name: 'HomeStack'}],
-  //       }),
-  //     );
-  //     dispatch(LoginAction.resetRegister());
-  //   }
-  // }, [navigation, statuss, errors, dispatch]);
-
+ 
   // keyboard event
   useEffect(() => {
     console.log('keyboard event');

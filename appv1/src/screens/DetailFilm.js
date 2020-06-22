@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   Image,
-  ScrollView,
+  FlatList,
   Picker,
   StyleSheet,
   TouchableOpacity,
@@ -28,7 +28,21 @@ import * as types from '../constants';
 
 const MIN_HEIGHT = 100;
 const MAX_HEIGHT = 250;
-
+const data = [
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Áasdsad'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+  {hour: 'Á'},
+];
 // Detail of the movie with data is passing from carousel through route
 function DetailFilm({route, navigation}) {
   const {film} = route.params;
@@ -100,9 +114,9 @@ function DetailFilm({route, navigation}) {
 
   function selectedDate(item, index) {
     console.log('Ngay', item);
-    setDate(item);
+    setDate(item.NgayChieu);
     arrDate.map(value => {
-      if (value.NgayChieu === item) {
+      if (value.NgayChieu === item.NgayChieu) {
         setTime(value.GioChieu);
         setHours(value.GioChieu[0]);
       }
@@ -323,7 +337,53 @@ function DetailFilm({route, navigation}) {
     }
     a();
   }, [ok]);
+
+  function renderScrollHorizontal({item}) {
+    let day = new Date(item.NgayChieu.split('T')[0]);
+    return (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: 120,
+          borderColor: 'red',
+          borderWidth: 1,
+          borderRadius: 10,
+          backgroundColor: 'blue',
+          margin: 2,
+        }}>
+        <TouchableOpacity onPress={() => selectedDate(item)}>
+          <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+            {day.getDay() === 0
+              ? `Chủ Nhật `
+              : day.getDay() === 1
+              ? `Thứ 2`
+              : day.getDay() === 2
+              ? `Thứ 3`
+              : day.getDay() === 3
+              ? 'Thứ 4'
+              : day.getDay() === 4
+              ? `Thứ 5`
+              : day.getDay() === 5
+              ? `Thứ 6`
+              : day.getDay() === 6
+              ? `Thứ 7`
+              : null}
+          </Text>
+          <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+            {item.NgayChieu.split('T')[0]
+              .slice(0, 10)
+              .split('-')
+              .reverse()
+              .join('-')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   //
+
   // var fullDate = new Date(film.NgayKetThuc);
   // console.log(fullDate);
   // var twoDigitMonth = fullDate.getMonth() + '';
@@ -368,6 +428,7 @@ function DetailFilm({route, navigation}) {
       </TouchableOpacity>
     ),
   });
+
   return (
     <View flex={1}>
       <View flex={8}>
@@ -428,7 +489,7 @@ function DetailFilm({route, navigation}) {
               */}
               <View
                 style={{
-                  flex: 1,
+                  flex: 3,
                   width: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -440,7 +501,7 @@ function DetailFilm({route, navigation}) {
                   */}
                 <View
                   style={{
-                    flex: 1,
+                    flex: 0.3,
                     alignContent: 'center',
                     width: '15%',
                     justifyContent: 'center',
@@ -474,7 +535,7 @@ function DetailFilm({route, navigation}) {
                 */}
                 <View
                   style={{
-                    flex: 3,
+                    flex: 2.3,
                     width: '100%',
                     // justifyContent: 'center',
                     backgroundColor: 'white',
@@ -494,35 +555,18 @@ function DetailFilm({route, navigation}) {
                       flex: 2,
                       backgroundColor: 'white',
                       width: '100%',
-                      flexDirection: 'row',
+                      flexDirection: 'column',
                       flexWrap: 'wrap',
                     }}>
-                    <View style={{flex: 1, width: '100%'}}>
-                      <Text
-                        style={{
-                          marginTop: 10,
-                        }}>
-                        Chọn Ngày:
-                      </Text>
-                      {/* <TouchableOpacity onPress={showDatePicker}>
-                      <FontAwesome5Icon
-                        name="calendar"
-                        size={40}
-                        color="black"
-                        style={{width: '100%'}}
-                      />
-                    </TouchableOpacity>
-                    <DateTimePickerModal
-                      isVisible={isDatePickerVisible}
-                      mode="date"
-                      onConfirm={handleConfirm}
-                      onCancel={hideDatePicker}
-                      // value={new Date(start)}
-                      minimumDate={new Date(start)}
-                      maximumDate={new Date(end)}
-                    />
-                    <Text>{date}</Text> */}
-                      <Picker
+                    {show === false || haveSchedule === false ? null : (
+                      <View style={{flex: 2, width: '100%'}}>
+                        <Text
+                          style={{
+                            marginTop: 10,
+                          }}>
+                          Chọn Ngày:
+                        </Text>
+                        {/* <Picker
                         itemStyle={{
                           // flex: 1,
                           alignItems: 'center',
@@ -549,36 +593,82 @@ function DetailFilm({route, navigation}) {
                                   .toString()}
                               />
                             ))}
-                      </Picker>
-                    </View>
+                      </Picker> */}
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            width: '100%',
+                          }}>
+                          <View style={{height: 100}}>
+                            <FlatList
+                              style={{backgroundColor: 'white', opacity: 0.5}}
+                              horizontal={true}
+                              data={arrDate.sort((a, b) =>
+                                Date.parse(a.NgayChieu) >
+                                Date.parse(b.NgayChieu)
+                                  ? 1
+                                  : Date.parse(b.NgayChieu) >
+                                    Date.parse(a.NgayChieu)
+                                  ? -1
+                                  : 0,
+                              )}
+                              renderItem={renderScrollHorizontal}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    )}
                     <View style={{flex: 1, width: '100%'}}>
+                      {date !== null ? (
+                        <>
+                          <Text
+                            style={{
+                              marginTop: 10,
+                            }}>
+                            {`Các khung giờ cho ngày ${date
+                              .split('T')[0]
+                              .slice(0, 10)
+                              .split('-')
+                              .reverse()
+                              .join('-')}`}
+                          </Text>
+                          <Picker
+                            itemStyle={{
+                              // flex: 1,
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              textAlign: 'center',
+                            }}
+                            selectedValue={hour}
+                            style={{top: 15, width: '100%'}}
+                            mode="dropdown"
+                            onValueChange={(itemValue, itemIndex) =>
+                              selectedHour(itemValue, itemIndex)
+                            }>
+                            {date !== null
+                              ? time.map(val => (
+                                  <Picker.Item
+                                    label={val.toString()}
+                                    value={val}
+                                  />
+                                ))
+                              : null}
+                          </Picker>
+                        </>
+                      ) : null}
+
                       <Text
                         style={{
-                          marginTop: 10,
-                        }}>
-                        Chọn giờ:
-                      </Text>
-                      <Picker
-                        itemStyle={{
-                          // flex: 1,
+                          color: 'red',
+                          fontSize: 20,
+                          width: '100%',
                           alignItems: 'center',
-                          justifyContent: 'center',
                           textAlign: 'center',
-                        }}
-                        selectedValue={hour}
-                        style={{top: 15, width: '100%'}}
-                        mode="dropdown"
-                        onValueChange={(itemValue, itemIndex) =>
-                          selectedHour(itemValue, itemIndex)
-                        }>
-                        {date !== null
-                          ? time.map(val => (
-                              <Picker.Item label={val.toString()} value={val} />
-                            ))
-                          : null}
-                      </Picker>
-                      <Text>
-                        {haveSchedule ? null : 'Phim chua co lich chieu'}
+                        }}>
+                        {haveSchedule
+                          ? null
+                          : 'Phim tạm thời chưa có lịch chiếu,\n chúng tôi sẽ cập nhật sau!'}
                       </Text>
                     </View>
                   </View>
@@ -592,7 +682,28 @@ function DetailFilm({route, navigation}) {
                     }}>
                     <TouchableOpacity
                       onPress={() => {
-                        if (date === null || hour === null) {
+                        if (user === null) {
+                          Alert.alert(
+                            'Đăng Nhập Ngay?',
+                            'Không thể đặt vé khi không có tài khoản',
+                            [
+                              {
+                                text: 'Hủy',
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: 'cancel',
+                              },
+                              {
+                                text: 'OK',
+                                onPress: () => {
+                                  setModal(false);
+                                  navigation.navigate('Login', {
+                                    continueBooking: true,
+                                  });
+                                },
+                              },
+                            ],
+                          );
+                        } else if (date === null || hour === null) {
                           Alert.alert(
                             'Chon thời gian',
                             'Chọn đầy đủ ngày và giờ chiếu',
@@ -611,7 +722,10 @@ function DetailFilm({route, navigation}) {
                               console.log(a);
                             }
                           });
-                          navigation.navigate('Seat', {schedule: a}),
+                          navigation.navigate('Seat', {
+                            schedule: a,
+                            detailfilm: film,
+                          }),
                             setModal(false);
                         }
                       }}
@@ -697,36 +811,7 @@ function DetailFilm({route, navigation}) {
               <TouchableOpacity
                 // gradient
                 onPress={() => {
-                  // if (new Date(start) > new Date()) {
-                  //   Alert.alert(
-                  //     'Phim chưa được công chiếu',
-                  //     `Trở lại vào ngày ${start}`,
-                  //   );
-                  //   return;
-                  // } else {
-                  //   {
-                  user === null
-                    ? Alert.alert(
-                        'Đăng Nhập Ngay?',
-                        'Không thể đặt vé khi không có tài khoản',
-                        [
-                          {
-                            text: 'Hủy',
-                            onPress: () => console.log('Cancel Pressed'),
-                            style: 'cancel',
-                          },
-                          {
-                            text: 'OK',
-                            onPress: () => {
-                              setModal(false);
-                              navigation.navigate('Login', {
-                                continueBooking: true,
-                              });
-                            },
-                          },
-                        ],
-                      )
-                    : setModal(true);
+                  setModal(true);
                   //   }
                   // }
                   // setModal(true);

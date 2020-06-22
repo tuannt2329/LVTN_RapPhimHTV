@@ -108,8 +108,13 @@ function TicketUnuse({films, image}) {
                     .toFixed(1)
                     .replace(/\d(?=(\d{3})+\.)/g, '$&,')
                     .split('.0')[0]
-                } 
-                 VND
+                }
+                VND
+              </Text>
+            </Text>
+            <Text style={styles.cardSize}>
+              <Text style={{color: 'red'}}>
+                {item.payed === true ? null : 'Chưa thanh toán'}
               </Text>
             </Text>
           </View>
@@ -119,7 +124,6 @@ function TicketUnuse({films, image}) {
   }
   return (
     <View style={{flex: 1}}>
-      <Text>xin chao cac banj</Text>
       <View
         style={{
           flex: 5,

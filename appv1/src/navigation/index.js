@@ -349,12 +349,15 @@ const DrawerContent = props => {
                   color: 'black',
                   fontWeight: 'bold',
                   // marginLeft: -16,
-                  fontSize: 20,
+                  fontSize: 15,
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('DetailAccount')}
                 icon={() => (
-                  <MaterialCommunityIcons name={'account-details'} size={30} />
+                  <MaterialCommunityIcons
+                    name={'account-circle-outline'}
+                    size={30}
+                  />
                 )}
               />
 
@@ -364,12 +367,29 @@ const DrawerContent = props => {
                   color: 'black',
                   fontWeight: 'bold',
                   // marginLeft: -16,
-                  fontSize: 20,
+                  fontSize: 15,
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('Ticket')}
                 icon={() => (
-                  <MaterialCommunityIcons name={'account-details'} size={30} />
+                  <MaterialCommunityIcons name={'movie-outline'} size={30} />
+                )}
+              />
+              <DrawerItem
+                label="Phim theo tên"
+                labelStyle={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  // marginLeft: -16,
+                  fontSize: 15,
+                }}
+                style={styles.drawerItem}
+                onPress={() => props.navigation.navigate('ListFilmSearchName')}
+                icon={() => (
+                  <MaterialCommunityIcons
+                    name={'file-find-outline'}
+                    size={30}
+                  />
                 )}
               />
             </View>
