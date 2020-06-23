@@ -25,7 +25,7 @@ class TicketHistory extends React.Component {
         email: email,
         status: true
       }
-      axios.post('http://localhost:8000/ticket/find', ve)
+      axios.post('http://htvcinemas.live:8000/ticket/find', ve)
         .then((res) => {
           if (!res.data.error) {
             this.setState({ ve: res.data.ticket });
@@ -46,7 +46,7 @@ class TicketHistory extends React.Component {
     var Tenfilm = {
       TenFilm: tenfilm
     }
-    axios.post('http://localhost:8000/film/find', Tenfilm)
+    axios.post('http://htvcinemas.live:8000/film/find', Tenfilm)
       .then((res) => {
         if (images.length === 0) {
           images.push(res.data.film[0]);
@@ -92,7 +92,7 @@ class TicketHistory extends React.Component {
                     (item["TenFilm"] === items["TenFilm"]) ?
                       <img style={{ width: 425, height: 317 }}
                         key={index + 100}
-                        src={"http://localhost:8000/images/" + items["AnhBia"]} alt={items.TenFilm}
+                        src={"http://htvcinemas.live:8000/images/" + items["AnhBia"]} alt={items.TenFilm}
                         className="lazy loaded" />
                       :
                       null

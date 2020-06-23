@@ -15,7 +15,7 @@ class StatisticalRevenue extends Component {
 
     }
     UNSAFE_componentWillMount() {
-        axios.get("http://localhost:3001/film/thuchi")
+        axios.get("http://htvcinemas.live:3001/film/thuchi")
             .then((res) => {
                 if(res.data.length !== 0) {
                     this.setStateFilms(res.data);

@@ -16,25 +16,25 @@ class DetailFilm extends React.Component {
   UNSAFE_componentWillMount() {
     var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
 
-    // axios.post("http://localhost:8000/film/find", TenFilm)
+    // axios.post("http://htvcinemas.live:8000/film/find", TenFilm)
     //   .then((res) => {
     //     this.setStateFilms(res.data);
-    //     axios.post("http://localhost:8000/film/find")
+    //     axios.post("http://htvcinemas.live:8000/film/find")
     //       .then((res1) => {
     //         console.log(res1.data);
     //       })
     //   })
 
-    // axios.post("http://localhost:8000/film/find", TenFilm)
+    // axios.post("http://htvcinemas.live:8000/film/find", TenFilm)
     // .then((res) => {
     //     this.setStateFilms(res.data.film[0]);
-    //     axios.post("http://localhost:8000/film/find")
+    //     axios.post("http://htvcinemas.live:8000/film/find")
     //       .then((res1) => {
     //         console.log(res1.data);
     //       })
     //   });
 
-    axios.post("http://localhost:8000/film/find", TenFilm)
+    axios.post("http://htvcinemas.live:8000/film/find", TenFilm)
       .then((res) => {
         this.setStateFilms(res.data)
       })
