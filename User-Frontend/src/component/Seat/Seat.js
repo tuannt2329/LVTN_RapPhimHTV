@@ -411,12 +411,14 @@ class Seat extends React.Component {
 
   render() {
     let thu = []
-    for(let i = 0; i < this.state.LichChieu.length; i++) {
-      let date = new Date(this.state.LichChieu[i].NgayChieu)
-      if(date.getDay() + 1 === 1) {
-        thu.push("Chủ nhật")
-      } else {
-        thu.push(date.getDay() + 1)  
+    if(this.state.LichChieu.NgayChieu) {
+      for(let i = 0; i < this.state.LichChieu.length; i++) {
+        let date = new Date(this.state.LichChieu[i].NgayChieu)
+        if(date.getDay() + 1 === 1) {
+          thu.push("Chủ nhật")
+        } else {
+          thu.push(date.getDay() + 1)  
+        }
       }
     }
     
@@ -438,16 +440,20 @@ class Seat extends React.Component {
                               <div className="flex-viewport" style={{ overflow: 'hidden', position: 'relative' }}>
                                 <ul className="tab--showtimes-controls slides">
                                   {this.state.LichChieu.map((item, index) =>
+                                  (thu[index]) ?
                                     (item.NgayChieu === this.state.NgayChieu) ?
                                       <li className="padding-time"
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id js__active">
                                           {
-                                            (thu[index] !== "Chủ nhật") ? 
-                                            <span className="week">Thứ {thu[index]}</span>
-                                          :
-                                            <span className="week">{thu[index]}</span>
+                                            (thu[index]) ?
+                                              (thu[index] !== "Chủ nhật") ? 
+                                              <span className="week">Thứ {thu[index]}</span>
+                                              :
+                                              <span className="week">{thu[index]}</span>
+                                            : 
+                                              null
                                           }
                                           <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
                                         </a>
@@ -458,15 +464,23 @@ class Seat extends React.Component {
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
                                           className="tab--control js__tab_time_control not_active added-transaction-id">
                                           {
-                                            (thu[index] !== "Chủ nhật") ? 
-                                            <span className="week">Thứ {thu[index]}</span>
-                                          :
-                                            <span className="week">{thu[index]}</span>
+                                            (thu[index]) ?
+                                              (thu[index] !== "Chủ nhật") ? 
+                                                <span className="week">Thứ {thu[index]}</span>
+                                              :
+                                                <span className="week">{thu[index]}</span>
+                                            : 
+                                              null
                                           }
-                                          <span className="day" value={item.NgayChieu}
-                                          >{item.NgayChieu} </span>
+                                          <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
                                         </a>
                                       </li>
+                                    :
+                                      <center>
+                                          <a id="showtime-tab-1" className="tab--control js__tab_time_control not_active added-transaction-id">
+                                            <span className="week">Hiện tại chưa có lịch chiếu</span>
+                                          </a>
+                                      </center>
                                   )}
                                 </ul>
                               </div>
