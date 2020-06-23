@@ -60,24 +60,24 @@ class Slide extends React.Component {
                 <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)} className="item active">
                   <img style={{ width: 1688, height: 505 }}
                     key={index}
-                    src={"http://localhost:8000/images/" + item.AnhBia}
+                    src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
                   <img style={{ width: 400, height: 200 }}
                     key={index}
-                    src={"http://localhost:8000/images/" + item.AnhBia}
+                    src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                     className="lazy hidden-md hidden-lg" />
                 </Link>
                 :
                 <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)} className="item">
                   <img style={{ width: 1688, height: 505 }}
                     key={index}
-                    src={"http://localhost:8000/images/" + item.AnhBia}
+                    src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                     className="lazy hidden-xs hidden-sm loaded" />
                   {/* ReponSive for mobile */}
                   <img style={{ width: 400, height: 200 }}
                     key={index}
-                    src={"http://localhost:8000/images/" + item.AnhBia}
+                    src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                     className="lazy hidden-md hidden-lg" />
                 </Link>
               :

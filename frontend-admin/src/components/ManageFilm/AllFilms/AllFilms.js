@@ -15,7 +15,7 @@ class AllFilms extends Component {
 
   UNSAFE_componentWillMount() {
     this.isLocalStorage();
-    axios.post("http://localhost:8000/film/find").then((res) => {
+    axios.post("http://htvcinemas.live:8000/film/find").then((res) => {
       this.setStateFilms(res.data);
     });
   }
@@ -58,7 +58,7 @@ class AllFilms extends Component {
     if (window.confirm("Do you really want to delete?")) {
       var tenfilm = { TenFilm: tenphim };
       axios
-        .put("http://localhost:8000/film/deletefilm", tenfilm)
+        .put("http://htvcinemas.live:8000/film/deletefilm", tenfilm)
         .then((res) => {
           window.location.reload();
         });

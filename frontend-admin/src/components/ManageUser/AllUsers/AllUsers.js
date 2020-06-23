@@ -16,7 +16,7 @@ class AllUsers extends Component {
   componentDidMount() {}
   UNSAFE_componentWillMount() {
     this.isLocalStorage();
-    axios.post("http://localhost:8000/user/find").then((res) => {
+    axios.post("http://htvcinemas.live:8000/user/find").then((res) => {
       this.setStateFilms(res.data.user);
     });
   }
@@ -61,7 +61,7 @@ class AllUsers extends Component {
   handleOnclickDelete = (email) => {
     if (window.confirm("Do you really want to delete?")) {
       var email = { email: email };
-      axios.put("http://localhost:8000/user/deleteuser", email).then((res) => {
+      axios.put("http://htvcinemas.live:8000/user/deleteuser", email).then((res) => {
         window.location.reload();
       });
     }
