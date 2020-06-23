@@ -411,7 +411,7 @@ class Seat extends React.Component {
 
   render() {
     let thu = []
-    if(this.state.LichChieu.NgayChieu) {
+    if(this.state.LichChieu[0].NgayChieu) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
         let date = new Date(this.state.LichChieu[i].NgayChieu)
         if(date.getDay() + 1 === 1) {
@@ -421,7 +421,7 @@ class Seat extends React.Component {
         }
       }
     }
-    
+
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -458,7 +458,7 @@ class Seat extends React.Component {
                                           <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
                                         </a>
                                       </li>
-                                      :
+                                    :
                                       <li className="padding-time"
                                         style={{ width: '70px', marginRight: '0px', float: 'left', display: 'block' }}>
                                         <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, item.NgayChieu)}
@@ -475,7 +475,7 @@ class Seat extends React.Component {
                                           <span className="day" value={item.NgayChieu}>{item.NgayChieu} </span>
                                         </a>
                                       </li>
-                                    :
+                                  :
                                       <center>
                                           <a id="showtime-tab-1" className="tab--control js__tab_time_control not_active added-transaction-id">
                                             <span className="week">Hiện tại chưa có lịch chiếu</span>
