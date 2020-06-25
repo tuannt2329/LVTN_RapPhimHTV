@@ -22,6 +22,7 @@ import DotIndicator from '../components/indicator/DotIndicator';
 import LinearGradient from 'react-native-linear-gradient';
 import styless from '../constants/index.style';
 import {useIsFocused} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const couple = [
   {key: 'Y1', color: 'pink'},
@@ -52,11 +53,7 @@ function Seat({route, navigation}) {
             }),
           )
         }>
-        <Image
-          source={require('../assets/imgs/home.png')}
-          style={{height: 30, width: 50}}
-          resizeMode="contain"
-        />
+        <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });

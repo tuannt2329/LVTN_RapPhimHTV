@@ -22,6 +22,7 @@ import {CommonActions} from '@react-navigation/native';
 import * as types from '../constants';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const window = Dimensions.get('window');
 
@@ -59,11 +60,7 @@ function SignUpHook({navigation}) {
             }),
           )
         }>
-        <Image
-          source={require('../assets/imgs/home.png')}
-          style={{height: 30, width: 50}}
-          resizeMode="contain"
-        />
+        <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });
@@ -83,7 +80,7 @@ function SignUpHook({navigation}) {
       toValue: IMAGE_HEIGHT,
     }).start();
   };
- 
+
   // keyboard event
   useEffect(() => {
     console.log('keyboard event');

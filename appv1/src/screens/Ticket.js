@@ -5,12 +5,15 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import TicketUnuse from '../tab/TicketUnuse';
 import TicketUsed from '../tab/TicketUsed';
 import * as types from '../constants';
+import {CommonActions} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const mariner = '#3B5F8F';
 const mediumPurple = '#8266D4';
@@ -28,6 +31,25 @@ function Ticket({navigation, route}) {
   const [listTicket, setListTicket] = useState(null);
   const [image, setImage] = useState([]);
   const [done, setDone] = useState(false);
+  navigation.setOptions({
+    title: 'Lịch sử vé',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={async () =>
+          await navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'Home'}],
+            }),
+          )
+        }>
+        <Entypo name={'home'} size={40} color="black" />
+      </TouchableOpacity>
+    ),
+  });
   useEffect(() => {
     let objImage = [];
 

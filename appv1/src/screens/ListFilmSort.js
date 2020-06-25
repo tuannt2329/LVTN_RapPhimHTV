@@ -15,6 +15,8 @@ import Carousel from 'react-native-snap-carousel';
 import * as Constant from '../constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+import {CommonActions} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 export default function ListFilmSort({navigation, route}) {
   const carouselRef = useRef(null);
@@ -48,6 +50,26 @@ export default function ListFilmSort({navigation, route}) {
   const [background, setBackground] = useState(
     `${Constant.API}/images/${list[0].AnhBia}`,
   );
+
+  navigation.setOptions({
+    title: 'Danh sách phim',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={async () =>
+          await navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'Home'}],
+            }),
+          )
+        }>
+        <Entypo name={'home'} size={40} color="black" />
+      </TouchableOpacity>
+    ),
+  });
   useEffect(() => {
     async function a() {
       console.log('will mount');

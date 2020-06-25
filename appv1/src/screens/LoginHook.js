@@ -25,6 +25,7 @@ const window = Dimensions.get('window');
 const IMAGE_HEIGHT = 100;
 const IMAGE_HEIGHT_SMALL = 0;
 const imageHeight = new Animated.Value(IMAGE_HEIGHT);
+import Entypo from 'react-native-vector-icons/Entypo';
 
 LoginHook.propTypes = {};
 const keyboardDidShow = event => {
@@ -62,11 +63,7 @@ function LoginHook({navigation, route}) {
             }),
           )
         }>
-        <Image
-          source={require('../assets/imgs/home.png')}
-          style={{height: 30, width: 50}}
-          resizeMode="contain"
-        />
+        <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });

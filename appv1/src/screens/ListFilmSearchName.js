@@ -16,6 +16,7 @@ const API = 'https://swapi.co/api';
 const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonActions} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 class AutocompleteExample extends Component {
   static renderFilm(film, navigation) {
@@ -49,7 +50,7 @@ class AutocompleteExample extends Component {
       query: '',
     };
     this.props.navigation.setOptions({
-      title: 'Nội Dung Phim',
+      title: 'Tìm phim theo tên',
       headerTitleStyle: {
         fontWeight: 'bold',
       },
@@ -68,7 +69,7 @@ class AutocompleteExample extends Component {
             style={{height: 30, width: 50}}
             resizeMode="contain"
           /> */}
-          <AntDesign name={'home'} size={40} color="black" />
+          <Entypo name={'home'} size={40} color="black" />
         </TouchableOpacity>
       ),
     });
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     // right: 0,
     // top: 0,
     // zIndex: 1,
-    borderColor: 'red',
+    borderColor: 'white',
     borderWidth: 3,
   },
   itemText: {

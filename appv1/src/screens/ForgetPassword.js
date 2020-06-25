@@ -27,6 +27,9 @@ import CustomHeader from '../components/CustomHeader';
 import Block from '../components/block';
 import TextComponent from '../components/text';
 import {CommonActions} from '@react-navigation/native';
+import * as types from '../constants';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 class ForgetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -55,11 +58,7 @@ class ForgetPassword extends React.Component {
               }),
             )
           }>
-          <Image
-            source={require('../assets/imgs/home.png')}
-            style={{height: 30, width: 50}}
-            resizeMode="contain"
-          />
+          <Entypo name={'home'} size={40} color="black" />
         </TouchableOpacity>
       ),
     });
@@ -104,7 +103,7 @@ class ForgetPassword extends React.Component {
     // console.log('from fnc', this.props.error.error);
     // console.log('from fnc', this.props.info);
     console.log('forgot', email);
-    const t = fetch('http://192.168.56.1:8000/user/verification/', {
+    const t = fetch(`${types.API}user/verification/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -133,7 +132,7 @@ class ForgetPassword extends React.Component {
   changePass = (email, code, pass) => {
     console.log('forgot', email);
     this.setState({loading: true});
-    const t = fetch('http://192.168.56.1:8000/user/updateInfo/', {
+    const t = fetch(`${types.API}user/updateInfo/`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',

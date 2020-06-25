@@ -135,7 +135,6 @@ function TicketUsed({films, image}) {
   }
   return (
     <View style={{flex: 1}}>
-      <Text>xin chao cac banj</Text>
       <View
         style={{
           flex: 5,

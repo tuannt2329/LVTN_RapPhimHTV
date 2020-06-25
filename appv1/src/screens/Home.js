@@ -36,7 +36,7 @@ function Home({navigation}) {
   };
   useEffect(() => {
     //Update the state you want to be updated
-    console.log('force update')
+    console.log('force update');
     getList();
   }, [isFocused]);
   useEffect(() => {
@@ -94,7 +94,10 @@ function Home({navigation}) {
                 data: film,
               })
             }>
-            <Text style={styles.textListFilm}> Tất cả các phim </Text>
+            <Text style={styles.textListFilm}>
+              {' '}
+              Danh sách các phim hiện có{' '}
+            </Text>
           </Button>
         ) : (
           <DotIndicator />

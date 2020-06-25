@@ -25,24 +25,11 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 const {width} = Dimensions.get('window');
 import {useSelector} from 'react-redux';
 import * as types from '../constants';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const MIN_HEIGHT = 100;
 const MAX_HEIGHT = 250;
-const data = [
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Áasdsad'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-  {hour: 'Á'},
-];
+
 // Detail of the movie with data is passing from carousel through route
 function DetailFilm({route, navigation}) {
   const {film} = route.params;
@@ -424,7 +411,7 @@ function DetailFilm({route, navigation}) {
           style={{height: 30, width: 50}}
           resizeMode="contain"
         /> */}
-        <AntDesign name={'home'} size={40} color="black" />
+        <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });

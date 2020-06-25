@@ -23,6 +23,7 @@ import * as types from '../constants';
 import DotIndicator from '../components/indicator/DotIndicator';
 import {theme} from '../components/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const window = Dimensions.get('window');
 
@@ -64,11 +65,7 @@ function DetailAccount({navigation}) {
             }),
           )
         }>
-        <Image
-          source={require('../assets/imgs/home.png')}
-          style={{height: 30, width: 50}}
-          resizeMode="contain"
-        />
+        <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
   });
@@ -125,7 +122,7 @@ function DetailAccount({navigation}) {
     console.log('mount');
     setEmail(user.user.email);
 
-    async function a(){
+    async function a() {
       await fetch(`${types.API}user/find/`, {
         method: 'POST',
         headers: {
@@ -138,7 +135,7 @@ function DetailAccount({navigation}) {
       })
         .then(res => res.json())
         .then(async users => {
-          console.log(users)
+          console.log(users);
           if (users.user[0].gender === 'male') {
             console.log('male');
             console.log(selectedIndex);
@@ -269,7 +266,7 @@ function DetailAccount({navigation}) {
           />
         </View>
         <View style={styles.inputView}>
-           <Input
+          <Input
             placeholder="Mật khẩu..."
             secureTextEntry={showPassword}
             style={styles.inputText}
