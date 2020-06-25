@@ -58,7 +58,7 @@ class Tab1 extends React.Component {
       <View style={styless.exampleContainer}>
         <Text style={styless.title}>{'Phim hiện đang công chiếu'}</Text>
         <Text style={styless.subtitle}>
-          {'Nhấn vào phim bạn tìm kiếm và đặt vé ngay nào'}
+          {'Nhấn vào phim bạn yêu thích và đặt vé ngay'}
         </Text>
         <Carousel
           data={this.state.list.filter(

@@ -95,8 +95,8 @@ function Home({navigation}) {
               })
             }>
             <Text style={styles.textListFilm}>
-              {' '}
-              Danh sách các phim hiện có{' '}
+              {'          '}
+              Danh sách các phim hiện có{'             '}
             </Text>
           </Button>
         ) : (
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   textListFilm: {
     color: 'black',
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

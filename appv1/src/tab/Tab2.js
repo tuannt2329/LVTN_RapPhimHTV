@@ -58,7 +58,10 @@ class Tab2 extends React.Component {
     return (
       <View style={styless.exampleContainer}>
         <Text style={styless.title}>{`Phim sắp ra mắt`}</Text>
-        <Text style={styless.subtitle}>{`Cùng theo dõi thông tin bộ phim bạn yêu thích`}</Text>
+        <Text
+          style={
+            styless.subtitle
+          }>{`Theo dõi thông tin các bộ phim sắp ra mắt`}</Text>
         <Carousel
           data={this.state.list.filter(
             item => Date.parse(item.NgayChieu) > Date.parse(Date()),

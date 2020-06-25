@@ -20,7 +20,7 @@ function login(email, pass) {
       .then(res => res.json())
       .then(res => {
         if (res.error !== '') {
-          storeData(res.user.firstName);
+          storeData(res.user.email);
           dispatch(loginSuccess(true, res));
         } else {
           dispatch(loginError(false));

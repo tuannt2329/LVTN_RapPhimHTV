@@ -196,7 +196,7 @@ function SignUpHook({navigation}) {
                     routes: [{name: 'Home'}],
                   }),
                 );
-              }, 500);
+              }, 1500);
             }
           })
           .catch(e => {
@@ -461,6 +461,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 export {SignUpHook};

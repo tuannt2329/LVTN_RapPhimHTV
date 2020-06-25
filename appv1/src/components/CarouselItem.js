@@ -15,7 +15,12 @@ const CarouselItem = ({item}) => {
     <TouchableOpacity
       style={styles.cardView}
       onPress={() => {
-        alert(`You've clicked '${item.TenFilm}'`);
+        alert(
+          `Khởi chiếu ngày: ${item.NgayChieu.split('T')[0]
+            .split('-')
+            .reverse()
+            .join('-')}`,
+        );
       }}>
       <Image
         style={styles.image}

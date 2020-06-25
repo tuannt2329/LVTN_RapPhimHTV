@@ -7,7 +7,14 @@
  */
 
 import React, {Fragment, useEffect} from 'react';
-import {Platform, Image, Dimensions, Animated, StyleSheet} from 'react-native';
+import {
+  Platform,
+  Image,
+  Alert,
+  Dimensions,
+  Animated,
+  StyleSheet,
+} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -412,10 +419,61 @@ const forFadeHeader = ({current, next}) => {
 //     </Stack.Navigator>
 //   );
 // }
+import BackgroundFetch from 'react-native-background-fetch';
+import NotificationService from './NotificationService';
+const notification = new NotificationService(() => onNotification());
+function onNotification(notif) {
+  Alert.alert(notif.title, notif.message);
+}
 
+//Permissions to use notifications
+function handlePerm(perms) {
+  Alert.alert('Permissions', JSON.stringify(perms));
+}
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
+    notification.localNotification();
+    BackgroundFetch.configure(
+      {
+        minimumFetchInterval: 15, // <-- minutes (15 is minimum allowed)
+        // Android options
+        forceAlarmManager: false, // <-- Set true to bypass JobScheduler.
+        stopOnTerminate: false,
+        startOnBoot: true,
+        requiredNetworkType: BackgroundFetch.NETWORK_TYPE_NONE, // Default
+        requiresCharging: false, // Default
+        requiresDeviceIdle: false, // Default
+        requiresBatteryNotLow: false, // Default
+        requiresStorageNotLow: false, // Default
+      },
+      async taskId => {
+        console.log('[js] Received background-fetch event: ', taskId);
+        notification.scheduleNotification();
+        // Required: Signal completion of your task to native code
+        // If you fail to do this, the OS can terminate your app
+        // or assign battery-blame for consuming too much background-time
+        BackgroundFetch.finish(taskId);
+      },
+      error => {
+        console.log('[js] RNBackgroundFetch failed to start');
+      },
+    );
+
+    // Optional: Query the authorization status.
+    BackgroundFetch.status(status => {
+      switch (status) {
+        case BackgroundFetch.STATUS_RESTRICTED:
+          console.log('BackgroundFetch restricted');
+          break;
+        case BackgroundFetch.STATUS_DENIED:
+          console.log('BackgroundFetch denied');
+          break;
+        case BackgroundFetch.STATUS_AVAILABLE:
+          console.log('BackgroundFetch is enabled');
+          break;
+      }
+    });
   }, []);
   return (
     <Provider store={store}>
