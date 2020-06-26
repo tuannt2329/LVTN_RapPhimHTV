@@ -25,7 +25,7 @@ class Seat extends React.Component {
         GioChieu: []
       }],
       NgayChieu: 'CHỌN NGÀY',
-      GioChieu: 'CHỌN SUẤT CHIẾU',
+      GioChieu: '',
       TenPhong: null,
       Ghe: [],
       choosing: [],
@@ -150,7 +150,7 @@ class Seat extends React.Component {
     strghe = ""
     tongtien = 0
     console.log("xx", ngaychieu)
-    this.setState({ GioChieu: 'CHỌN SUẤT CHIẾU', Ghe: [], choosing: [], TongTienVe: 0 })
+    this.setState({ GioChieu: '', Ghe: [], choosing: [], TongTienVe: 0 })
     this.setState({ NgayChieu: ngaychieu });
   }
 
@@ -517,7 +517,7 @@ class Seat extends React.Component {
                                                       <a className="time added-transaction-id js__active_button"
                                                         value={gc}
                                                       >
-                                                        {gc.substring(0, gc.length - 5)}
+                                                        {gc.substring(0, gc.length - 8)}
                                                       </a>
                                                     </li>
                                                     :
@@ -525,7 +525,7 @@ class Seat extends React.Component {
                                                       <a className="time added-transaction-id"
                                                         value={gc}
                                                       >
-                                                        {gc.substring(0, gc.length - 5)}
+                                                        {gc.substring(0, gc.length - 8)}
                                                       </a>
                                                     </li>
                                                 )
@@ -603,7 +603,7 @@ class Seat extends React.Component {
                           <h2 className="ticket-title upper-text">{item.TenFilm}</h2>
                           <div className="ticket-info">
                             <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
-                            <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 5)}&nbsp; | {this.state.NgayChieu}</p>
+                            <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 8)}&nbsp; | {this.state.NgayChieu}</p>
                             <p className="  "><b>Combo: &nbsp;</b></p>
                             <p className="  "><b>Ghế: {strghe}&nbsp;</b></p>
                           </div>
