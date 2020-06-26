@@ -19,7 +19,7 @@ class successPayment extends React.Component {
       const ve = JSON.parse(sessionStorage.getItem('ve'));
       this.setStateFilms(ve)
       const tenfilm = {TenFilm: ve.TenFilm}
-      axios.post('http://localhost:8000/film/find', tenfilm)
+      axios.post('http://htvcinemas.live:8000/film/find', tenfilm)
       .then((res) => {
         if(!res.data.error) {
           this.setState({films: res.data.film, AnhBia: res.data.film[0].AnhBia})
@@ -31,7 +31,7 @@ class successPayment extends React.Component {
   componentDidMount() {
     if(this.state.ve.payed === false) {
 
-      axios.post('http://localhost:8000/ticket/createticket', this.state.ve)
+      axios.post('http://htvcinemas.live:8000/ticket/createticket', this.state.ve)
           .then((res) => {
             if (!res.data.error) {
               const tongthu = {
@@ -45,7 +45,7 @@ class successPayment extends React.Component {
                 NgayChieu: this.state.films[0].NgayChieu,
                 NgayKetThuc: this.state.films[0].NgayKetThuc
               }
-              axios.put('http://localhost:8000/film/updatefilm', tongthu)
+              axios.put('http://htvcinemas.live:8000/film/updatefilm', tongthu)
                 .then((res1) => {
                   if (!res1.data.error) {
                   } else {
@@ -100,7 +100,7 @@ class successPayment extends React.Component {
                 <section className="ticket-feature">
                   <article className="row">
                     <div style={{ textAlign: 'center' }} className="col-md-12">
-                      <img src={"http://localhost:8000/images/" + this.state.AnhBia} className="loading" data-was-processed="true" />
+                      <img src={"http://htvcinemas.live:8000/images/" + this.state.AnhBia} className="loading" data-was-processed="true" />
                     </div>
                     <div className="col-md-12">
                       <div className="ticket-detail">

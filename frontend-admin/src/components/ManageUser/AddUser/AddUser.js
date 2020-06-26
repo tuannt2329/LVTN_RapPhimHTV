@@ -64,7 +64,7 @@ class AddUser extends Component {
         e.preventDefault();
        
         const User = this.state.User;
-        axios.post('http://localhost:3001/user/register', User)
+        axios.post('http://htvcinemas.live:3001/user/register', User)
         .then((res) => {
             if(res.data["message"] === "New account created!") {
                 window.alert("New user created!");
