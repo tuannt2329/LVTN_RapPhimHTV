@@ -82,7 +82,7 @@ class ModalDetail extends React.Component {
       this.state.Film.map(async (item) => {
         const film = item;
         await axios
-          .put("http://htvcinemas.live:8000/schedule/updateSchedule", film)
+          .put("http://localhost:8000/schedule/updateSchedule", film)
           .then((res) => {
             if (!res.data.error) {
               count++;
@@ -102,12 +102,12 @@ class ModalDetail extends React.Component {
     if (window.confirm("Do you really want to delete?")) {
       var film = film;
       axios
-        .put("http://htvcinemas.live:8000/schedule/deleteSchedule", film)
+        .put("http://localhost:8000/schedule/deleteSchedule", film)
         .then((res) => {
           if (!res.data.error) {
             console.log(res.data);
             axios
-              .put("http://htvcinemas.live:8000/ghe/updateStatus", film)
+              .put("http://localhost:8000/ghe/updateStatus", film)
               .then((res1) => {
                 console.log(res1.data);
                 if (!res1.data.error) {

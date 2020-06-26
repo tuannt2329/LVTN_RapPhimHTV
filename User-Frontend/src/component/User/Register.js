@@ -100,7 +100,7 @@ class Register extends React.Component {
 
         let {password, passwordConf} = this.state;
         if (password === passwordConf) {
-            axios.post('http://htvcinemas.live:8000/user/signup', account)
+            axios.post('http://localhost:8000/user/signup', account)
                 .then((res) => {
                     console.log(account)
                     if (!res.data.error) {
