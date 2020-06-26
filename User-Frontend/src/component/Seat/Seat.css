@@ -13,6 +13,14 @@
   margin-bottom: 20px;  */
 }
 
+.rectangle2 {
+  position: sticky;
+  position: -webkit-sticky;
+  right: 10px;
+  top: 150px;
+  overflow: hidden;
+}
+
 .cinema-title {
   text-align: center;
   width: 50%;

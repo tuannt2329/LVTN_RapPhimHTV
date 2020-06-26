@@ -588,7 +588,7 @@ class Seat extends React.Component {
               </div>
             </div>
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 rectangle2">
             <div htv-scroll-follow-content className="ticket-header aa">
               <section className="ticket-feature">
                 {this.state.films.map((item, index) =>
