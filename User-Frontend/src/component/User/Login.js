@@ -61,7 +61,7 @@ class Login extends React.Component {
       password: this.state.password
     }
 
-    axios.post('http://htvcinemas.live:8000/user/login', account)
+    axios.post('http://localhost:8000/user/login', account)
       .then((res) => {
         if (!res.data.error) {
           localStorage.setItem("user", JSON.stringify(res.data.user));

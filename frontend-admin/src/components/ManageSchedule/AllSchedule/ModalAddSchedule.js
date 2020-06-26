@@ -21,7 +21,7 @@ class ModalAddSchedule extends React.Component {
   }
 
   UNSAFE_componentWillMount() {
-    axios.post("http://htvcinemas.live:8000/film/find").then(async (res) => {
+    axios.post("http://localhost:8000/film/find").then(async (res) => {
       await res.data.film.map(async (val) => {
         if ((Date.parse(val["NgayChieu"]) <= Date.parse(Date())) 
          && (Date.parse(Date()) < (Date.parse(val["NgayKetThuc"])))) {
@@ -127,7 +127,7 @@ class ModalAddSchedule extends React.Component {
         };
         let count = 0;
         await axios
-          .post("http://htvcinemas.live:8000/schedule/find", schedule)
+          .post("http://localhost:8000/schedule/find", schedule)
           .then((res) => {
             if (!res.data.error) {
               res.data.schedule.map((item) => {
@@ -147,7 +147,7 @@ class ModalAddSchedule extends React.Component {
         if (count == 0) {
           const film = this.state.Film;
           axios
-            .post("http://htvcinemas.live:8000/schedule/createSchedule", film)
+            .post("http://localhost:8000/schedule/createSchedule", film)
             .then((res) => {
               if (!res.data.error) {
                 window.alert("create schedule success!");
