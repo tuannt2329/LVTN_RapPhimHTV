@@ -193,7 +193,7 @@ class Menu extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="/statisticalrevenue" className="nav-link">
+                      <a href="/allfilmchart" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Chart Statistical Revenue</p>
                       </a>

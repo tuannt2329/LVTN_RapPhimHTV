@@ -26,7 +26,9 @@ import TicketHistory from './components/ManageTicket/LichSuVe/LichSuVe'
 import DetailTicketHistory from './components/ManageTicket/DetailTicketHistory/DetailTicketHistory'
 import AllTicketType from './components/ManageTicket/AllTicketType/AllTicketType'
 import DetailTicketType from './components/ManageTicket/DetailTicketType/DetailTicketType'
- 
+
+import AllFilmsChart from './components/StatisticalRevenue/AllFilms/AllFilms'
+
 class RouterWeb extends React.Component {	
 
     render() {	
@@ -59,6 +61,8 @@ class RouterWeb extends React.Component {
                 <Route exact path='/detailtickethistory' component={DetailTicketHistory}/>
                 <Route exact path='/alltickettype' component={AllTicketType}/>
                 <Route exact path='/detailtickettype' component={DetailTicketType}/>
+
+                <Route exact path='/allfilmchart' component={AllFilmsChart}/>
                 
             </Switch>	
 
