@@ -66,18 +66,41 @@ class Seat extends React.Component {
   getFilminLichChieu = () => {
     var tenfilm = { TenFilm: this.state.TenFilm };
     var today = new Date()
-    let date = today.getFullYear() + '-0' + (today.getMonth() + 1)
+    console.log(today)
+    let date = today.getFullYear()
+    if ((today.getMonth() + 1) < 10) {
+      date += '-0' + (today.getMonth() + 1)
+    } else {
+      date += '-' + (today.getMonth() + 1)
+    }
     if (today.getDate() < 10) {
       date += '-0' + today.getDate()
     } else {
       date += '-' + today.getDate()
     }
-    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds() + '.000Z'
+    let time = ''
+    if (today.getHours() < 10) {
+      time += '0' + today.getHours()
+    } else {
+      time += today.getHours()
+    }
+    if ((today.getMinutes() - 5) < 10) {
+      time += ':0' + (today.getMinutes() - 5)
+    } else {
+      time += ':' + (today.getMinutes() - 5)
+    }
+    if (today.getSeconds() < 10) {
+      time += ':0' + today.getSeconds()
+    } else {
+      time += ':' + today.getSeconds()
+    }
+    time += '.000Z'
     const datetime = date + 'T' + time
     axios.post('http://localhost:8000/schedule/find', tenfilm)
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
+            console.log(res.data.schedule[lc]["ThoiGianChieu"])
             if (res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
               var lichchieu = (res.data.schedule[lc]["ThoiGianChieu"]).split("T");
               var i = 0;
