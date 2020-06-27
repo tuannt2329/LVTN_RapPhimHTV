@@ -455,7 +455,7 @@ class Item extends Component {
           <View style={[styles.section, styles.sectionLarge]}>
             <Text style={styles.sectionTitle}>Thông Tin </Text>
             <View style={styles.keywords}>
-              <View>
+              {/* <View>
                 <LinearGradient
                   start={{x: 0.0, y: 0.25}}
                   end={{x: 0.5, y: 1.0}}
@@ -466,7 +466,7 @@ class Item extends Component {
                 >
                   <Text style={styles.keyword}>Lượt Xem: {film.LuotXem}</Text>
                 </LinearGradient>
-              </View>
+              </View> */}
               <View>
                 <LinearGradient
                   start={{x: 0.0, y: 0.25}}

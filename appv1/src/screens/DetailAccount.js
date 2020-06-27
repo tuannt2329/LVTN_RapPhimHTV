@@ -167,58 +167,62 @@ function DetailAccount({navigation}) {
   }
   // func update info
   function doUpdate() {
-    fetch(`${types.API}user/updateInfo/`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: pass,
-        firstName: firstName,
-        lastName: lastName,
-        gender: gender,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.error) {
-          console.log(res.error);
-          if (res.error === 'Password is required.') {
-            setError('Vui lòng nhập Mật Khẩu');
-          }
-          if (res.error === 'first name is required.') {
-            console.log(res.error);
-            setError('Vui lòng nhập Họ');
-          }
-          if (res.error === 'last name is required.') {
-            console.log(res.error);
-            setError('Vui Lòng nhập Tên');
-          }
-          // setError('Email đã đăng ký');s
-          // setLoading(false);
-        } else {
-          console.log(res.content);
-          if (res.content === 'Changed personal details') {
-            setError('Cập Nhật Thành Công');
-          }
-          // setLoading(false);
-          // setTextSuccess(true);
-          // setTimeout(() => {
-          //   setTextSuccess(false);
-          //   navigation.dispatch(
-          //     CommonActions.reset({
-          //       index: 1,
-          //       routes: [{name: 'HomeStack'}],
-          //     }),
-          //   );
-          // }, 500);
-        }
+    if (pass.length < 6) {
+      setError('Mật khẩu phải hơn 6 ký tự');
+    } else {
+      fetch(`${types.API}user/updateInfo/`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: pass,
+          firstName: firstName,
+          lastName: lastName,
+          gender: gender,
+        }),
       })
-      .catch(e => {
-        console.log('catch sign up');
-      });
+        .then(res => res.json())
+        .then(res => {
+          if (res.error) {
+            console.log(res.error);
+            if (res.error === 'Password is required.') {
+              setError('Vui lòng nhập Mật Khẩu');
+            }
+            if (res.error === 'first name is required.') {
+              console.log(res.error);
+              setError('Vui lòng nhập Họ');
+            }
+            if (res.error === 'last name is required.') {
+              console.log(res.error);
+              setError('Vui Lòng nhập Tên');
+            }
+            // setError('Email đã đăng ký');s
+            // setLoading(false);
+          } else {
+            console.log(res.content);
+            if (res.content === 'Changed personal details') {
+              setError('Cập Nhật Thành Công');
+            }
+            // setLoading(false);
+            // setTextSuccess(true);
+            // setTimeout(() => {
+            //   setTextSuccess(false);
+            //   navigation.dispatch(
+            //     CommonActions.reset({
+            //       index: 1,
+            //       routes: [{name: 'HomeStack'}],
+            //     }),
+            //   );
+            // }, 500);
+          }
+        })
+        .catch(e => {
+          console.log('catch sign up');
+        });
+    }
   }
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -237,20 +241,22 @@ function DetailAccount({navigation}) {
         />
         <Animated.Text
           style={{
-            color: '#21243d',
+            color: '#ff7c7c',
             fontWeight: 'bold',
-            fontSize: 60,
+            fontSize: 40,
+            width:'100%',
+            textAlign: 'center',
             marginBottom: 50,
             height: imageHeight,
           }}>
-          cinemas
+          HTV
           <Text
             style={{
-              color: '#ff7c7c',
+              color: 'black',
               fontWeight: 'bold',
               fontStyle: 'italic',
             }}>
-            HTV
+            cinemas
           </Text>
         </Animated.Text>
         <View style={{...styles.inputView}}>
@@ -433,7 +439,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
-    padding: 20,
+    // padding: 20,
   },
   buttonGroup: {
     width: '80%',

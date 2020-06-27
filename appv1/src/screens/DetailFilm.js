@@ -21,11 +21,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import styless from '../constants/index.style';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 const {width} = Dimensions.get('window');
 import {useSelector} from 'react-redux';
 import * as types from '../constants';
 import Entypo from 'react-native-vector-icons/Entypo';
+import {useIsFocused} from '@react-navigation/native';
 
 const MIN_HEIGHT = 100;
 const MAX_HEIGHT = 250;
@@ -34,14 +34,11 @@ const MAX_HEIGHT = 250;
 function DetailFilm({route, navigation}) {
   const {film} = route.params;
   const [modal, setModal] = useState(false);
-  const [start, setStart] = useState(false);
-  const [end, setEnd] = useState(false);
+  const isFocused = useIsFocused();
+
   const user = useSelector(state => state.loginIn.user);
   // Luu schedule
   const [schedule, setSchedule] = useState(null);
-  // Lưu room
-  const [room, setRoom] = useState(null);
-  // const xử lý picker ngày giờ
   //
   // biến chính để lưu ngày
   const [date, setDate] = useState(null);
@@ -56,51 +53,10 @@ function DetailFilm({route, navigation}) {
   //  { ngay : gio }
 
   const [arrDate, setArrDate] = useState([{NgayChieu: null, GioChieu: []}]);
-  let arr = [];
+
   const [haveSchedule, setHaveSchedule] = useState(null);
-  // start date time picker
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = date => {
-    console.warn('A date has been picked: ', date);
-    // setDate(date.toLocaleDateString());
-    hideDatePicker();
-  };
-  //  start handle picker date
-  function _renderPicker(item) {
-    console.log('from render', item.ThoiGianChieu);
-
-    return (
-      <Picker.Item
-        // key={item.ThoiGianChieu}
-        value={item.ThoiGianChieu}
-        label={item.ThoiGianChieu.split('T')[0]
-          .slice(0, 10)
-          .toString()}
-      />
-    );
-
-    // return (
-    //   <Picker.Item
-    //     // key={item.ThoiGianChieu}
-    //     value={item.ThoiGianChieu}
-    //     label={item.ThoiGianChieu.split('T')[0]
-    //       .slice(0, 10)
-    //       .toString()}
-    //   />
-    // );
-  }
 
   function selectedDate(item, index) {
-    console.log('Ngay', item);
     setDate(item.NgayChieu);
     arrDate.map(value => {
       if (value.NgayChieu === item.NgayChieu) {
@@ -108,78 +64,12 @@ function DetailFilm({route, navigation}) {
         setHours(value.GioChieu[0]);
       }
     });
-    console.log(hour);
   }
   function selectedHour(item, index) {
     setHours(item);
-    console.log('hours', item);
   }
-  // end date time picker
-
-  // unmount
-  useEffect(() => {
-    const getList = async () => {
-      await fetch(`${types.API}schedule/find/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          TenFilm: film.TenFilm,
-        }),
-      })
-        .then(res => res.json())
-        .then(result =>
-          result.schedule.filter(
-            item => Date.parse(item.ThoiGianChieu) >= Date.parse(Date()),
-          ),
-        )
-        .then(async res => {
-          setSchedule(res);
-          // xử lý mảng lưu object là
-          // { ngày : giờ }
-          await res.map((item, index) => {
-            console.log(item.ThoiGianChieu.toString());
-            let date = item.ThoiGianChieu;
-            let i = 0;
-            arr.map((value, vitri) => {
-              if (
-                date.split('T')[0].slice(0, 10) !==
-                arr[vitri].NgayChieu.split('T')[0].slice(0, 10)
-              ) {
-                i++;
-              }
-            });
-
-            if (i === arr.length) {
-              arr.push({NgayChieu: date});
-            }
-          });
-          await arr.map((val, id) => {
-            let a = [];
-            res.map((item, i) => {
-              let date1 = item.ThoiGianChieu.split('T')[0].slice(0, 10);
-              let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
-              if (date1 === arr[id].NgayChieu.split('T')[0].slice(0, 10)) {
-                a.push(time1);
-              }
-            });
-            arr[id].GioChieu = a;
-          });
-          // await console.log(arr.slice(0, 1));
-          await setArrDate(arr);
-          // await setOK(true);
-          await console.log('final', arrDate);
-        })
-        .then(r => {
-          setOK(true);
-        })
-        .catch(e => {
-          console.log('catch get list film ');
-          console.log(e);
-        });
-    };
+  // function handle load
+  function handle() {
     const getFilmLoad = async () => {
       let popo = await fetch(`${types.API}film/find/`, {
         method: 'POST',
@@ -195,7 +85,36 @@ function DetailFilm({route, navigation}) {
       await setFilmLoad(popores.film[0]);
     };
     getFilmLoad();
-    if (Date.parse(film.NgayChieu) < Date.parse(Date())) {
+    let currentTime = '';
+    let currentMonth = '';
+    let currentDay = '';
+    let currentMinute = '';
+    let currentyear = '';
+    let now = new Date();
+    now.getHours() < 10
+      ? (currentTime += `0${now.getHours()}`)
+      : (currentTime += now.getHours());
+    now.getMonth() < 10
+      ? (currentMonth += '0' + (now.getMonth() + 1))
+      : (currentMonth += now.getMonth() + 1);
+    now.getDate() < 10
+      ? (currentDay += `0${now.getDate()}`)
+      : (currentDay += now.getDate());
+    now.getMinutes() < 10
+      ? (currentMinute += `0${now.getMinutes()}`)
+      : (currentMinute += now.getMinutes());
+    currentyear +=
+      now.getFullYear() +
+      '-' +
+      currentMonth +
+      '-' +
+      currentDay +
+      'T' +
+      currentTime +
+      ':' +
+      currentMinute +
+      ':00.000Z';
+    if (film.NgayChieu < currentyear) {
       const callhihi = async () => {
         let t = await fetch(`${types.API}schedule/find/`, {
           method: 'POST',
@@ -208,14 +127,11 @@ function DetailFilm({route, navigation}) {
           }),
         });
         let res = await t.json();
-
         async function a() {
           if (res.error === "schedule don't exist!") {
-            console.log(res);
             await setHaveSchedule(false);
             // await process();
           } else {
-            console.log(res);
             await setHaveSchedule(true);
             // await process();
           }
@@ -229,94 +145,162 @@ function DetailFilm({route, navigation}) {
     } else {
       setHaveSchedule(false);
     }
-  }, []);
+  }
+
+  // unmount
+  useEffect(() => handle(), []);
 
   useEffect(() => {
-    const getList = async () => {
-      await fetch(`${types.API}schedule/find/`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          TenFilm: film.TenFilm,
-        }),
-      })
-        .then(res => res.json())
-        .then(result =>
-          result.schedule.filter(
-            item => Date.parse(item.ThoiGianChieu) >= Date.parse(Date()),
-          ),
-        )
-        .then(async res => {
-          setSchedule(res);
-          // xử lý mảng lưu object là
-          // { ngày : giờ }
-          await res.map((item, index) => {
-            console.log(item.ThoiGianChieu.toString());
-            let date = item.ThoiGianChieu;
-            let i = 0;
-            arr.map((value, vitri) => {
-              if (
-                date.split('T')[0].slice(0, 10) !==
-                arr[vitri].NgayChieu.split('T')[0].slice(0, 10)
-              ) {
-                i++;
-              }
-            });
+    const unsubscribe = navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action
+      handle();
+    });
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [navigation]);
 
-            if (i === arr.length) {
-              arr.push({NgayChieu: date});
+  const getList = async () => {
+    console.log('dang chay trong day ne');
+
+    let currentTime = '';
+    let currentMonth = '';
+    let currentDay = '';
+    let currentMinute = '';
+    let currentyear = '';
+    let now = new Date();
+    now.getHours() < 10
+      ? (currentTime += `0${now.getHours()}`)
+      : (currentTime += now.getHours());
+    now.getMonth() < 10
+      ? (currentMonth += '0' + (now.getMonth() + 1))
+      : (currentMonth += now.getMonth() + 1);
+    now.getDate() < 10
+      ? (currentDay += `0${now.getDate()}`)
+      : (currentDay += now.getDate());
+    now.getMinutes() < 10
+      ? (currentMinute += `0${now.getMinutes()}`)
+      : (currentMinute += now.getMinutes());
+    currentyear +=
+      now.getFullYear() +
+      '-' +
+      currentMonth +
+      '-' +
+      currentDay +
+      'T' +
+      currentTime +
+      ':' +
+      currentMinute +
+      ':00.000Z';
+    await fetch(`${types.API}schedule/find/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        TenFilm: film.TenFilm,
+      }),
+    })
+      .then(res => res.json())
+      .then(result => {
+        return result.schedule.filter(item => item.ThoiGianChieu > currentyear);
+      })
+      .then(async res => {
+        setSchedule(res);
+        // xử lý mảng lưu object là
+        // { ngày : giờ }
+        let arr = [];
+        await res.map((item, index) => {
+          let date = item.ThoiGianChieu.split('T')[0];
+          let i = 0;
+          arr.map((value, vitri) => {
+            if (date !== value.NgayChieu) {
+              i++;
             }
           });
-          await arr.map((val, id) => {
-            let a = [];
-            res.map((item, i) => {
-              let date1 = item.ThoiGianChieu.split('T')[0].slice(0, 10);
-              let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
-              if (date1 === arr[id].NgayChieu.split('T')[0].slice(0, 10)) {
+
+          if (i === arr.length) {
+            arr.push({NgayChieu: date});
+          }
+        });
+        await arr.map((val, id) => {
+          let a = [];
+          res.map((item, i) => {
+            let currentTime = '';
+            let currentMonth = '';
+            let currentDay = '';
+            let currentMinute = '';
+            let currentdatetime = '';
+            let currentyear = '';
+            let now = new Date();
+            now.getHours() < 10
+              ? (currentTime += `0${now.getHours()}`)
+              : (currentTime += now.getHours());
+            now.getMonth() < 10
+              ? (currentMonth += '0' + (now.getMonth() + 1))
+              : (currentMonth += now.getMonth() + 1);
+            now.getDate() < 10
+              ? (currentDay += `0${now.getDate()}`)
+              : (currentDay += now.getDate());
+            now.getMinutes() < 10
+              ? (currentMinute += `0${now.getMinutes()}`)
+              : (currentMinute += now.getMinutes());
+            currentdatetime += currentTime + ':' + currentMinute;
+            currentyear +=
+              now.getFullYear() + '-' + currentMonth + '-' + currentDay;
+
+            let date1 = item.ThoiGianChieu.split('T')[0].slice(0, 10);
+            let time1 = item.ThoiGianChieu.split('T')[1].slice(0, 5);
+            if (date1 === val.NgayChieu) {
+              // console.log(val[id].NgayChieu);
+              if (currentyear === date1 && time1 < currentdatetime) {
+              } else {
                 a.push(time1);
               }
-            });
-            arr[id].GioChieu = a;
+            }
           });
-          // await console.log(arr.slice(0, 1));
-          await setArrDate(arr);
-          // await setOK(true);
-          await console.log('final', arrDate);
-        })
-        .then(r => {
-          setOK(true);
-        })
-        .catch(e => {
-          console.log('catch get list film ');
-          console.log(e);
+          // a.sort((a, b) => {
+          //   console.log(a,b);
+          //   a.slice(0, 2) - b.slice(0, 2);
+          // });
+          // console.log( a.sort((a, b) => {
+          //   a.slice(0, 2) - b.slice(0, 2);
+          // }));
+          arr[id].GioChieu = a.sort();
         });
-    };
+        // await console.log(arr.slice(0, 1));
+        await setArrDate(arr);
+      })
+      .then(r => {
+        setOK(true);
+      })
+      .catch(e => {
+        console.log('catch get list film ');
+        console.log(e);
+      });
+  };
 
-    const process = async () => {
-      console.log('func process');
-      console.log(haveSchedule);
-      if (haveSchedule === true) {
-        await console.log('Co Schedule');
-        // await getList().then(r => setOK(true));
-        await getList();
-      }
-      if (haveSchedule === false) {
-        await console.log('Chua Co Schedule');
-        await setHaveSchedule(false);
-        await setShow(true);
-      }
-    };
+  const process = async () => {
+    if (haveSchedule === true) {
+      // await getList().then(r => setOK(true));
+      await getList();
+    }
+    if (haveSchedule === false) {
+      await setHaveSchedule(false);
+      await setShow(true);
+    }
+  };
+
+  useEffect(() => {
     process();
   }, [haveSchedule]);
 
   useEffect(() => {
     async function a() {
       if (ok) {
-        console.log('set show');
         await setShow(true);
+
         await setTime(arrDate[0].GioChieu);
         await setDate(arrDate[0].NgayChieu);
         await setHours(arrDate[0].GioChieu[0]);
@@ -334,38 +318,93 @@ function DetailFilm({route, navigation}) {
           flexDirection: 'column',
           alignItems: 'center',
           width: 120,
-          borderColor: 'red',
-          borderWidth: 1,
+          // borderColor: 'red',
+          // borderWidth: 1,
           borderRadius: 10,
-          backgroundColor: 'blue',
+          // backgroundColor: 'blue',
           margin: 2,
+          // height: '100%',
+          textAlign: 'center',
         }}>
-        <TouchableOpacity onPress={() => selectedDate(item)}>
-          <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-            {day.getDay() === 0
-              ? `Chủ Nhật `
-              : day.getDay() === 1
-              ? `Thứ 2`
-              : day.getDay() === 2
-              ? `Thứ 3`
-              : day.getDay() === 3
-              ? 'Thứ 4'
-              : day.getDay() === 4
-              ? `Thứ 5`
-              : day.getDay() === 5
-              ? `Thứ 6`
-              : day.getDay() === 6
-              ? `Thứ 7`
-              : null}
-          </Text>
-          <Text style={{color: 'white', margin: 10, fontSize: 16}}>
-            {item.NgayChieu.split('T')[0]
-              .slice(0, 10)
-              .split('-')
-              .reverse()
-              .join('-')}
-          </Text>
-        </TouchableOpacity>
+        <LinearGradient
+          start={{x: 0.0, y: 0.2}}
+          end={{x: 0, y: 1.0}}
+          locations={[0.1, 0.5, 0.2]}
+          colors={['#5F9AF2', '#D8B4D8', '#5465D6']}
+          style={{
+            backgroundColor: 'transparent',
+            borderRadius: 10,
+            borderWidth: 1,
+            width: 120,
+            borderColor: 'orange',
+            borderBottomWidth: 1,
+            shadowColor: '#000',
+            shadowOffset: {width: 0, height: 2},
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 4,
+          }}>
+          <TouchableOpacity onPress={() => selectedDate(item)}>
+            <Text
+              style={{
+                color: 'white',
+                margin: 10,
+                textAlign: 'center',
+                fontSize: 19,
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+              }}>
+              {day.getDay() === 0 ? (
+                <Text
+                  style={{
+                    color: 'white',
+                    margin: 10,
+                    textAlign: 'center',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                  }}>
+                  Chủ Nhật
+                </Text>
+              ) : day.getDay() === 1 ? (
+                `Thứ 2`
+              ) : day.getDay() === 2 ? (
+                `Thứ 3`
+              ) : day.getDay() === 3 ? (
+                'Thứ 4'
+              ) : day.getDay() === 4 ? (
+                `Thứ 5`
+              ) : day.getDay() === 5 ? (
+                `Thứ 6`
+              ) : day.getDay() === 6 ? (
+                `Thứ 7`
+              ) : null}
+            </Text>
+            <Text
+              style={{
+                color: 'red',
+                margin: 5,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                fontSize: 30,
+              }}>
+              {item.NgayChieu.split('T')[0].slice(8, 10)
+              // .split('-')
+              // .reverse()
+              // .join('-')
+              }
+            </Text>
+            <Text
+              style={{
+                color: 'white',
+                margin: 5,
+                textAlign: 'center',
+                fontSize: 16,
+              }}>
+              Tháng {item.NgayChieu.split('T')[0].slice(5, 7)}
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </View>
     );
   }
@@ -406,11 +445,6 @@ function DetailFilm({route, navigation}) {
             }),
           )
         }>
-        {/* <Image
-          source={require('../assets/imgs/home.png')}
-          style={{height: 30, width: 50}}
-          resizeMode="contain"
-        /> */}
         <Entypo name={'home'} size={40} color="black" />
       </TouchableOpacity>
     ),
@@ -469,7 +503,7 @@ function DetailFilm({route, navigation}) {
               {/*
                   View cho phần modal bị transparent 50% phía trên
               */}
-              <View style={{flex: 2}} />
+              <View style={{flex: 1}} />
               {/*
                   view cho phần modal không transparent
                     50 % phía dưới
@@ -522,13 +556,14 @@ function DetailFilm({route, navigation}) {
                 */}
                 <View
                   style={{
-                    flex: 2.3,
+                    flex: 3,
                     width: '100%',
                     // justifyContent: 'center',
-                    backgroundColor: 'white',
+                    backgroundColor: '#f0ede6',
                     alignItems: 'center',
-                    borderColor: 'red',
-                    borderWidth: 2,
+                    // borderColor: 'red',
+                    borderWidth: 3,
+                    elevation: 40,
                     borderTopEndRadius: 20,
                     borderTopStartRadius: 20,
                   }}>
@@ -540,7 +575,7 @@ function DetailFilm({route, navigation}) {
                       // flexDirection: 'row',
                       // alignContent: 'space-between',
                       flex: 2,
-                      backgroundColor: 'white',
+                      backgroundColor: '#f0ede6',
                       width: '100%',
                       flexDirection: 'column',
                       flexWrap: 'wrap',
@@ -550,44 +585,20 @@ function DetailFilm({route, navigation}) {
                         <Text
                           style={{
                             marginTop: 10,
+                            fontSize: 17,
+                            fontWeight: 'bold',
+                            // textAlign: 'center',
                           }}>
-                          Chọn Ngày:
+                          Chọn ngày chiếu
                         </Text>
-                        {/* <Picker
-                        itemStyle={{
-                          // flex: 1,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          textAlign: 'center',
-                        }}
-                        selectedValue={date}
-                        style={{top: 15, width: '100%'}}
-                        mode="dropdown"
-                        onValueChange={(itemValue, itemIndex) =>
-                          selectedDate(itemValue, itemIndex)
-                        }>
-                        {show === false || haveSchedule === false
-                          ? null
-                          : arrDate.map((item, id) => (
-                              <Picker.Item
-                                id={id}
-                                value={item.NgayChieu}
-                                label={item.NgayChieu.split('T')[0]
-                                  .slice(0, 10)
-                                  .split('-')
-                                  .reverse()
-                                  .join('-')
-                                  .toString()}
-                              />
-                            ))}
-                      </Picker> */}
+
                         <View
                           style={{
                             flex: 1,
                             flexDirection: 'column',
                             width: '100%',
                           }}>
-                          <View style={{height: 100}}>
+                          <View style={{height: '100%'}}>
                             <FlatList
                               style={{backgroundColor: 'white', opacity: 0.5}}
                               horizontal={true}
@@ -612,8 +623,11 @@ function DetailFilm({route, navigation}) {
                           <Text
                             style={{
                               marginTop: 10,
+                              fontSize: 17,
+                              fontWeight: 'bold',
+                              textAlign: 'center',
                             }}>
-                            {`Các khung giờ cho ngày ${date
+                            {`Các suất chiếu trong ngày ${date
                               .split('T')[0]
                               .slice(0, 10)
                               .split('-')
@@ -626,9 +640,18 @@ function DetailFilm({route, navigation}) {
                               alignItems: 'center',
                               justifyContent: 'center',
                               textAlign: 'center',
+                              backgroundColor: '#D8B4D8',
                             }}
                             selectedValue={hour}
-                            style={{top: 15, width: '100%'}}
+                            style={{
+                              top: 15,
+                              backgroundColor: '#D8B4D8',
+                              width: '100%',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              textAlign: 'center',
+                              color: 'red',
+                            }}
                             mode="dropdown"
                             onValueChange={(itemValue, itemIndex) =>
                               selectedHour(itemValue, itemIndex)
@@ -642,20 +665,33 @@ function DetailFilm({route, navigation}) {
                                 ))
                               : null}
                           </Picker>
+                          <Text
+                            style={{
+                              marginTop: 20,
+                              fontSize: 17,
+                              fontWeight: 'bold',
+                              textAlign: 'center',
+                            }}>
+                            {`Bạn đang chọn suất chiếu: ${hour}
+                             `}
+                          </Text>
                         </>
                       ) : null}
 
                       <Text
                         style={{
-                          color: 'red',
-                          fontSize: 20,
+                          color: 'blue',
+                          fontSize: 22,
+                          fontWeight: 'bold',
                           width: '100%',
+                          top: '50%',
                           alignItems: 'center',
                           textAlign: 'center',
+                          justifyContent: 'center',
                         }}>
                         {haveSchedule
                           ? null
-                          : 'Phim tạm thời chưa có lịch chiếu,\n chúng tôi sẽ cập nhật sau!'}
+                          : 'Phim tạm thời chưa có lịch chiếu,\n nhấn theo dõi để nhận thông báo về email khi có lịch chiếu mới!'}
                       </Text>
                     </View>
                   </View>
@@ -667,81 +703,119 @@ function DetailFilm({route, navigation}) {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (user === null) {
-                          Alert.alert(
-                            'Đăng Nhập Ngay?',
-                            'Không thể đặt vé khi không có tài khoản',
-                            [
-                              {
-                                text: 'Hủy',
-                                onPress: () => console.log('Cancel Pressed'),
-                                style: 'cancel',
-                              },
-                              {
-                                text: 'OK',
-                                onPress: () => {
-                                  setModal(false);
-                                  navigation.navigate('Login', {
-                                    continueBooking: true,
-                                  });
+                    {!haveSchedule ? null : (
+                      <TouchableOpacity
+                        onPress={() => {
+                          let currentTime = '';
+                          let currentMonth = '';
+                          let currentDay = '';
+                          let currentMinute = '';
+
+                          let now = new Date();
+                          now.getHours() < 10
+                            ? (currentTime += `0${now.getHours()}`)
+                            : (currentTime += now.getHours());
+                          now.getMonth() < 10
+                            ? (currentMonth += `0${now.getMonth()}` + 1)
+                            : (currentMonth += now.getMonth() + 1);
+                          now.getDate() < 10
+                            ? (currentDay += `0${now.getDate()}`)
+                            : (currentDay += now.getDate());
+                          now.getMinutes() < 10
+                            ? (currentMinute += `0${now.getMinutes()}`)
+                            : (currentMinute += now.getMinutes());
+
+                          if (user === null) {
+                            Alert.alert(
+                              'Đăng Nhập Ngay?',
+                              'Không thể đặt vé khi không có tài khoản',
+                              [
+                                {
+                                  text: 'Hủy',
+                                  onPress: () => console.log('Cancel Pressed'),
+                                  style: 'cancel',
                                 },
-                              },
-                            ],
-                          );
-                        } else if (date === null || hour === null) {
-                          Alert.alert(
-                            'Chon thời gian',
-                            'Chọn đầy đủ ngày và giờ chiếu',
-                          );
-                        } else {
-                          let a;
-                          schedule.map(val => {
-                            if (
-                              val.ThoiGianChieu.split('T')[0].slice(0, 10) ===
-                                date.split('T')[0].slice(0, 10) &&
-                              val.ThoiGianChieu.split('T')[1].slice(0, 5) ===
-                                hour
-                            ) {
-                              console.log(val);
-                              a = val;
-                              console.log(a);
-                            }
-                          });
-                          navigation.navigate('Seat', {
-                            schedule: a,
-                            detailfilm: film,
-                          }),
-                            setModal(false);
-                        }
-                      }}
-                      style={styles.btn_Choose}>
-                      <LinearGradient
-                        // start={{x: 0, y: 0}}
-                        // end={{x: 1, y: 1}}
-                        startPoint={{x: 1, y: 0}}
-                        endPoint={{x: 0, y: 1}}
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 1}}
-                        locations={[0.1, 0.9]}
-                        colors={['#d53369', '#cbad6d']}
-                        style={styless.gradient}
-                      />
-                      <Textt
-                        bold
-                        white
-                        h1
-                        center
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '40%',
-                          overflow: 'hidden',
-                        }}>
-                        Chọn Ghế
-                      </Textt>
-                    </TouchableOpacity>
+                                {
+                                  text: 'OK',
+                                  onPress: () => {
+                                    setModal(false);
+                                    navigation.navigate('Login', {
+                                      continueBooking: true,
+                                    });
+                                  },
+                                },
+                              ],
+                            );
+                          } else if (
+                            Number(hour.slice(0, 2)) - Number(currentTime) <=
+                              1 &&
+                            Number(date.split('T')[0].slice(5, 7)) ===
+                              Number(currentMonth) &&
+                            Number(date.split('T')[0].slice(8, 10)) ===
+                              Number(currentDay) &&
+                            Number(date.split('T')[1].slice(3, 5)) -
+                              Number(currentMinute) >
+                              1
+                          ) {
+                            Alert.alert(
+                              'Suất đã kết thúc',
+                              'Xin mời chọn suất khác',
+                            );
+                          } else {
+                            let a;
+                            schedule.map(val => {
+                              if (
+                                val.ThoiGianChieu.split('T')[0].slice(0, 10) ===
+                                  date &&
+                                val.ThoiGianChieu.split('T')[1].slice(0, 5) ===
+                                  hour
+                              ) {
+                                a = val;
+                              }
+                            });
+                            setHaveSchedule(null);
+                            setHours(null);
+                            setDate(null);
+                            setOK(false);
+                            setSchedule(null);
+                            setShow(false);
+                            setTime(null);
+                            setFilmLoad(null);
+                            setArrDate([{NgayChieu: null, GioChieu: []}]);
+                            navigation.navigate('Seat', {
+                              schedule: a,
+                              detailfilm: film,
+                            }),
+                              setModal(false);
+                          }
+                        }}
+                        style={styles.btn_Choose}>
+                        <LinearGradient
+                          // start={{x: 0, y: 0}}
+                          // end={{x: 1, y: 1}}
+                          startPoint={{x: 1, y: 0}}
+                          endPoint={{x: 0, y: 1}}
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 1}}
+                          locations={[0.1, 0.9]}
+                          colors={['#d53369', '#cbad6d']}
+                          style={styless.gradient}
+                        />
+                        <Textt
+                          bold
+                          white
+                          h1
+                          center
+                          style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            overflow: 'hidden',
+                          }}>
+                          Chọn Ghế
+                        </Textt>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
                 {/*</View>*/}

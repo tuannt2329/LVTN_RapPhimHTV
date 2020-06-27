@@ -222,20 +222,23 @@ function SignUpHook({navigation}) {
         />
         <Animated.Text
           style={{
-            color: '#21243d',
+            color: '#ff7c7c',
             fontWeight: 'bold',
-            fontSize: 60,
+            fontSize: 40,
+            textAlign: 'center',
+            width: '100%',
+            top: 50,
             marginBottom: 50,
             height: imageHeight,
           }}>
-          cinemas
+          HTV
           <Text
             style={{
-              color: '#ff7c7c',
-              fontWeight: 'bold',
+              color: 'black',
+              // fontWeight: 'bold',
               fontStyle: 'italic',
             }}>
-            HTV
+            cinemas
           </Text>
         </Animated.Text>
         <View style={{...styles.inputView}}>
@@ -420,7 +423,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
-    padding: 20,
+    // padding: 20,
   },
   buttonGroup: {
     width: '80%',

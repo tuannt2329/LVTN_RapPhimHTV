@@ -118,43 +118,81 @@ export default function ListFilmSort({navigation, route}) {
   }
 
   useEffect(() => {
+    let currentTime = '';
+    let currentMonth = '';
+    let currentDay = '';
+    let currentMinute = '';
+    let currentyear = '';
+    let now = new Date();
+    now.getHours() < 10
+      ? (currentTime += `0${now.getHours()}`)
+      : (currentTime += now.getHours());
+    now.getMonth() < 10
+      ? (currentMonth += '0' + (now.getMonth() + 1))
+      : (currentMonth += now.getMonth() + 1);
+    now.getDate() < 10
+      ? (currentDay += `0${now.getDate()}`)
+      : (currentDay += now.getDate());
+    now.getMinutes() < 10
+      ? (currentMinute += `0${now.getMinutes()}`)
+      : (currentMinute += now.getMinutes());
+    currentyear +=
+      now.getFullYear() +
+      '-' +
+      currentMonth +
+      '-' +
+      currentDay +
+      'T' +
+      currentTime +
+      ':' +
+      currentMinute +
+      ':00.000Z';
     // async function hii() {
     if (selectedValueType === 'all' && selectedValueCountry === 'all') {
       if (selectedValueSort === 'tang') {
         setActiveIndex(0);
-        setListFilter(list.sort((a, b) => a.TongThu - b.TongThu));
+        setListFilter(list.filter(a => a.NgayChieu > currentyear));
       }
       if (selectedValueSort === 'giam') {
         setActiveIndex(0);
-
-        setListFilter(list.sort((a, b) => b.TongThu - a.TongThu));
+        setListFilter(
+          list.filter(
+            a => a.NgayChieu < currentyear && currentyear < a.NgayKetThuc,
+          ),
+        );
       }
       if (selectedValueSort === 'all') {
         setActiveIndex(0);
-        setListFilter(list);
+        setListFilter(list.filter(a => a.NgayKetThuc > currentyear));
       }
     }
     if (selectedValueType !== 'all' && selectedValueCountry === 'all') {
       if (selectedValueSort === 'tang') {
         setActiveIndex(0);
         setListFilter(
-          list
-            .filter(r => r.TheLoai === selectedValueType)
-            .sort((a, b) => a.TongThu - b.TongThu),
+          list.filter(
+            r => r.TheLoai === selectedValueType && r.NgayChieu > currentyear,
+          ),
         );
       }
       if (selectedValueSort === 'giam') {
         setActiveIndex(0);
         setListFilter(
-          list
-            .filter(r => r.TheLoai === selectedValueType)
-            .sort((a, b) => b.TongThu - a.TongThu),
+          list.filter(
+            r =>
+              r.TheLoai === selectedValueType &&
+              r.NgayChieu < currentyear &&
+              currentyear < r.NgayKetThuc,
+          ),
         );
       }
       if (selectedValueSort === 'all') {
-        console.log('zoooooooo');
         setActiveIndex(0);
-        setListFilter(list.filter(r => r.TheLoai === selectedValueType));
+        setListFilter(
+          list.filter(
+            r => r.TheLoai === selectedValueType && r.NgayKetThuc > currentyear,
+          ),
+        );
       }
     }
     if (selectedValueType === 'all' && selectedValueCountry !== 'all') {
@@ -162,50 +200,59 @@ export default function ListFilmSort({navigation, route}) {
         setActiveIndex(0);
 
         setListFilter(
-          list
-            .filter(r => r.TenNuocSX === selectedValueCountry)
-            .sort((a, b) => a.TongThu - b.TongThu),
+          list.filter(
+            r =>
+              r.TenNuocSX === selectedValueCountry && r.NgayChieu > currentyear,
+          ),
         );
       }
       if (selectedValueSort === 'giam') {
         setActiveIndex(0);
 
         setListFilter(
-          list
-            .filter(r => r.TenNuocSX === selectedValueCountry)
-            .sort((a, b) => b.TongThu - a.TongThu),
+          list.filter(
+            r =>
+              r.TenNuocSX === selectedValueCountry &&
+              r.NgayChieu < currentyear &&
+              currentyear < r.NgayKetThuc,
+          ),
         );
       }
       if (selectedValueSort === 'all') {
         setActiveIndex(0);
 
-        setListFilter(list.filter(r => r.TenNuocSX === selectedValueCountry));
+        setListFilter(
+          list.filter(
+            r =>
+              r.TenNuocSX === selectedValueCountry &&
+              r.NgayKetThuc > currentyear,
+          ),
+        );
       }
     }
     if (selectedValueCountry !== 'all' && selectedValueType !== 'all') {
       if (selectedValueSort === 'tang') {
         setActiveIndex(0);
         setListFilter(
-          list
-            .filter(
-              r =>
-                r.TheLoai === selectedValueType &&
-                r.TenNuocSX === selectedValueCountry,
-            )
-            .sort((a, b) => a.TongThu - b.TongThu),
+          list.filter(
+            r =>
+              r.TheLoai === selectedValueType &&
+              r.TenNuocSX === selectedValueCountry &&
+              r.NgayChieu > currentyear,
+          ),
         );
       }
       if (selectedValueSort === 'giam') {
         setActiveIndex(0);
 
         setListFilter(
-          list
-            .filter(
-              r =>
-                r.TheLoai === selectedValueType &&
-                r.TenNuocSX === selectedValueCountry,
-            )
-            .sort((a, b) => b.TongThu - a.TongThu),
+          list.filter(
+            r =>
+              r.TheLoai === selectedValueType &&
+              r.TenNuocSX === selectedValueCountry &&
+              r.NgayChieu < currentyear &&
+              currentyear < r.NgayKetThuc,
+          ),
         );
       }
       if (selectedValueSort === 'all') {
@@ -214,7 +261,8 @@ export default function ListFilmSort({navigation, route}) {
           list.filter(
             r =>
               r.TheLoai === selectedValueType &&
-              r.TenNuocSX === selectedValueCountry,
+              r.TenNuocSX === selectedValueCountry &&
+              r.NgayKetThuc > currentyear,
           ),
         );
       }
@@ -298,7 +346,7 @@ export default function ListFilmSort({navigation, route}) {
                     onValueChange={(itemValue, itemIndex) =>
                       selectedType(itemValue, itemIndex)
                     }>
-                    <Picker.Item label="All" value="all" />
+                    <Picker.Item label="Tất cả" value="all" />
                     {show === 'yes'
                       ? type.map((item, id) => (
                           <Picker.Item
@@ -338,7 +386,7 @@ export default function ListFilmSort({navigation, route}) {
                     onValueChange={(itemValue, itemIndex) =>
                       selectedCountry(itemValue, itemIndex)
                     }>
-                    <Picker.Item label="All" value="all" />
+                    <Picker.Item label="Tất cả" value="all" />
                     {show === 'yes'
                       ? country.map((item, id) => (
                           <Picker.Item
@@ -362,7 +410,7 @@ export default function ListFilmSort({navigation, route}) {
                       position: 'absolute',
                       justifyContent: 'center',
                     }}>
-                    DOANH THU
+                    TRẠNG THÁI
                   </Text>
                   <Picker
                     itemStyle={{
@@ -377,9 +425,9 @@ export default function ListFilmSort({navigation, route}) {
                     onValueChange={(itemValue, itemIndex) =>
                       selectedSort(itemValue, itemIndex)
                     }>
-                    <Picker.Item label="All" value="all" />
-                    <Picker.Item label="Giam" value="giam" />
-                    <Picker.Item label="Tang" value="tang" />
+                    <Picker.Item label="Tất cả" value="all" />
+                    <Picker.Item label="Đang chiếu" value="giam" />
+                    <Picker.Item label="Sắp chiếu" value="tang" />
                   </Picker>
                 </View>
               </View>

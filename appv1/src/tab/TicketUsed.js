@@ -1,5 +1,3 @@
-
-
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -124,8 +122,8 @@ function TicketUsed({films, image}) {
                     .toFixed(1)
                     .replace(/\d(?=(\d{3})+\.)/g, '$&,')
                     .split('.0')[0]
-                } 
-                 VND
+                }
+                VND
               </Text>
             </Text>
           </View>
@@ -145,7 +143,9 @@ function TicketUsed({films, image}) {
           marginTop: 10,
         }}>
         <FlatList
-          data={films}
+          data={films.sort((a, b) => {
+            b.ThoiGianDat - a.ThoiGianDat;
+          })}
           keyExtractor={(item, index) => 'key' + index}
           renderItem={renderItem}
         />

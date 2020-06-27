@@ -146,17 +146,18 @@ function LoginHook({navigation, route}) {
 
         <Animated.Image
           source={require('../assets/imgs/htv_logo.png')}
-          style={{width: '90%', resizeMode: 'contain', height: imageHeight}}
+          style={{width: '90%',top : '5%', resizeMode: 'contain', height: imageHeight}}
         />
         <Text style={styles.title}>
-          cinemas
+          HTV
           <Text
             style={{
-              color: '#ff7c7c',
-              fontWeight: 'bold',
+              color: 'black',
+              // width:'20%',
+              // fontWeight: 'bold',
               fontStyle: 'italic',
             }}>
-            HTV
+            cinemas
           </Text>
         </Text>
 
@@ -291,9 +292,13 @@ function LoginHook({navigation, route}) {
 }
 const styles = StyleSheet.create({
   title: {
-    color: '#21243d',
+    color: '#ff7c7c',
     fontWeight: 'bold',
-    fontSize: 60,
+    fontSize: 40,
+    textAlign: 'center',
+    width: '100%',
+    top: 50,
+    flexDirection: 'row',
     marginBottom: 50,
   },
   container: {
@@ -315,7 +320,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
-    padding: 20,
+    // padding: 20,
   },
   inputText: {
     height: 50,

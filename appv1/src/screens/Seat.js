@@ -181,29 +181,59 @@ function Seat({route, navigation}) {
   }
 
   function checkOut() {
-    var thoigianthuc = new Date();
-    var thoigianxacthuc = thoigianthuc.getFullYear() + '-';
-    if (thoigianthuc.getMonth() + 1 < 10) {
-      thoigianxacthuc += '0';
+    let currentTime = '';
+    let currentMonth = '';
+    let currentDay = '';
+    let currentMinute = '';
+    let currentyear = '';
+    let now = new Date();
+    now.getHours() < 10
+      ? (currentTime += `0${now.getHours()}`)
+      : (currentTime += now.getHours());
+    now.getMonth() < 10
+      ? (currentMonth += '0' + (now.getMonth() + 1))
+      : (currentMonth += now.getMonth() + 1);
+    now.getDate() < 10
+      ? (currentDay += `0${now.getDate()}`)
+      : (currentDay += now.getDate());
+    now.getMinutes() < 10
+      ? (currentMinute += `0${now.getMinutes()}`)
+      : (currentMinute += now.getMinutes());
+    currentyear +=
+      now.getFullYear() +
+      '-' +
+      currentMonth +
+      '-' +
+      currentDay +
+      'T' +
+      currentTime +
+      ':' +
+      currentMinute +
+      ':00.000Z';
+    let hr = currentTime + ':' + currentMinute;
+    console.log(hr);
+    console.log(schedule.ThoiGianChieu);
+    function CompareTime(time_1, time_2) {
+      if (time_1.split(':')[0] === time_2.split(':')[0]) {
+        let s1 = time_1.split(':')[0] * 60 + time_1.split(':')[1];
+        let s2 = time_2.split(':')[0] * 60 + time_2.split(':')[1];
+        console.log(s1 - s2);
+        if (Math.abs(s1 - s2) < 5) return 1; // Gets difference in seconds
+      } else if (time_1.split(':')[0] > time_2.split(':')[0]) {
+        let s1 = time_1.split(':')[1];
+        let s2 = time_2.split(':')[1];
+        if (Math.abs(60 - s2 + Number(s1)) < 5) return 1; // Gets difference in seconds
+      }
     }
-    thoigianxacthuc += thoigianthuc.getMonth() + 1 + '-';
-    if (thoigianthuc.getDate() < 10) {
-      thoigianxacthuc += '0';
-    }
-    thoigianxacthuc += thoigianthuc.getDate() + 'T';
-    if (thoigianthuc.getHours() < 10) {
-      thoigianxacthuc += '0';
-    }
-    thoigianxacthuc += thoigianthuc.getHours() + ':';
-    if (thoigianthuc.getMinutes() < 10) {
-      thoigianxacthuc += '0';
-    }
-    thoigianxacthuc += thoigianthuc.getMinutes() + ':';
-    if (thoigianthuc.getSeconds() < 10) {
-      thoigianxacthuc += '0';
-    }
-    thoigianxacthuc += thoigianthuc.getSeconds() + '.000Z';
-    if (selectedIndex === 0) {
+
+    if (
+      CompareTime(schedule.ThoiGianChieu.split('T')[1].slice(0, 5), hr) === 1
+    ) {
+      Alert.alert(
+        'Phim đã quá giờ chọn vé',
+        'Đặt vé trước thời gian chiếu 5 phút',
+      );
+    } else if (selectedIndex === 0) {
       fetch(`${types.APIWEB}paypal/pay/`, {
         method: 'POST',
         headers: {
@@ -218,7 +248,7 @@ function Seat({route, navigation}) {
           ThoiGianChieu: schedule.ThoiGianChieu,
           GiaVe: amount,
           payed: true,
-          ThoiGianDat: thoigianxacthuc,
+          ThoiGianDat: currentyear,
         }),
       })
         .then(res => res.json())
@@ -247,7 +277,7 @@ function Seat({route, navigation}) {
           ThoiGianChieu: schedule.ThoiGianChieu,
           GiaVe: amount,
           payed: false,
-          ThoiGianDat: thoigianxacthuc,
+          ThoiGianDat: currentyear,
         }),
       })
         .then(a => a.json())
@@ -456,7 +486,7 @@ function Seat({route, navigation}) {
         ]}>
         <Text onPress={() => pressItems(item)} style={[styles.itemText]}>
           {item.key}
-          <MaterialCommunityIcons name={'seat'} color={'white'} size={10} />
+          <MaterialCommunityIcons name={'seat'} color={'white'} size={8} />
         </Text>
       </View>
     );
@@ -790,32 +820,41 @@ function Seat({route, navigation}) {
       <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
         <View style={{flex: 1}}>
           {/*<Text>Phim:</Text>*/}
-          <Text style={{fontWeight: 'bold'}}> {schedule.TenFilm}</Text>
-        </View>
-        <View style={{flex: 1}}>
           <Text style={{fontWeight: 'bold'}}>
-            Ngày chiếu: {`\n`}
-            {schedule.ThoiGianChieu.split('T')[0]
-              .slice(0, 10)
-              .split('-')
-              .reverse()
-              .join('-')}
+            <Text style={{color: 'red'}}>{schedule.TenFilm}</Text>
+          </Text>
+        </View>
+        <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+          <Text style={{fontWeight: 'bold'}}>
+            Ngày chiếu: {`\n`}{' '}
+            <Text style={{color: 'red'}}>
+              {schedule.ThoiGianChieu.split('T')[0]
+                .slice(0, 10)
+                .split('-')
+                .reverse()
+                .join('-')}
+            </Text>
           </Text>
         </View>
         <View style={{flex: 1}}>
           <Text style={{fontWeight: 'bold'}}>
-            Thời Gian:
-            {schedule.ThoiGianChieu.split('T')[1].slice(0, 5)}-
-            {schedule.ThoiGianKetThuc.split('T')[1].slice(0, 5)}
+            Thời gian:
+            <Text style={{color: 'red'}}>
+              {schedule.ThoiGianChieu.split('T')[1].slice(0, 5)}-
+              {schedule.ThoiGianKetThuc.split('T')[1].slice(0, 5)}
+            </Text>
           </Text>
         </View>
         <View>
-          <Text>Rạp {schedule.TenPhong}</Text>
+          <Text style={{fontWeight: 'bold'}}>
+            Rạp{`\n`}
+            <Text style={{color: 'red'}}>{schedule.TenPhong}</Text>
+          </Text>
         </View>
       </View>
       <View
         style={{
-          flex: 0.5,
+          flex: 0.1,
           backgroundColor: '#fff',
           marginBottom: 20,
         }}>
@@ -848,7 +887,7 @@ function Seat({route, navigation}) {
       </View>
       <View
         style={{
-          flex: 5,
+          flex: 6,
           opacity: 1,
           marginLeft: 6,
           marginRight: 6,
@@ -876,7 +915,7 @@ function Seat({route, navigation}) {
       </View>
       <View
         style={{
-          flex: 1,
+          flex: 0.5,
           alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'center',
@@ -885,54 +924,95 @@ function Seat({route, navigation}) {
         <View
           style={{
             flexDirection: 'row',
-            width: '33%',
+            width: '33.3%',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
           <View
             style={[
-              styles.item,
               {
                 backgroundColor: '#e2ab32',
-                // width: '10%',
+                width: '30%',
                 alignItems: 'center',
                 justifyContent: 'center',
               },
             ]}>
             <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
           </View>
-          <Text>Ghế còn trống</Text>
+          <Text style={{fontSize: 10}}>Ghế còn trống</Text>
         </View>
         <View
-          style={{flexDirection: 'row', width: '33%', alignItems: 'center'}}>
-          <View style={[styles.item, {backgroundColor: 'red', width: '10%'}]}>
+          style={{
+            flexDirection: 'row',
+            width: '33.3%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={[
+              {
+                backgroundColor: 'red',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '30%',
+              },
+            ]}>
             <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
           </View>
-          <Text>Ghế đã đặt</Text>
+          <Text style={{fontSize: 10}}>Ghế đã đặt</Text>
         </View>
         <View
-          style={{flexDirection: 'row', width: '33%', alignItems: 'center'}}>
-          <View style={[styles.item, {backgroundColor: 'green', width: '10%'}]}>
+          style={{
+            flexDirection: 'row',
+            width: '33.3%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={[
+              {
+                width: '30%',
+                backgroundColor: 'green',
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            ]}>
             <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
           </View>
-          <Text>Ghế đang chọn</Text>
-        </View>
-        <View
-          style={{flexDirection: 'row', width: '50%', alignItems: 'center'}}>
-          <View style={[styles.item, {backgroundColor: 'pink', width: '30%'}]}>
-            <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
-          </View>
-          <Text>Ghế đôi</Text>
+          <Text style={{fontSize: 10}}>Ghế đang chọn</Text>
         </View>
         <View
           style={{flexDirection: 'row', width: '30%', alignItems: 'center'}}>
-          <View style={[styles.item, {backgroundColor: 'white', width: '20%'}]}>
+          <View
+            style={[
+              {
+                width: '30%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'pink',
+              },
+            ]}>
+            <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
+          </View>
+          <Text style={{fontSize: 10}}>Ghế đôi</Text>
+        </View>
+        <View
+          style={{flexDirection: 'row', width: '30%', alignItems: 'center'}}>
+          <View
+            style={[
+              {
+                width: '30%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+              },
+            ]}>
             <AntDesign name={'arrowdown'} color={'black'} size={15} />
           </View>
-          <Text>Lối đi</Text>
+          <Text style={{fontSize: 10}}>Lối đi</Text>
         </View>
       </View>
-      <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+      <View style={{flex: 1.5, flexDirection: 'row', flexWrap: 'wrap'}}>
         <View style={{width: '100%'}}>
           <Text>
             Ghế đang chọn{' '}
@@ -1017,6 +1097,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 20,
     marginRight: 20,
+    marginBottom: 5,
     // marginLeft: 20,
     borderWidth: 1,
     overflow: 'hidden',
@@ -1027,6 +1108,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     margin: 2,
+    width: '10%',
     marginBottom: 3,
     height: Dimensions.get('window').width / numColumns, // approximate a square
   },
