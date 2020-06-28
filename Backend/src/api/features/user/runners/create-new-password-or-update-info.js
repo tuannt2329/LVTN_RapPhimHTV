@@ -48,8 +48,9 @@ const handlerCreateNewPassword = (model, _) => async (req, res) => {
 
 const handlerUpdateInfo = (model, _) => async (req, res) => {
   const modeInstance = model(req.body)
+  const password = req.body.password
   modeInstance.validateSync()
-  const {firstName, lastName, gender, email, password, role } = modeInstance
+  const {firstName, lastName, gender, email, role } = modeInstance
   if (!firstName) {
     res.send({ error: 'first name is required.' })
   } else if (!lastName) {
@@ -68,24 +69,45 @@ const handlerUpdateInfo = (model, _) => async (req, res) => {
       const user = await model.findOne(listparams)
       
       if (user) {
-        const result = await model.updateMany(
-          {email: email},
-          {$set: {
-              firstName: firstName,
-              lastName: lastName,
-              gender: gender,
-              password: password,
-              role: role
-            }
-          })
-
-        if(result) {
-          const content = 'Your personal details have been changed successfully!'
-          const subject = 'Changed personal details'
-          sendEmail(user.email, subject, content)
-          res.send({ content: subject })
+        listparams = {
+          email: email,
+          deleted: false,
+          password: password
         }
-      } 
+        const userfound = await model.findOne(listparams)
+        if(userfound) {
+          const result = await model.updateMany(
+            {email: email},
+            {$set: {
+                firstName: firstName,
+                lastName: lastName,
+                gender: gender,
+                role: role
+              }
+            })
+
+          if(result) {
+            const content = 'Your personal details have been changed successfully!'
+            const subject = 'Changed personal details'
+            sendEmail(user.email, subject, content)
+            res.send({ content: subject })
+          }
+        } else {
+          const result = await model.updateMany(
+            {email: email},
+            {$set: {
+                password: password,
+              }
+            })
+
+          if(result) {
+            const content = 'Your password has been changed successfully!'
+            const subject = 'Changed password'
+            sendEmail(user.email, subject, content)
+            res.send({ content: subject })
+          }
+        }
+      }
     } catch (error) {
       res.send({ error })
     }

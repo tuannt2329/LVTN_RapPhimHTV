@@ -65,7 +65,7 @@ class UpdateUser extends Component {
         axios.put('http://localhost:8000/user/updateInfo', User)
         .then((res) => {
             if (!res.data.error) {
-                window.alert("update film success!")
+                window.alert("update your information success!")
                 return window.location.reload()
             } else {
                 return window.alert(res.data.error)
@@ -74,6 +74,7 @@ class UpdateUser extends Component {
     }
 
     render() {
+        console.log(this.state.User)
         if(this.state.User) {
             return (
                 <div>
