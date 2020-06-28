@@ -378,6 +378,9 @@ class Seat extends React.Component {
           thoigianxacthuc += "0";
         }
         thoigianxacthuc += thoigianthuc.getHours() + ":";
+
+        let thoigiandatve = thoigianxacthuc
+
         if (thoigianthuc.getMinutes() < 10) {
           thoigianxacthuc += "0";
         }
@@ -387,40 +390,55 @@ class Seat extends React.Component {
         }
         thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
 
-        if (this.state.paymentmethods === "payonline") {
-          let ve = {
-            email: JSON.parse(localStorage.getItem('user'))['email'],
-            TenFilm: this.state.TenFilm,
-            TenPhong: this.state.TenPhong,
-            TenGhe: this.state.choosing,
-            ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
-            ThoiGianDat: thoigianxacthuc,
-            GiaVe: this.state.TongTienVe,
-            payed: true
+        if ((thoigianthuc.getMinutes() - 5) < 10) {
+          thoigiandatve += "0";
+        }
+        thoigiandatve += (thoigianthuc.getMinutes() - 5) + ":";
+        if (thoigianthuc.getSeconds() < 10) {
+          thoigiandatve += "0";
+        }
+        thoigiandatve += thoigianthuc.getSeconds() + ".000Z";
+
+        if(thoigiandatve >= (this.state.NgayChieu + "T" + this.state.GioChieu)) {
+          if (this.state.paymentmethods === "payonline") {
+            let ve = {
+              email: JSON.parse(localStorage.getItem('user'))['email'],
+              TenFilm: this.state.TenFilm,
+              TenPhong: this.state.TenPhong,
+              TenGhe: this.state.choosing,
+              ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+              ThoiGianDat: thoigianxacthuc,
+              GiaVe: this.state.TongTienVe,
+              payed: true
+            }
+          
+            sessionStorage.setItem('ve', JSON.stringify(ve))
+            axios.post('http://localhost:8000/paypal/pay', ve)
+              .then((res) => {
+                if (!res.data.error) {
+                  return window.location = res.data.result
+                } else {
+                  return window.alert(res.data.error)
+                }
+              })
+          } else {
+            let ve = {
+              email: JSON.parse(localStorage.getItem('user'))['email'],
+              TenFilm: this.state.TenFilm,
+              TenPhong: this.state.TenPhong,
+              TenGhe: this.state.choosing,
+              ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
+              ThoiGianDat: thoigianxacthuc,
+              GiaVe: this.state.TongTienVe,
+              payed: false
+            }
+            sessionStorage.setItem('ve', JSON.stringify(ve))
+            return window.location = '/successpayment';
           }
-        
-          sessionStorage.setItem('ve', JSON.stringify(ve))
-          axios.post('http://localhost:8000/paypal/pay', ve)
-            .then((res) => {
-              if (!res.data.error) {
-                return window.location = res.data.result
-              } else {
-                return window.alert(res.data.error)
-              }
-            })
         } else {
-          let ve = {
-            email: JSON.parse(localStorage.getItem('user'))['email'],
-            TenFilm: this.state.TenFilm,
-            TenPhong: this.state.TenPhong,
-            TenGhe: this.state.choosing,
-            ThoiGianChieu: this.state.NgayChieu + "T" + this.state.GioChieu,
-            ThoiGianDat: thoigianxacthuc,
-            GiaVe: this.state.TongTienVe,
-            payed: false
-          }
-          sessionStorage.setItem('ve', JSON.stringify(ve))
-          return window.location = '/successpayment';
+          window.alert("đã hết thời gian đặt vé online\nxin mời bạn đến quầy đặt vé") 
+          return window.location.reload()
+
         }
       } else {
         return window.alert("Bạn cần đăng nhập trước khi đặt vé")
@@ -434,7 +452,7 @@ class Seat extends React.Component {
 
   render() {
     let thu = []
-    if(this.state.LichChieu[0].NgayChieu) {
+    if(this.state.LichChieu.length != 0) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
         let date = new Date(this.state.LichChieu[i].NgayChieu)
         if(date.getDay() + 1 === 1) {
@@ -444,7 +462,7 @@ class Seat extends React.Component {
         }
       }
     }
-
+    console.log(thu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -518,7 +536,7 @@ class Seat extends React.Component {
                                 <ul className="list--showtimes-cinema">
                                   <li className="item--showtimes-cinema date_2020-06-20 date_2020-06-21 hide-date"
                                     data-date="2020-06-20" style={{ display: 'list-item' }}>
-                                    <div className="info">
+                                    {/* <div className="info">
                                       <div className="inside">
                                         <h4 className="title">HTV Thủ Đức</h4>
                                         <p>Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh Số 01, Võ Văn Ngân, Tỉnh Thủ Đức. </p>
@@ -526,7 +544,7 @@ class Seat extends React.Component {
                                       <a href="https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+H%E1%BB%8Dc+S%C6%B0+Ph%E1%BA%A1m+K%E1%BB%B9+Thu%E1%BA%ADt+TP.+H%E1%BB%93+Ch%C3%AD+Minh/@10.8507786,106.7696897,17z/data=!3m1!4b1!4m5!3m4!1s0x3175270ad28d48ab:0xa6c02de0a7c40d6c!8m2!3d10.8507786!4d106.7718784?hl=vi-VN"
                                         target="_blank" className="btn--location added-transaction-id">
                                         <i className="fa fa-map-marker" />XEM VỊ TRÍ</a>
-                                    </div>
+                                    </div> */}
 
                                     <div className="date_2020-06-20 hide-date" style={{ display: 'block' }}>
                                       <ul className="list--film-type">
