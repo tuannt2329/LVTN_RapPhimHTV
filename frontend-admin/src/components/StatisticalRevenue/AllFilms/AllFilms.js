@@ -15,7 +15,7 @@ class AllFilms extends Component {
 
   UNSAFE_componentWillMount() {
     this.isLocalStorage();
-    axios.post("http://localhost:8000/film/find").then((res) => {
+    axios.post("http://htvcinemas.live:8000/film/find").then((res) => {
       this.setStateFilms(res.data);
     });
   }

@@ -26,7 +26,7 @@ class TicketDaDat extends React.Component {
         email: email,
         status: false
       }
-      axios.post('http://localhost:8000/ticket/find', ve)
+      axios.post('http://htvcinemas.live:8000/ticket/find', ve)
         .then((res) => {
           if (!res.data.error) {
             this.setState({ ve: res.data.ticket });
@@ -46,7 +46,7 @@ class TicketDaDat extends React.Component {
     var Tenfilm = {
       TenFilm: tenfilm
     }
-    axios.post('http://localhost:8000/film/find', Tenfilm)
+    axios.post('http://htvcinemas.live:8000/film/find', Tenfilm)
       .then((res) => {
         if (images.length === 0) {
           images.push(res.data.film[0]);
@@ -90,7 +90,7 @@ class TicketDaDat extends React.Component {
                     (item["TenFilm"] === items["TenFilm"]) ?
                       <img style={{ width: 425, height: 330 }}
                         key={index}
-                        src={"http://localhost:8000/images/" + items["AnhBia"]}
+                        src={"http://htvcinemas.live:8000/images/" + items["AnhBia"]}
                         className="lazy loaded" />
                       :
                       null
