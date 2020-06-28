@@ -21,7 +21,7 @@ class AllTickets extends Component {
         const status = {
             status: false
         }
-        axios.post("http://localhost:8000/ticket/find", status)
+        axios.post("http://htvcinemas.live:8000/ticket/find", status)
             .then((res) => {
                 if(!res.data.error) {
                     this.setStateFilms(res.data)
