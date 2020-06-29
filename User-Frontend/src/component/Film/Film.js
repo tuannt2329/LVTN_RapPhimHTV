@@ -27,7 +27,7 @@ class Film extends React.Component {
     UNSAFE_componentWillMount() {
         let TheLoai = { TheLoai: this.props.match.params.id.slice(1, this.props.match.params.id.length) };
 
-        axios.post("http://localhost:8000/film/find", TheLoai)
+        axios.post("http://htvcinemas.live:8000/film/find", TheLoai)
             .then(async (res) => {
                 await console.log('aaaaaaaa', res.data)
                 await this.setStateFilms(res.data);
@@ -51,7 +51,7 @@ class Film extends React.Component {
         if (this.props.match.params.id !== prevProps.match.params.id) {
             let TheLoai = { TheLoai: this.props.match.params.id.slice(1, this.props.match.params.id.length) };
 
-            axios.post("http://localhost:8000/film/find", TheLoai)
+            axios.post("http://htvcinemas.live:8000/film/find", TheLoai)
                 .then(async (res) => {
                     await this.setStateFilms(res.data);
                 })
@@ -98,7 +98,7 @@ class Film extends React.Component {
                                                                     <div className="article-movie-home">
                                                                         <img style={{ height: 264 }}
                                                                             key={index}
-                                                                            src={"http://localhost:8000/images/" + item.AnhBia}
+                                                                            src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                                                                             className="lazy loaded" />
                                                                         <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                             <div className="decription-hover overlay">
@@ -146,7 +146,7 @@ class Film extends React.Component {
                                                                     <div className="article-movie-home">
                                                                         <img style={{ height: 264 }}
                                                                             key={index}
-                                                                            src={"http://localhost:8000/images/" + item.AnhBia}
+                                                                            src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                                                                             className="lazy loaded" />
                                                                         <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                                                             <div className="decription-hover overlay">
