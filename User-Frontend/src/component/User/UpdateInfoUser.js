@@ -17,7 +17,7 @@ class UpdateInfoUser extends React.Component {
 
   UNSAFE_componentWillMount() {
     var email = {email: JSON.parse(localStorage.getItem('user')).email}
-    axios.post("http://htvcinemas.live:8000/user/find", email)
+    axios.post("http://localhost:8000/user/find", email)
       .then((res) => {
         this.setStateUsers(res.data.user[0]);
         this.setState({
@@ -78,7 +78,7 @@ class UpdateInfoUser extends React.Component {
     e.preventDefault();
 
     const User = this.state.User;
-    axios.put('http://htvcinemas.live:8000/user/updateInfo', User)
+    axios.put('http://localhost:8000/user/updateInfo', User)
       .then((res) => {
         if (!res.data.error) {
           window.alert("update info user success!")

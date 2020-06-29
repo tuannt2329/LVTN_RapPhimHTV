@@ -1,6 +1,6 @@
 const server = {
   server: {
-    host: process.env.HOST || 'htvcinemas.live',
+    host: process.env.HOST || 'localhost',
     port: process.env.PORT || 8000,
     useHttps: false,
     https: {

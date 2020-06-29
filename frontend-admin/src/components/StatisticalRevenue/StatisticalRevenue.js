@@ -18,10 +18,10 @@ class StatisticalRevenue extends Component {
     }
     UNSAFE_componentWillMount() {
         var TenFilm = {TenFilm: sessionStorage.getItem('tenphim')};
-        axios.post("http://htvcinemas.live:8000/ticket/find", TenFilm)
+        axios.post("http://localhost:8000/ticket/find", TenFilm)
             .then((res) => {
                 if(!res.data.error) {
-                    axios.post("http://htvcinemas.live:8000/film/find", TenFilm)
+                    axios.post("http://localhost:8000/film/find", TenFilm)
                     .then((res1) => {
                         if(!res1.data.error) {
                             this.setState({tongchi: res1.data.film[0].TongChi})
