@@ -64,7 +64,7 @@ class Register extends React.Component {
             passwordConf: this.state.passwordConf
         }
 
-        axios.post('http://htvcinemas.live:3001/user/register', account)
+        axios.post('http://localhost:3001/user/register', account)
         .then( res => {
             if(res.data["message"] === "New account created!") {
                 this.setState({submit: true});

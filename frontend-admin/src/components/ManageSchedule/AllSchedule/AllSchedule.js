@@ -90,7 +90,7 @@ class AllFilms extends Component {
   };
   UNSAFE_componentWillMount() {
     this.isLocalStorage();
-    axios.post("http://htvcinemas.live:8000/schedule/find").then(async (res) => {
+    axios.post("http://localhost:8000/schedule/find").then(async (res) => {
       await this.setStateFilms(res.data.schedule);
       this.handle();
     });
