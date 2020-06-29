@@ -10,6 +10,7 @@ class UpdateInfoUser extends React.Component {
       gender: null,
     }
     this.onChangePassword = this.onChangePassword.bind(this)
+    this.onChangeNewPassword = this.onChangeNewPassword.bind(this)
     this.onChangeFirstName = this.onChangeFirstName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
     this.onChangegender = this.onChangegender.bind(this);
@@ -38,6 +39,21 @@ class UpdateInfoUser extends React.Component {
     });
   }
 
+  onChangeNewPassword = (e) => {
+    var User = this.state.User;
+    User["newPassword"] = e.target.value;
+    this.setState({
+      User: User
+    });
+  }
+
+  onChangeNewPasswordConfirm = (e) => {
+    var User = this.state.User;
+    User["newPasswordConfirm"] = e.target.value;
+    this.setState({
+      User: User
+    });
+  }
   onChangeFirstName = (e) => {
     var User = this.state.User;
     User["firstName"] = e.target.value;
@@ -65,15 +81,6 @@ class UpdateInfoUser extends React.Component {
     });
   }
 
-  // onChangerole = (e) => {
-  //   var User = this.state.User;
-  //   User["role"] = e.target.value;
-  //   this.setState({
-  //     User: User
-  //   });
-  // }
-
-
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -89,7 +96,45 @@ class UpdateInfoUser extends React.Component {
       });
   }
 
+  onSubmitNewPassword = (e) => {
+    e.preventDefault();
+
+    let account = {
+      email: this.state.User.email,
+      password: this.state.User.password
+    }
+    let accountChangpassword = {
+      email: this.state.User.email,
+      password: this.state.User.newPassword,
+      firstName: this.state.User.firstName,
+      lastName: this.state.User.lastName
+    }
+    if (this.state.User.newPassword === this.state.User.newPasswordConfirm) {
+      axios.post('http://localhost:8000/user/login', account)
+        .then((res) => {
+          if (!res.data.error) {
+            axios.put('http://localhost:8000/user/updateInfo', accountChangpassword)
+                  .then((res) => {
+                    if (!res.data.error) {
+                      window.alert("update password success!")
+                      localStorage.removeItem('user')
+                      return window.location = '/'
+                    } else {
+                      return window.alert(res.data.error)
+                    }
+                  });
+          } else {
+            window.alert(res.data.error)
+          }
+        })
+    } else {
+      return window.alert("mật khẩu xác nhận không khớp")
+    }
+    
+  }
+
   render() {
+    console.log(this.state.User)
     if (this.state.User) {
       return (
         <div className="block-wrapper">
@@ -113,8 +158,8 @@ class UpdateInfoUser extends React.Component {
                         <li className="active">
                           <a href="#tab_info" data-toggle="tab">Thông tin thành viên</a>
                         </li>
-                        {/* <li><a href="#tab_exchange" data-toggle="tab">Giao dịch của tôi</a>
-                        </li> */}
+                        <li><a href="#tab_exchange" data-toggle="tab">Đổi mật khẩu</a>
+                        </li>
                       </ul>
                       <div className="tab-content">
                         <div id="tab_info" className="tab-pane active">
@@ -190,27 +235,57 @@ class UpdateInfoUser extends React.Component {
                           </form>
                         </div>
                         <div id="tab_exchange" className="tab-pane">
-                          <form className="member-form">
-                            <div className="row">
-
-                            </div>
-                            <div className="row">
-
-                            </div>
-                          </form>
-
-                          <div id="gift-detail" className="row">
-                            <section className="detail-feature transaction-detail">
-
-                            </section>
-                            <div className="col-md-12 col-sm-12 col-xs-12">
-                              <div className="table-responsive">
+                          <form className="member-form" onSubmit={this.onSubmitNewPassword.bind(this)}>
+                            <div className="row row-info">
+                              <div className="col-md-5 col-sm-7 col-xs-7">
+                                <label>Email</label>
+                                <button type="button"
+                                  defaultValue={this.state.User["email"]}
+                                  data-toggle="tooltip"
+                                  data-placement="right"
+                                  title className="btn btn-email">{this.state.User["email"]}</button>
                               </div>
                             </div>
-                            <div className="col-md-12 col-sm-12 col-xs-12 pull-right">
-                              <a className="btn secondary fl-right member-btn-history">Xem lại lịch sử giao dịch</a>
+                            <div className="row">
+                              <div className="col-md-5 col-sm-7 col-xs-7">
+                                <label>Mật khẩu cũ</label>
+                                <input id="address"
+                                  placeholder="Mật khẩu cũ" type="password"
+                                  className="login"
+                                  onChange={this.onChangePassword}
+                                  required
+                                />
+                              </div>
                             </div>
-                          </div>
+                            <div className="row">
+                              <div className="col-md-5 col-sm-7 col-xs-7">
+                                <label>Mật khẩu mới</label>
+                                <input id="address"
+                                  placeholder="Mật khẩu mới" type="password"
+                                  className="login"
+                                  onChange={this.onChangeNewPassword}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-5 col-sm-7 col-xs-7">
+                                <label>Nhập lại mật khẩu mới</label>
+                                <input id="address"
+                                  placeholder="Nhập lại mật khẩu mới" type="password"
+                                  className="login"
+                                  onChange={this.onChangeNewPasswordConfirm}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="row row-info">
+                              <div className="col-md-12">
+                                <button type="submit" id="save" className="btn primary btn-login-buyticket">
+                                  <i className="fa fa-pulse fa-spinner" />Lưu lại</button>
+                              </div>
+                            </div>
+                          </form>
                         </div>
                       </div>
                     </div>
