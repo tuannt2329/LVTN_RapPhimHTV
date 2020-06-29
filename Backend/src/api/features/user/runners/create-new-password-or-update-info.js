@@ -48,9 +48,8 @@ const handlerCreateNewPassword = (model, _) => async (req, res) => {
 
 const handlerUpdateInfo = (model, _) => async (req, res) => {
   const modeInstance = model(req.body)
-  const password = req.body.password
   modeInstance.validateSync()
-  const {firstName, lastName, gender, email, role } = modeInstance
+  const {firstName, lastName, gender, email, password, role } = modeInstance
   if (!firstName) {
     res.send({ error: 'first name is required.' })
   } else if (!lastName) {
@@ -68,11 +67,13 @@ const handlerUpdateInfo = (model, _) => async (req, res) => {
       }
       const user = await model.findOne(listparams)
       
+      const oldpassword = req.body.password
+      
       if (user) {
         listparams = {
           email: email,
           deleted: false,
-          password: password
+          password: oldpassword
         }
         const userfound = await model.findOne(listparams)
         if(userfound) {
