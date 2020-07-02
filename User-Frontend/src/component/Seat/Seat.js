@@ -453,7 +453,7 @@ class Seat extends React.Component {
 
   render() {
     let thu = []
-    if(this.state.LichChieu.length != 0) {
+    if(this.state.LichChieu.length != 0 && this.state.LichChieu[0].NgayChieu) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
         let date = new Date(this.state.LichChieu[i].NgayChieu)
         if(date.getDay() + 1 === 1) {
@@ -463,7 +463,7 @@ class Seat extends React.Component {
         }
       }
     }
-    console.log(thu)
+    console.log(this.state.LichChieu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
