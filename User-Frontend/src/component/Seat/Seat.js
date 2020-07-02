@@ -398,8 +398,9 @@ class Seat extends React.Component {
           thoigiandatve += "0";
         }
         thoigiandatve += thoigianthuc.getSeconds() + ".000Z";
-
-        if(thoigiandatve >= (this.state.NgayChieu + "T" + this.state.GioChieu)) {
+        console.log(thoigiandatve)
+        console.log(this.state.NgayChieu + "T" + this.state.GioChieu)
+        if(thoigiandatve < (this.state.NgayChieu + "T" + this.state.GioChieu)) {
           if (this.state.paymentmethods === "payonline") {
             let ve = {
               email: JSON.parse(localStorage.getItem('user'))['email'],
