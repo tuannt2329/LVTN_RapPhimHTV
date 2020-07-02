@@ -536,7 +536,7 @@ class Seat extends React.Component {
                                 <ul className="list--showtimes-cinema">
                                   <li className="item--showtimes-cinema date_2020-06-20 date_2020-06-21 hide-date"
                                     data-date="2020-06-20" style={{ display: 'list-item' }}>
-                                    {/* <div className="info">
+                                    <div className="info">
                                       <div className="inside">
                                         <h4 className="title">HTV Thủ Đức</h4>
                                         <p>Trường Đại Học Sư Phạm Kỹ Thuật TP. Hồ Chí Minh Số 01, Võ Văn Ngân, Tỉnh Thủ Đức. </p>
@@ -544,7 +544,7 @@ class Seat extends React.Component {
                                       <a href="https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+H%E1%BB%8Dc+S%C6%B0+Ph%E1%BA%A1m+K%E1%BB%B9+Thu%E1%BA%ADt+TP.+H%E1%BB%93+Ch%C3%AD+Minh/@10.8507786,106.7696897,17z/data=!3m1!4b1!4m5!3m4!1s0x3175270ad28d48ab:0xa6c02de0a7c40d6c!8m2!3d10.8507786!4d106.7718784?hl=vi-VN"
                                         target="_blank" className="btn--location added-transaction-id">
                                         <i className="fa fa-map-marker" />XEM VỊ TRÍ</a>
-                                    </div> */}
+                                    </div>
 
                                     <div className="date_2020-06-20 hide-date" style={{ display: 'block' }}>
                                       <ul className="list--film-type">

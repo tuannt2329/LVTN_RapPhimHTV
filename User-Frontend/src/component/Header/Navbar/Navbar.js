@@ -4,17 +4,21 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
 } from "react-router-dom";
+
+
 class Navbar extends React.Component {
     constructor(props) {
         super(props)
         this.setStateFilms = this.setStateFilms.bind(this)
         this.state = {
             films: [],
-            counter: 0, 
+            counter: 0,
             theloai1: null,
-            tennuocsx1: null
+            tennuocsx1: null,
+            show: false
         }
     }
 
@@ -55,6 +59,16 @@ class Navbar extends React.Component {
                     return window.alert(res.data.error);
                 }
             })
+    }
+
+    HandleClickThanhVien = (event) => {
+        event.preventDefault();
+        // if (localStorage.getItem('user')) {
+        //     //   return  <Redirect to="/updateinfouser" />
+        //     // this.props.history.push("/updateinfouser")
+        // } else {
+        return window.alert("Bạn cần đăng nhập trước khi xem thông tin thành viên")
+        // }
     }
 
     render() {
@@ -235,10 +249,20 @@ class Navbar extends React.Component {
                                     </ul>
                                 </div>
                             </li> */}
+
                                 <li><a>Giá vé</a></li>
-                                <li><a href="/updateinfouser">Thành viên</a></li>
-                            </div></ul>
-                        {/* </div> */}
+                                
+                                {
+                                    localStorage.getItem("user") ?
+                                        <li><a href="/updateinfouser">Thành viên</a></li>
+                                        :
+                                        <li onClick={(event) => this.HandleClickThanhVien(event)}><a  >Thành viên</a></li>
+                                }
+
+                                {/* <li onClick={(event) => this.HandleClickThanhVien(event)}><a  >Thành viên</a></li> */}
+                                {/* {this.HandleClickThanhVien()} */}
+                            </div>
+                        </ul>
 
                     </nav>
                 </div>
