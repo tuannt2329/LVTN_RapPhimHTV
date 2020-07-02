@@ -148,7 +148,7 @@ function DetailFilm({route, navigation}) {
   }
 
   // unmount
-  useEffect(() => handle(), []);
+  // useEffect(() => handle(), []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -350,35 +350,25 @@ function DetailFilm({route, navigation}) {
                 color: 'white',
                 margin: 10,
                 textAlign: 'center',
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: 'bold',
                 textTransform: 'uppercase',
               }}>
-              {day.getDay() === 0 ? (
-                <Text
-                  style={{
-                    color: 'white',
-                    margin: 10,
-                    textAlign: 'center',
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    textTransform: 'uppercase',
-                  }}>
-                  Chủ Nhật
-                </Text>
-              ) : day.getDay() === 1 ? (
-                `Thứ 2`
-              ) : day.getDay() === 2 ? (
-                `Thứ 3`
-              ) : day.getDay() === 3 ? (
-                'Thứ 4'
-              ) : day.getDay() === 4 ? (
-                `Thứ 5`
-              ) : day.getDay() === 5 ? (
-                `Thứ 6`
-              ) : day.getDay() === 6 ? (
-                `Thứ 7`
-              ) : null}
+              {day.getDay() === 0
+                ? `Chủ Nhật`
+                : day.getDay() === 1
+                ? `Thứ 2`
+                : day.getDay() === 2
+                ? `Thứ 3`
+                : day.getDay() === 3
+                ? 'Thứ 4'
+                : day.getDay() === 4
+                ? `Thứ 5`
+                : day.getDay() === 5
+                ? `Thứ 6`
+                : day.getDay() === 6
+                ? `Thứ 7`
+                : null}
             </Text>
             <Text
               style={{
@@ -540,7 +530,7 @@ function DetailFilm({route, navigation}) {
                   }}>
                   <AntDesign
                     // name="closecircle"
-                    name="circledown"
+                    name="closecircle"
                     size={40}
                     color="red"
                     style={styles.btnCloseModal}
@@ -580,7 +570,9 @@ function DetailFilm({route, navigation}) {
                       flexDirection: 'column',
                       flexWrap: 'wrap',
                     }}>
-                    {show === false || haveSchedule === false ? null : (
+                    {show === false ||
+                    haveSchedule === false ||
+                    arrDate.length <= 0 ? null : (
                       <View style={{flex: 2, width: '100%'}}>
                         <Text
                           style={{
@@ -689,7 +681,7 @@ function DetailFilm({route, navigation}) {
                           textAlign: 'center',
                           justifyContent: 'center',
                         }}>
-                        {haveSchedule
+                        {haveSchedule && arrDate.length > 0
                           ? null
                           : 'Phim tạm thời chưa có lịch chiếu,\n nhấn theo dõi để nhận thông báo về email khi có lịch chiếu mới!'}
                       </Text>
@@ -703,7 +695,7 @@ function DetailFilm({route, navigation}) {
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}>
-                    {!haveSchedule ? null : (
+                    {!haveSchedule || arrDate.length <= 0 ? null : (
                       <TouchableOpacity
                         onPress={() => {
                           let currentTime = '';

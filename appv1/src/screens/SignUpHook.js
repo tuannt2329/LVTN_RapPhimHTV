@@ -102,15 +102,12 @@ function SignUpHook({navigation}) {
   useEffect(() => {
     if (selectedIndex === 1) {
       setGender('female');
-      console.log(gender);
     }
     if (selectedIndex === 0) {
       setGender('male');
-      console.log(gender);
     }
     if (selectedIndex === 2) {
       setGender('other');
-      console.log(gender);
     }
   }, [selectedIndex, gender]);
 
@@ -129,17 +126,13 @@ function SignUpHook({navigation}) {
   function validateEmail(email) {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if (reg.test(email) === false) {
-      console.log('Email is Not Correct');
       return false;
     } else {
-      console.log('Email is Correct');
       return true;
     }
   }
   //
   function doSignUp() {
-    console.log('stt button ', email, lastName);
-    console.log(gender);
     if (
       email === '' ||
       pass === '' ||
@@ -180,9 +173,7 @@ function SignUpHook({navigation}) {
         })
           .then(res => res.json())
           .then(res => {
-            console.log(res.error);
             if (res.error) {
-              console.log('a');
               setError('Email đã đăng ký');
               setLoading(false);
             } else {

@@ -75,7 +75,6 @@ function LoginHook({navigation, route}) {
     setLoading(true);
     if (email && pass) {
       setTimeout(() => {
-        console.log('timeout login');
         setLoading(false);
         Keyboard.dismiss();
         dispatch(LoginAction.login(email, pass));
@@ -87,15 +86,12 @@ function LoginHook({navigation, route}) {
   }
 
   useEffect(() => {
-    console.log('Handle api');
-    console.log(status);
     if (route.params) {
       var {continueBooking} = route.params;
       console.log(continueBooking);
     }
     if (status === 'OK') {
       if (continueBooking === true) {
-        console.log('back hihi');
         navigation.goBack();
       } else {
         navigation.navigate('Home');
@@ -107,7 +103,6 @@ function LoginHook({navigation, route}) {
   }, [navigation, error, status]);
 
   useEffect(() => {
-    console.log('keyboard event');
     let keyboardWillShowSub = Keyboard.addListener(
       'keyboardDidShow',
       keyboardDidShow,
@@ -118,7 +113,6 @@ function LoginHook({navigation, route}) {
     );
     setError(false);
     return function cleanup() {
-      console.log('unmount');
       keyboardWillShowSub.remove();
       keyboardWillHideSub.remove();
       if (status === 'ERROR') {
@@ -146,7 +140,12 @@ function LoginHook({navigation, route}) {
 
         <Animated.Image
           source={require('../assets/imgs/htv_logo.png')}
-          style={{width: '90%',top : '5%', resizeMode: 'contain', height: imageHeight}}
+          style={{
+            width: '90%',
+            top: '5%',
+            resizeMode: 'contain',
+            height: imageHeight,
+          }}
         />
         <Text style={styles.title}>
           HTV

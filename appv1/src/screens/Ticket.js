@@ -84,7 +84,7 @@ function Ticket({navigation, route}) {
       });
 
       let json = await get.json();
-      let getImage = await json.film.map(async value => {
+      await json.film.map(async value => {
         await objImage.push({
           TenFilm: value.TenFilm,
           AnhBia: value.AnhBia,
@@ -122,7 +122,13 @@ function Ticket({navigation, route}) {
                  */}
               {props => (
                 <TicketUnuse
-                  films={listTicket.filter(val => val.status === false)}
+                  films={listTicket
+                    .filter(val => val.status === false)
+                    .sort(
+                      (a, b) =>
+                        Date.parse(b.ThoiGianChieu.split('T')[0]) -
+                        Date.parse(a.ThoiGianChieu.split('T')[0]),
+                    )}
                   image={image}
                 />
               )}
@@ -133,7 +139,13 @@ function Ticket({navigation, route}) {
               options={{tabBarLabel: 'Vé Đã Sử Dụng'}}>
               {props => (
                 <TicketUsed
-                  films={listTicket.filter(val => val.status === true)}
+                  films={listTicket
+                    .filter(val => val.status === true)
+                    .sort(
+                      (a, b) =>
+                        Date.parse(b.ThoiGianChieu.split('T')[0]) -
+                        Date.parse(a.ThoiGianChieu.split('T')[0]),
+                    )}
                   image={image}
                 />
               )}

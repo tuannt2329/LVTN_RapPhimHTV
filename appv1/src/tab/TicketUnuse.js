@@ -16,8 +16,6 @@ function TicketUnuse({films, image}) {
   const [seatCouple, setSeatCouple] = useState([]);
   // const [image, setImage] = useState([]);
   useEffect(() => {
-    console.log('films', films);
-    console.log('iamge', image);
     let vip = [],
       couple = [];
   }, []);
@@ -27,24 +25,12 @@ function TicketUnuse({films, image}) {
     let hinh = '';
     image.map(value => {
       if (value.TenFilm === item.TenFilm) {
-        console.log(value);
         hinh += value.AnhBia;
-        console.log(hinh);
       }
     });
     return (
       <View style={{flex: 1, width: '100%'}}>
-        <TouchableOpacity
-          style={styles.card}
-          //   onPress={() => {
-          //     // alert(`You've clicked '${TenFilm}'`);
-          //     navigation.navigate('DetailFilm', {film: item});
-          //   }}
-        >
-          {/* <Image
-            style={styles.cardImage}
-            source={{uri: `${Constant.API}/images/${image}`}}
-          /> */}
+        <TouchableOpacity style={styles.card}>
           <Image
             style={styles.cardImage}
             source={{uri: `${Constant.API}/images/${hinh}`}}

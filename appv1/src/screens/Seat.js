@@ -140,8 +140,6 @@ function Seat({route, navigation}) {
             }
           });
         }
-
-        console.log('SAu khi xoa', seat);
       }
       // nhấn vào ghế chưa chọn
       else {
@@ -150,7 +148,6 @@ function Seat({route, navigation}) {
         if (item.key.slice(0, 1) !== 'R') {
           for (let i = 0; i < seat.length; i++) {
             if (seat[i].key === item.key) {
-              console.log(seat[i].key);
               seat[i].Color = 'green';
             }
           }
@@ -171,7 +168,6 @@ function Seat({route, navigation}) {
             }
           });
         }
-        console.log(seatPick);
       }
     }
   }
@@ -211,13 +207,11 @@ function Seat({route, navigation}) {
       currentMinute +
       ':00.000Z';
     let hr = currentTime + ':' + currentMinute;
-    console.log(hr);
-    console.log(schedule.ThoiGianChieu);
+
     function CompareTime(time_1, time_2) {
       if (time_1.split(':')[0] === time_2.split(':')[0]) {
         let s1 = time_1.split(':')[0] * 60 + time_1.split(':')[1];
         let s2 = time_2.split(':')[0] * 60 + time_2.split(':')[1];
-        console.log(s1 - s2);
         if (Math.abs(s1 - s2) < 5) return 1; // Gets difference in seconds
       } else if (time_1.split(':')[0] > time_2.split(':')[0]) {
         let s1 = time_1.split(':')[1];
@@ -253,7 +247,6 @@ function Seat({route, navigation}) {
       })
         .then(res => res.json())
         .then(res => {
-          console.log(res.result);
           setUrl(res.result);
           setShowModal(false);
           setShowModalWebview(true);
@@ -319,9 +312,6 @@ function Seat({route, navigation}) {
     }
   }
   function _onNavigationStateChange(data) {
-    console.log(data.url);
-    console.log('tile', data.title);
-    console.log('data', data);
     if (data.url === 'http://htvcinemas.live/successpayment') {
       setShowModalWebview(false);
       setShowModalTicket(true);
@@ -368,7 +358,6 @@ function Seat({route, navigation}) {
       if (dataa.ticket !== undefined) {
         await Promise.all(
           dataa.ticket.map(value => {
-            console.log('promise all');
             value.TenGhe.map(value2 => {
               if (value2.slice(0, 1) !== 'R')
                 setSeatPicked(r => [...r, value2]);
@@ -440,9 +429,7 @@ function Seat({route, navigation}) {
   useEffect(() => {
     async function handleSeatFromAPI() {
       // let t = async function() {
-      console.log('handle from seate api');
       if (done === true) {
-        console.log('done', done);
         if (seatPicked.length > 0) {
           await listSeat.map(async value => {
             await seatPicked.map(value1 => {

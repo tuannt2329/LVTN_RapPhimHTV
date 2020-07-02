@@ -235,6 +235,12 @@ class Item extends Component {
       .reverse()
       .join('-');
 
+    const date1 = film.NgayKetThuc.split('T')[0]
+      .slice(0, 10)
+      .split('-')
+      .reverse()
+      .join('-');
+
     return (
       <View style={{flex: 1}}>
         <StatusBar barStyle="light-content" />
@@ -385,7 +391,7 @@ class Item extends Component {
             {/*/>*/}
             <Text style={styles.title}>
               <Text style={styles.name}>{film.TenFilm}</Text>
-              {'\n'}Khởi chiếu: {date}
+              {'\n'}Khởi chiếu: {date} - {date1}
             </Text>
             <View style={styles.keywords}>
               <TouchableOpacity

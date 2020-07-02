@@ -16,8 +16,7 @@ function TicketUsed({films, image}) {
   const [seatCouple, setSeatCouple] = useState([]);
   // const [image, setImage] = useState([]);
   useEffect(() => {
-    console.log('films', films);
-    console.log('iamge', image);
+
     let vip = [],
       couple = [];
   }, []);
@@ -27,9 +26,7 @@ function TicketUsed({films, image}) {
     let hinh = '';
     image.map(value => {
       if (value.TenFilm === item.TenFilm) {
-        console.log(value);
         hinh += value.AnhBia;
-        console.log(hinh);
       }
     });
     return (

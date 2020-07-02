@@ -77,6 +77,35 @@ class AutocompleteExample extends Component {
 
   componentDidMount() {
     const getFilmLoad = async () => {
+      let currentTime = '';
+      let currentMonth = '';
+      let currentDay = '';
+      let currentMinute = '';
+      let currentyear = '';
+      let now = new Date();
+      now.getHours() < 10
+        ? (currentTime += `0${now.getHours()}`)
+        : (currentTime += now.getHours());
+      now.getMonth() < 10
+        ? (currentMonth += '0' + (now.getMonth() + 1))
+        : (currentMonth += now.getMonth() + 1);
+      now.getDate() < 10
+        ? (currentDay += `0${now.getDate()}`)
+        : (currentDay += now.getDate());
+      now.getMinutes() < 10
+        ? (currentMinute += `0${now.getMinutes()}`)
+        : (currentMinute += now.getMinutes());
+      currentyear +=
+        now.getFullYear() +
+        '-' +
+        currentMonth +
+        '-' +
+        currentDay +
+        'T' +
+        currentTime +
+        ':' +
+        currentMinute +
+        ':00.000Z';
       let popo = await fetch(`${types.API}film/find/`, {
         method: 'POST',
         headers: {
@@ -86,6 +115,9 @@ class AutocompleteExample extends Component {
       });
       let popores = await popo.json();
       await this.setState({films: popores.film});
+      await this.setState({
+        films: this.state.films.filter(a => a.NgayKetThuc > currentyear),
+      });
     };
     getFilmLoad();
   }

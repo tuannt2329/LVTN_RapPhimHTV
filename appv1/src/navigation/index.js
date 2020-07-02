@@ -344,7 +344,7 @@ const DrawerContent = props => {
               </View>
 
               <DrawerItem
-                label="Tài Khoản"
+                label="Tài khoản"
                 labelStyle={{
                   color: 'black',
                   fontWeight: 'bold',
@@ -353,16 +353,11 @@ const DrawerContent = props => {
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('DetailAccount')}
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name={'account-circle-outline'}
-                    size={30}
-                  />
-                )}
+                icon={() => <FontAwesome5 name={'user-edit'} size={30} />}
               />
 
               <DrawerItem
-                label="Quản Lý Vé"
+                label="Danh sách vé"
                 labelStyle={{
                   color: 'black',
                   fontWeight: 'bold',
@@ -371,9 +366,7 @@ const DrawerContent = props => {
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('Ticket')}
-                icon={() => (
-                  <MaterialCommunityIcons name={'movie-outline'} size={30} />
-                )}
+                icon={() => <FontAwesome5 name={'tasks'} size={30} />}
               />
               <DrawerItem
                 label="Phim theo tên"
@@ -385,12 +378,7 @@ const DrawerContent = props => {
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('ListFilmSearchName')}
-                icon={() => (
-                  <MaterialCommunityIcons
-                    name={'file-find-outline'}
-                    size={30}
-                  />
-                )}
+                icon={() => <FontAwesome5 name={'search'} size={30} />}
               />
             </View>
           )}
@@ -420,6 +408,16 @@ const DrawerContent = props => {
                 <FontAwesome5 name={'user-plus'} color="black" size={30} />
               )}
             />
+            <DrawerItem
+              label="Tìm Phim"
+              labelStyle={styles.drawerLabel}
+              style={{alignItems: 'flex-start', marginVertical: 0}}
+              onPress={() => props.navigation.navigate('ListFilmSearchName')}
+              icon={() => (
+                <FontAwesome5 name={'search'} color="black" size={30} />
+              )}
+            />
+
             {/*<DrawerItem*/}
             {/*  label="Contact us"*/}
             {/*  labelStyle={{color: 'white', marginLeft: -16}}*/}
@@ -434,7 +432,7 @@ const DrawerContent = props => {
         <Block flex={false}>
           <DrawerItem
             label="Đăng Xuất"
-            labelStyle={{color: 'black', fontSize: 20, fontWeight: 'bold'}}
+            labelStyle={{color: 'black', fontSize: 15, fontWeight: 'bold'}}
             icon={() => (
               <FontAwesome5 name="sign-out-alt" color={'red'} size={20} />
             )}

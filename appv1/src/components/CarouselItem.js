@@ -5,6 +5,7 @@ import {
   Text,
   Image,
   Dimensions,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import * as Constant from '../constants/index';
@@ -15,7 +16,7 @@ const CarouselItem = ({item}) => {
     <TouchableOpacity
       style={styles.cardView}
       onPress={() => {
-        alert(
+        Alert.alert(
           `Khởi chiếu ngày: ${item.NgayChieu.split('T')[0]
             .split('-')
             .reverse()

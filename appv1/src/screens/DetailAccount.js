@@ -35,21 +35,33 @@ function DetailAccount({navigation}) {
 
   const [email, setEmail] = useState(user.user.email);
   const [pass, setPass] = useState(null);
+  const [oldpass, setOldPass] = useState(null);
+  const [newPass, setNewPass] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [gender, setGender] = useState(null);
   const [error, setError] = useState('');
+  const [error1, setError1] = useState('');
   const [infoUser, setInfoUser] = useState(null);
   const [done, setDone] = useState(null);
   // const [fromGender, setFromGender] = useState(user.user.gender);
   const [showPassword, setShowPassword] = useState(true);
-
+  const [showPassword1, setShowPassword1] = useState(true);
+  const [showPassword2, setShowPassword2] = useState(true);
+  const [userInfo, setUserInfo] = useState(false);
   // loading sử dụng cho indicator
   const [loading, setLoading] = useState(false);
   const [textSuccess, setTextSuccess] = useState(false);
   const buttons = ['Nam', 'Nữ', 'Khác'];
+  const buttons2 = ['Đổi thông tin', 'Đổi mật khẩu'];
+  const [typeUpdate, setTypeUpdate] = useState(1);
+  const inputOldPass = React.createRef();
+  const inputPass = React.createRef();
+  const inputNewPass = React.createRef();
+  const [hashPass, setHassPass] = useState(null);
+  // state cho verify password
+ 
 
-  const dispatch = useDispatch();
   navigation.setOptions({
     title: 'Cập nhật thông tin',
     headerTitleStyle: {
@@ -103,7 +115,6 @@ function DetailAccount({navigation}) {
 
   // keyboard event
   useEffect(() => {
-    console.log('keyboard event');
     let keyboardWillShowSub = Keyboard.addListener(
       'keyboardDidShow',
       keyboardDidShow,
@@ -119,7 +130,6 @@ function DetailAccount({navigation}) {
   });
 
   useEffect(() => {
-    console.log('mount');
     setEmail(user.user.email);
 
     async function a() {
@@ -135,7 +145,7 @@ function DetailAccount({navigation}) {
       })
         .then(res => res.json())
         .then(async users => {
-          console.log(users);
+          await setUserInfo(users.user);
           if (users.user[0].gender === 'male') {
             console.log('male');
             console.log(selectedIndex);
@@ -165,11 +175,33 @@ function DetailAccount({navigation}) {
   function toggleSwitch() {
     setShowPassword(!showPassword);
   }
-  // func update info
-  function doUpdate() {
-    if (pass.length < 6) {
-      setError('Mật khẩu phải hơn 6 ký tự');
-    } else {
+  function toggleSwitch1() {
+    setShowPassword1(!showPassword1);
+  }
+  function toggleSwitch2() {
+    setShowPassword2(!showPassword2);
+  }
+
+  // fucnc verify login
+
+  async function login(email, pass) {
+    // dispatch(isLogining());
+    let r = await fetch(`${types.API}user/login/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: pass,
+      }),
+    });
+    let res = await r.json();
+
+    if (!res.error) {
+      await setHassPass(res.user.password);
+      // await setStatusLogin(true);
       fetch(`${types.API}user/updateInfo/`, {
         method: 'PUT',
         headers: {
@@ -178,52 +210,119 @@ function DetailAccount({navigation}) {
         },
         body: JSON.stringify({
           email: email,
-          password: pass,
+          password: hashPass,
           firstName: firstName,
           lastName: lastName,
           gender: gender,
         }),
       })
         .then(res => res.json())
-        .then(res => {
+        .then(async res => {
           if (res.error) {
-            console.log(res.error);
-            if (res.error === 'Password is required.') {
-              setError('Vui lòng nhập Mật Khẩu');
-            }
+            // if (res.error === 'Password is required.') {
+            //   setError('Vui lòng nhập Mật Khẩu');
+            // }
             if (res.error === 'first name is required.') {
-              console.log(res.error);
-              setError('Vui lòng nhập Họ');
+              await setError('Vui lòng nhập Họ');
             }
             if (res.error === 'last name is required.') {
-              console.log(res.error);
-              setError('Vui Lòng nhập Tên');
+              await setError('Vui Lòng nhập Tên');
             }
             // setError('Email đã đăng ký');s
             // setLoading(false);
           } else {
-            console.log(res.content);
             if (res.content === 'Changed personal details') {
-              setError('Cập Nhật Thành Công');
+              // await setOldPass('');
+              await inputOldPass.current.clear();
+              await setError('Cập Nhật Thành Công');
+              await setOldPass('');
             }
-            // setLoading(false);
-            // setTextSuccess(true);
-            // setTimeout(() => {
-            //   setTextSuccess(false);
-            //   navigation.dispatch(
-            //     CommonActions.reset({
-            //       index: 1,
-            //       routes: [{name: 'HomeStack'}],
-            //     }),
-            //   );
-            // }, 500);
           }
         })
         .catch(e => {
           console.log('catch sign up');
         });
+    } else {
+      await setError('Mật Khẩu Không Chính Xác');
     }
   }
+
+  async function login1(email, passs) {
+    // dispatch(isLogining());
+    let call = await fetch(`${types.API}user/login/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: passs,
+      }),
+    });
+    let res = await call.json();
+    if (!res.error) {
+      fetch(`${types.API}user/updateInfo/`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: newPass,
+          firstName: firstName,
+          lastName: lastName,
+          gender: gender,
+        }),
+      })
+        .then(res => res.json())
+        .then(async res => {
+          console.log(res.content);
+          if (res.content === 'Changed password') {
+            // await inputOldPass.current.clear();
+            await inputPass.current.clear();
+            await inputNewPass.current.clear();
+            await setError1('Đổi Mật Khẩu Thành Công');
+            await setNewPass('');
+            await setPass('');
+            // await setStatusLogin1(null);
+          }
+        })
+        .catch(e => {
+          console.log('catch update pass', e);
+        });
+    } else {
+      await setError1('Mật khẩu cũ không chính xác');
+    }
+  }
+
+  // func update info
+  async function doUpdateInfo(e) {
+    // e.preventDefault();
+    if (oldpass === null || oldpass === '') {
+      await setError('Nhập mật khẩu để thực hiện');
+    } else {
+      await login(email, oldpass);
+    }
+  }
+
+  async function doUpdatePass() {
+    if (pass === null || pass === '') {
+      await setError1('Nhập mật khẩu cũ');
+    } else if (newPass === null || newPass === '') {
+      await setError1('Nhập mật khẩu mới');
+    } else if (newPass.length < 6) {
+      await setError1('Mật khẩu mới phải hơn 6 ký tự');
+    } else {
+      await login1(email, pass);
+      // if (sttLogin1 === true) {
+
+      // } else if (sttLogin1 === false && pass.length > 0) {
+      // }
+    }
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       {/*<CustomHeader isHome="false" title="Đăng Ký" navigation={navigation} />*/}
@@ -244,9 +343,9 @@ function DetailAccount({navigation}) {
             color: '#ff7c7c',
             fontWeight: 'bold',
             fontSize: 40,
-            width:'100%',
+            width: '100%',
             textAlign: 'center',
-            marginBottom: 50,
+            marginBottom: 0,
             height: imageHeight,
           }}>
           HTV
@@ -259,154 +358,258 @@ function DetailAccount({navigation}) {
             cinemas
           </Text>
         </Animated.Text>
-        <View style={{...styles.inputView}}>
-          <Input
-            placeholder="Email..."
-            style={styles.inputText}
-            value={email}
-            editable={false}
-            selectTextOnFocus={false}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => setEmail(text)}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="Mật khẩu..."
-            secureTextEntry={showPassword}
-            style={styles.inputText}
-            leftIcon={<Icon name="lock" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => setPass(text)}
-            rightIcon={
-              // <Switch onValueChange={toggleSwitch} value={!showPassword} />
-              <TouchableOpacity onPress={toggleSwitch}>
-                {showPassword ? (
-                  <AntDesign name="eyeo" size={25} />
-                ) : (
-                  <AntDesign name="eye" size={25} color={'red'} />
-                )}
+        {/* <View style={{...styles.inputView}}> */}
+        <ButtonGroup
+          selectedIndex={typeUpdate}
+          onPress={setTypeUpdate}
+          buttons={buttons2}
+          containerStyle={{
+            height: 35,
+            borderRadius: 25,
+            width: '80%',
+            marginBottom: 20,
+            backgroundColor: '#fde0f2',
+          }}
+        />
+        {/* </View> */}
+        {typeUpdate === 0 ? (
+          <>
+            <View style={{...styles.inputView}}>
+              <Input
+                placeholder="Email..."
+                style={styles.inputText}
+                value={email}
+                editable={false}
+                selectTextOnFocus={false}
+                leftIcon={<Icon name="user" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={text => {
+                  setEmail(text);
+                }}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Input
+                placeholder="Mật khẩu cũ..."
+                secureTextEntry={showPassword1}
+                style={styles.inputText}
+                ref={inputOldPass}
+                leftIcon={<Icon name="key" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={async text => {
+                  await setOldPass(text);
+                  setError('');
+                }}
+                rightIcon={
+                  // <Switch onValueChange={toggleSwitch} value={!showPassword} />
+                  <TouchableOpacity onPress={toggleSwitch1}>
+                    {showPassword1 ? (
+                      <AntDesign name="eyeo" size={25} />
+                    ) : (
+                      <AntDesign name="eye" size={25} color={'red'} />
+                    )}
+                  </TouchableOpacity>
+                }
+              />
+            </View>
+
+            <View style={styles.inputView}>
+              <Input
+                placeholder="Họ..."
+                style={styles.inputText}
+                value={firstName}
+                leftIcon={<Icon name="user" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={text => {
+                  setFirstName(text);
+                  setError('');
+                }}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Input
+                placeholder="Tên..."
+                style={styles.inputText}
+                value={lastName}
+                leftIcon={<Icon name="user" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={text => {
+                  setLastName(text);
+                  setError('');
+                }}
+              />
+            </View>
+            {/*<View style={styles.buttonGroup}>*/}
+            <View>
+              {selectedIndex !== null ? (
+                <ButtonGroup
+                  selectedIndex={selectedIndex}
+                  onPress={setSelectedIndex}
+                  buttons={buttons}
+                  containerStyle={{
+                    height: 50,
+                    borderRadius: 25,
+                    width: '80%',
+                    backgroundColor: '#fde0f2',
+                  }}
+                />
+              ) : null}
+            </View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+                color: 'red',
+              }}>
+              {error !== '' ? error : ''}
+            </Text>
+            <View
+              style={[
+                styles.loginBtn,
+                {
+                  borderColor: '#ddd',
+                  borderBottomWidth: 0,
+
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 2},
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
+
+                  borderRadius: 20,
+                  marginRight: 40,
+                  marginLeft: 40,
+                  marginTop: 10,
+                  paddingTop: 5,
+                  paddingBottom: 10,
+                  borderWidth: 1,
+                  overflow: 'hidden',
+                },
+              ]}>
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 1}}
+                startPoint={{x: 1, y: 0}}
+                endPoint={{x: 0, y: 1}}
+                // colors={['#0AC4BA', '#2BDA8E']}
+                colors={['#d53369', '#cbad6d']}
+                style={styless.gradient}
+              />
+              <TouchableOpacity
+                // style={styles.loginBtn}
+                onPress={event => doUpdateInfo(event)}>
+                <Text style={styles.loginText}>CẬP NHẬT</Text>
               </TouchableOpacity>
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="Họ..."
-            style={styles.inputText}
-            value={firstName}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => setFirstName(text)}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <Input
-            placeholder="Tên..."
-            style={styles.inputText}
-            value={lastName}
-            leftIcon={<Icon name="user" size={24} color="black" />}
-            placeholderTextColor="#003f5c"
-            onChangeText={text => setLastName(text)}
-          />
-        </View>
-        {/*<View style={styles.buttonGroup}>*/}
-        <View>
-          {selectedIndex !== null ? (
-            <ButtonGroup
-              selectedIndex={selectedIndex}
-              onPress={setSelectedIndex}
-              buttons={buttons}
-              containerStyle={{
-                height: 50,
-                borderRadius: 25,
-                width: '80%',
-                backgroundColor: '#fde0f2',
-              }}
-            />
-          ) : null}
-        </View>
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: 'bold',
-            fontStyle: 'italic',
-            color: 'red',
-          }}>
-          {error !== '' ? error : ''}
-        </Text>
-        <View
-          style={[
-            styles.loginBtn,
-            {
-              borderColor: '#ddd',
-              borderBottomWidth: 0,
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={{...styles.inputView}}>
+              <Input
+                placeholder="Email..."
+                style={styles.inputText}
+                value={email}
+                editable={false}
+                selectTextOnFocus={false}
+                leftIcon={<Icon name="user" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={text => setEmail(text)}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Input
+                placeholder="Mật khẩu cũ..."
+                secureTextEntry={showPassword}
+                style={styles.inputText}
+                ref={inputPass}
+                leftIcon={<Icon name="key" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={async text => {
+                  await setPass(text);
+                  setError1('');
+                }}
+                rightIcon={
+                  <TouchableOpacity onPress={toggleSwitch}>
+                    {showPassword ? (
+                      <AntDesign name="eyeo" size={25} />
+                    ) : (
+                      <AntDesign name="eye" size={25} color={'red'} />
+                    )}
+                  </TouchableOpacity>
+                }
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Input
+                placeholder=" Mật khẩu mới..."
+                secureTextEntry={showPassword2}
+                style={styles.inputText}
+                ref={inputNewPass}
+                leftIcon={<Icon name="lock" size={24} color="black" />}
+                placeholderTextColor="#003f5c"
+                onChangeText={async text => {
+                  await setNewPass(text);
+                  setError1('');
+                }}
+                rightIcon={
+                  // <Switch onValueChange={toggleSwitch} value={!showPassword} />
+                  <TouchableOpacity onPress={toggleSwitch2}>
+                    {showPassword2 ? (
+                      <AntDesign name="eyeo" size={25} />
+                    ) : (
+                      <AntDesign name="eye" size={25} color={'red'} />
+                    )}
+                  </TouchableOpacity>
+                }
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+                color: 'red',
+              }}>
+              {error1 !== '' ? error1 : ''}
+            </Text>
+            <View
+              style={[
+                styles.loginBtn,
+                {
+                  borderColor: '#ddd',
+                  borderBottomWidth: 0,
 
-              shadowColor: '#000',
-              shadowOffset: {width: 0, height: 2},
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 3,
+                  shadowColor: '#000',
+                  shadowOffset: {width: 0, height: 2},
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
 
-              borderRadius: 20,
-              marginRight: 40,
-              marginLeft: 40,
-              marginTop: 10,
-              paddingTop: 5,
-              paddingBottom: 10,
-              borderWidth: 1,
-              overflow: 'hidden',
-            },
-          ]}>
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            startPoint={{x: 1, y: 0}}
-            endPoint={{x: 0, y: 1}}
-            // colors={['#0AC4BA', '#2BDA8E']}
-            colors={['#d53369', '#cbad6d']}
-            style={styless.gradient}
-          />
-          <TouchableOpacity
-            // style={styles.loginBtn}
-            onPress={() => doUpdate()}>
-            {/*  <View>*/}
-            {/*    <DotIndicator*/}
-            {/*      color={theme.colors.white}*/}
-            {/*      count={4}*/}
-            {/*      size={theme.sizes.base * 0.5}*/}
-            {/*    />*/}
-            {/*    <Text style={styles.loginText}>Đang xác thực</Text>*/}
-            {/*  </View>*/}
-            {/*) : // xử lý timeout lúc đăng ký thành công*/}
-            {/*// đã nhận kết quả từ server, chỉ chờ timeout để hiện thông báo*/}
-            {/*textSuccess !== false ? (*/}
-            {/*  <Text style={styles.loginText}>*/}
-            {/*    Đăng ký thành công về trang chủ sau 1s*/}
-            {/*  </Text>*/}
-            {/*) : (*/}
-            {/*  <Text style={styles.loginText}>CẬP NHẬT</Text>*/}
-            {/*)}*/}
-            <Text style={styles.loginText}>CẬP NHẬT</Text>
-          </TouchableOpacity>
-        </View>
-        {/*sing up button*/}
-        {/*<TouchableOpacity>*/}
-        {/*  <Text*/}
-        {/*    style={[*/}
-        {/*      styles.loginText,*/}
-        {/*      {*/}
-        {/*        textDecorationLine: 'underline',*/}
-        {/*        fontStyle: 'italic',*/}
-        {/*        fontSize: 17,*/}
-        {/*        color: 'black',*/}
-        {/*      },*/}
-        {/*    ]}*/}
-        {/*    onPress={() => navigation.navigate('Login')}>*/}
-        {/*    ĐĂNG NHẬP*/}
-        {/*  </Text>*/}
-        {/*</TouchableOpacity>*/}
+                  borderRadius: 20,
+                  marginRight: 40,
+                  marginLeft: 40,
+                  marginTop: 10,
+                  paddingTop: 5,
+                  paddingBottom: 10,
+                  borderWidth: 1,
+                  overflow: 'hidden',
+                },
+              ]}>
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 1}}
+                startPoint={{x: 1, y: 0}}
+                endPoint={{x: 0, y: 1}}
+                colors={['#d53369', '#cbad6d']}
+                style={styless.gradient}
+              />
+              <TouchableOpacity onPress={() => doUpdatePass()}>
+                <Text style={styles.loginText}>ĐỔI MẬT KHẨU</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </KeyboardAvoidingView>
       {/*</View>*/}
     </SafeAreaView>

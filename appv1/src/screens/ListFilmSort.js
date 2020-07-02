@@ -72,19 +72,49 @@ export default function ListFilmSort({navigation, route}) {
   });
   useEffect(() => {
     async function a() {
+      let currentTime = '';
+      let currentMonth = '';
+      let currentDay = '';
+      let currentMinute = '';
+      let currentyear = '';
+      let now = new Date();
+      now.getHours() < 10
+        ? (currentTime += `0${now.getHours()}`)
+        : (currentTime += now.getHours());
+      now.getMonth() < 10
+        ? (currentMonth += '0' + (now.getMonth() + 1))
+        : (currentMonth += now.getMonth() + 1);
+      now.getDate() < 10
+        ? (currentDay += `0${now.getDate()}`)
+        : (currentDay += now.getDate());
+      now.getMinutes() < 10
+        ? (currentMinute += `0${now.getMinutes()}`)
+        : (currentMinute += now.getMinutes());
+      currentyear +=
+        now.getFullYear() +
+        '-' +
+        currentMonth +
+        '-' +
+        currentDay +
+        'T' +
+        currentTime +
+        ':' +
+        currentMinute +
+        ':00.000Z';
       console.log('will mount');
       // lấy các thể loại
       data.forEach((val, index) => {
-        setType(type => [...type, val.TheLoai]);
+        if (val.NgayKetThuc > currentyear)
+          setType(type => [...type, val.TheLoai]);
       });
       // lấy các quốc gia
       await data.forEach((val, index) => {
-        setCountry(country => [...country, val.TenNuocSX]);
+        if (val.NgayKetThuc > currentyear)
+          setCountry(country => [...country, val.TenNuocSX]);
       });
       await setLoad('t');
     }
     a();
-    console.log('type', type);
   }, []);
 
   useEffect(() => {
@@ -95,8 +125,6 @@ export default function ListFilmSort({navigation, route}) {
         await setCountry([...new Set(country)]);
       }
       await setShow('yes');
-      console.log('from type', type);
-      console.log('from country', country);
     }
     a();
   }, [load]);
@@ -104,17 +132,14 @@ export default function ListFilmSort({navigation, route}) {
 
   async function selectedType(value, index) {
     await setSelectedValueType(value);
-    console.log(selectedValueType);
   }
 
   async function selectedCountry(value, index) {
     await setSelectedValueCountry(value);
-    console.log(selectedValueType);
   }
 
   async function selectedSort(value, index) {
     await setSelectedValueSort(value);
-    console.log(selectedValueSort);
   }
 
   useEffect(() => {
@@ -433,7 +458,7 @@ export default function ListFilmSort({navigation, route}) {
               </View>
             </View>
 
-            <Text
+            {/* <Text
               style={{
                 color: '#FFF',
                 fontSize: 20,
@@ -442,7 +467,7 @@ export default function ListFilmSort({navigation, route}) {
                 marginVertical: 10,
               }}>
               Danh Sách Phim
-            </Text>
+            </Text> */}
 
             <View style={styles.slideView}>
               <Carousel
@@ -477,8 +502,14 @@ export default function ListFilmSort({navigation, route}) {
                   {listFilter === [] ||
                   typeof listFilter[activeIndex] === 'undefined'
                     ? 'Không có phim như yêu cầu'
-                    : listFilter[activeIndex].TomTat.slice(0, 200)}
+                    : listFilter[activeIndex].TomTat.slice(0, 150)}
                   ...
+                  {'\n'}
+                  <Text style={{color: 'red'}}>Thể loại: </Text>
+                  {listFilter === [] ||
+                  typeof listFilter[activeIndex] === 'undefined'
+                    ? ''
+                    : listFilter[activeIndex].TheLoai}
                 </Text>
               </View>
               {/* <TouchableOpacity
@@ -532,7 +563,7 @@ const styles = StyleSheet.create({
     top: 15,
   },
   slideView: {
-    flex: 5,
+    flex: 4,
     width: '100%',
     height: '50%',
     justifyContent: 'center',
@@ -565,7 +596,7 @@ const styles = StyleSheet.create({
   moreInfo: {
     backgroundColor: '#fff',
     opacity: 0.8,
-    flex: 3,
+    flex: 2,
     width: screenWidth,
     // height: screenHeight,
     // height: '30%',
