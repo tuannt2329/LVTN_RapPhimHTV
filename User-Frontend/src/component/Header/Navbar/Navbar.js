@@ -93,9 +93,9 @@ class Navbar extends React.Component {
                         
                         <ul className="primary-nav" aria-expanded="false">
                             <div id="navbarSupportedContent" className="collapse navbar-collapse">
-                                <li>
+                                {/* <li>
                                     <a href="/">Lịch chiếu</a>
-                                </li>
+                                </li> */}
                                 <li className="sub-nav">
                                     <a>Phim</a>
                                     <div id="sub-menu">
@@ -250,8 +250,8 @@ class Navbar extends React.Component {
                                 </div>
                             </li> */}
 
-                                <li><a>Giá vé</a></li>
-                                
+                                {/* <li><a>Giá vé</a></li> */}
+
                                 {
                                     localStorage.getItem("user") ?
                                         <li><a href="/updateinfouser">Thành viên</a></li>
