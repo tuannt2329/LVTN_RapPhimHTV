@@ -257,7 +257,7 @@ class Detail extends React.Component {
                     <div className="detail-info-row">
                       <label>Diễn viên:&nbsp;</label>
                       <div className="detail-info-right">
-                        <a href="/">a</a>
+                        <a  style={{color: 'white'}}>a</a>
                       </div>
                     </div>
                     <div className="detail-info-row">
