@@ -646,7 +646,7 @@ class Seat extends React.Component {
                           <div className="ticket-info">
                             <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 8)}&nbsp; | {this.state.NgayChieu}</p>
-                            <p className="  "><b>Combo: &nbsp;</b></p>
+                            {/* <p className="  "><b>Combo: &nbsp;</b></p> */}
                             <p className="  "><b>Ghế: {strghe}&nbsp;</b></p>
                           </div>
                           <div className="ticket-price-total">
@@ -662,7 +662,7 @@ class Seat extends React.Component {
 
                           <div className="require-col" onChange={this.onChangePay}>
                             <label className="gender">
-                              <input type="radio"
+                              <input type="radio" checked
                                 name="gender"
                                 title="Chọn hình thức thanh toán trực tuyến"
                                 value="payonline" />

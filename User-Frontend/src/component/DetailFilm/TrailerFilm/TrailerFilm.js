@@ -1,5 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
+import axios from "axios";
 
 class TrailerFilm extends React.Component {
   constructor(props) {
@@ -7,7 +8,9 @@ class TrailerFilm extends React.Component {
 
     this.state = {
       inputValue: this.props.films.Trailer,
-      url: ""
+      url: "",
+      films: [],
+      counter: 0,
     }
   }
 
@@ -20,6 +23,18 @@ class TrailerFilm extends React.Component {
     this.setState({ url: this.state.inputValue })
   }
 
+  setStateFilms = (data) => {
+    this.setState({ films: data.film, counter: 1 })
+  }
+
+  UNSAFE_componentWillMount() {
+    var TenFilm = { TenFilm: sessionStorage.getItem('tenphim') };
+    axios.post("http://localhost:8000/film/find", TenFilm)
+      .then(async (res) => {
+        await this.setStateFilms(res.data);
+      })
+  }
+
   render() {
     const styleVideo = {
       width: '100%',
@@ -27,6 +42,9 @@ class TrailerFilm extends React.Component {
       backgroundSize: 'cover',
     };
 
+    if (this.props.films[0] && this.state.counter === 0) {
+      this.setStateFilms(this.props.films)
+    }
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -40,7 +58,12 @@ class TrailerFilm extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" data-dismiss="modal" aria-hidden="true" className="close">×</button>
-                <h4 className="modal-title">Spring - Blender Open Movie</h4>
+                {this.state.films.map((item, index) =>
+                  ((Date.parse(item["NgayChieu"]) < (Date.parse(item["NgayKetThuc"])))) ?
+                    <h4 className="modal-title name-trailer">{item.TenFilm}</h4>
+                    :
+                    null
+                )}
               </div>
               <div className="modal-body">
                 <ReactPlayer className="video-trailer" style={styleVideo} url={this.state.url} controls={true} />

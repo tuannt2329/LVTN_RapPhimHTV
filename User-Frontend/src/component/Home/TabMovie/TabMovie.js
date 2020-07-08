@@ -22,7 +22,7 @@ class TabMovie extends React.Component {
     console.log(data)
     this.setState({ films: data, counter: 1 })
   }
-  
+
   handleOnclickFilm = (tenphim) => {
     sessionStorage.setItem("tenphim", tenphim);
   }
@@ -57,10 +57,22 @@ class TabMovie extends React.Component {
                                   key={index}
                                   src={"http://localhost:8000/images/" + item.AnhBia}
                                   className="lazy loaded" />
-                                <Link to ="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
+                                <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                   <div className="decription-hover overlay">
                                     <div className="movies-content">
                                       <div className="group">
+                                        <div className="content-text-actors-info content-text">
+                                          <auto-folded folded-height={200}>
+                                            <div>
+                                              <div className="shadow hidden" />
+                                              <div className="auto-folded bot-text" style={{ display: "block" }}>
+                                                <p className="p-tabmovie">
+                                                  {item.TomTat}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </auto-folded>
+                                        </div>
                                         <div className="btn secondary-white">mua vé</div>
                                       </div>
                                     </div>
@@ -98,6 +110,18 @@ class TabMovie extends React.Component {
                                   <div className="decription-hover overlay">
                                     <div className="movies-content">
                                       <div className="group">
+                                        <div className="content-text-actors-info content-text">
+                                          <auto-folded folded-height={200}>
+                                            <div>
+                                              <div className="shadow hidden" />
+                                              <div className="auto-folded bot-text" style={{ display: "block" }}>
+                                                <p className="p-tabmovie">
+                                                  {item.TomTat}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </auto-folded>
+                                        </div>
                                         <div className="btn secondary-white">mua vé</div>
                                       </div>
                                     </div>

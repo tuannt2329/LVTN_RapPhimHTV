@@ -1086,7 +1086,8 @@ ul.search-list {
       list-style: none;
       display: table-cell;
       text-align: center;
-      width: calc(100% / 7);
+      /* width: calc(100% / 7); */
+      width: 200px;
       line-height: 50px; }
       .htv-nav .primary-nav li:not(:last-child) {
         background: url("images/line-menu.png") no-repeat center right; }
@@ -2746,7 +2747,7 @@ a.showtimes-list {
   margin-bottom: 15px; }
 
 .ticket-feature {
-  padding-left: 2%;  /**/
+  /* padding-left: 2%;   */   /**/
   clear: both;
   min-height: 0;
   box-sizing: border-box;

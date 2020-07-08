@@ -113,7 +113,7 @@ class successPayment extends React.Component {
                         <div className="ticket-info">
                           <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.ve.TenPhong}&nbsp;</p>
                           <p><b>Suất chiếu: &nbsp;</b>{timechieu}</p>
-                          <p><b>Combo: &nbsp;</b></p>
+                          {/* <p><b>Combo: &nbsp;</b></p> */}
                           <p><b>Ghế: {this.state.ve.TenGhe}&nbsp;</b></p>
                         </div>
                         <div className="ticket-price-total">
