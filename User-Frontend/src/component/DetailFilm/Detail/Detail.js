@@ -60,28 +60,31 @@ class Detail extends React.Component {
   }
 
   handleOnclickLike = async (tenphim) => {
-    if (this.state.like === "Like") {
-      let countLike = this.state.countLike
-      countLike++
-      await this.setState({ countLike: countLike, like: "Dislike", show: true })
+    if (localStorage.getItem('user')) {
+      if (this.state.like === "Like") {
+        let countLike = this.state.countLike
+        countLike++
+        await this.setState({ countLike: countLike, like: "Dislike", show: true })
+      } else {
+        let countLike = this.state.countLike
+        countLike--
+        await this.setState({ countLike: countLike, like: "Like", show: false })
+      }
+      const like = {
+        TenFilm: this.state.films[0].TenFilm,
+        LuotLike: this.state.countLike
+      }
+      axios.put('http://localhost:8000/film/updatefilm', like)
+        .then((res) => {
+          if (!res.data.error) {
+            console.log(res.data)
+          } else {
+            return window.alert(res.data.error)
+          }
+        });
     } else {
-      let countLike = this.state.countLike
-      countLike--
-      await this.setState({ countLike: countLike, like: "Like", show: false })
+      return window.alert("bạn cần đăng nhập trước để thích phim")
     }
-    const like = {
-      TenFilm: this.state.films[0].TenFilm,
-      LuotLike: this.state.countLike
-    }
-    axios.put('http://localhost:8000/film/updatefilm', like)
-      .then((res) => {
-        if (!res.data.error) {
-          console.log(res.data)
-        } else {
-          return window.alert(res.data.error)
-        }
-      });
-
   }
 
   render() {
