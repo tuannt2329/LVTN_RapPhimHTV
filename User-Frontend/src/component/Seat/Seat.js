@@ -626,16 +626,15 @@ class Seat extends React.Component {
                               <li className="road">Lối đi</li>
                               {
                                 (this.state.LoaiVe.length != 0) ?
-                                  <li className="">Ghế VIP: {this.state.LoaiVe[0]["GiaVe"]} đồng</li>
-                                :
-                                 null
+                                  <li className=""><div className="price-ticket">Ghế VIP:</div> {this.state.LoaiVe[0]["GiaVe"]} đồng</li>
+                                  :
+                                  null
                               }
                               {
-                                 (this.state.LoaiVe.length != 0) ?
-                                 <li className=""> <span className="ticket-price-total">Ghế COUPLE: </span>{this.state.LoaiVe[1]["GiaVe"]} đồng</li>
-                               :
-                                null
-                               
+                                (this.state.LoaiVe.length != 0) ?
+                                  <li className=""><div className="price-ticket">Ghế COUPLE:</div>{this.state.LoaiVe[1]["GiaVe"]} đồng</li>
+                                  :
+                                  null
                               }
                             </ul>
                           </div>

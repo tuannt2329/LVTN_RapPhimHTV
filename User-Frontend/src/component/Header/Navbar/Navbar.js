@@ -113,7 +113,7 @@ class Navbar extends React.Component {
                                         <div className="visible-lg-block">
                                             <div className="row submenu-title">
                                                 <div className="col-sm-12">
-                                                    <h3><a href="phim-dang-chieu">Phim đang chiếu</a></h3>
+                                                    <h3><a href>Phim đang chiếu</a></h3>
                                                     {/* <h3><Link to ={'/allfilm', <TabMovie films={this.state.films}/>}>Phim đang chiếu</Link></h3> */}
                                                 </div>
                                             </div>
@@ -153,7 +153,7 @@ class Navbar extends React.Component {
                                             <div className="row submenu-title">
                                                 <div className="col-sm-12">
                                                     <h3>
-                                                        <a href="/">Phim sắp chiếu</a>
+                                                        <a href>Phim sắp chiếu</a>
                                                     </h3>
                                                 </div>
                                             </div>

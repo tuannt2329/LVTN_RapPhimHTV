@@ -21,6 +21,16 @@
   overflow: hidden;
 }
 
+.price-ticket{
+  color: #286ffc;
+  display: inline-block;
+  line-height: 46px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 7px;
+}
+
 .cinema-title {
   text-align: center;
   width: 50%;
