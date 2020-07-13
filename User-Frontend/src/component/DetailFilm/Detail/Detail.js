@@ -13,7 +13,11 @@ class Detail extends React.Component {
       theodoi: "Theo dõi",
       like: "Like",
       countLike: 0,
-      show: false
+      show: false,
+      star: 0,
+      rating: false,
+      arrRating: [],
+      email: ""
     }
   }
 
@@ -23,6 +27,38 @@ class Detail extends React.Component {
 
   handleOnclickFilm = (tenphim) => {
     sessionStorage.setItem("tenphim", tenphim);
+  }
+
+  handleClickRating = async () => {
+    if (localStorage.getItem('user')) {
+      if (this.state.rating === false) {
+        let rating = this.state.films[0].Rating
+        if(!rating) {
+          rating = []
+        }
+        const user = {
+          email: JSON.parse(localStorage.getItem('user')).email,
+          star: this.state.star
+        }
+        await rating.push(user)
+        this.setState({ arrRating: rating, rating: true })
+      }
+      const rating = {
+        TenFilm: this.state.films[0].TenFilm,
+        Rating: this.state.arrRating
+      }
+      axios.put('http://htvcinemas.live:8000/film/updaterating', rating)
+        .then((res) => {
+          if (!res.data.error) {
+            console.log(res.data)
+
+          } else {
+            return window.alert(res.data.error)
+          }
+        });
+    } else {
+      return window.alert("bạn cần đăng nhập trước khi đánh giá phim")
+    }
   }
 
   handleOnclickFollow = async (tenphim) => {
@@ -59,15 +95,39 @@ class Detail extends React.Component {
     }
   }
 
+  onChangeRating = (e) => {
+    this.state.star = 0
+    if(e.target.value && !this.state.rating) {
+      const star = Number.parseFloat(e.target.value)
+      this.setState({star: star})
+    }
+  }
+
   handleOnclickLike = async (tenphim) => {
-    if (this.state.like === "Like") {
-      let countLike = this.state.countLike
-      countLike++
-      await this.setState({ countLike: countLike, like: "Dislike", show: true })
+    if (localStorage.getItem('user')) {
+      if (this.state.like === "Like") {
+        let countLike = this.state.countLike
+        countLike++
+        await this.setState({ countLike: countLike, like: "Dislike", show: true })
+      } else {
+        let countLike = this.state.countLike
+        countLike--
+        await this.setState({ countLike: countLike, like: "Like", show: false })
+      }
+      const like = {
+        TenFilm: this.state.films[0].TenFilm,
+        LuotLike: this.state.countLike
+      }
+      axios.put('http://htvcinemas.live:8000/film/updatefilm', like)
+        .then((res) => {
+          if (!res.data.error) {
+            console.log(res.data)
+          } else {
+            return window.alert(res.data.error)
+          }
+        });
     } else {
-      let countLike = this.state.countLike
-      countLike--
-      await this.setState({ countLike: countLike, like: "Like", show: false })
+      return window.alert("bạn cần đăng nhập trước để thích phim")
     }
     const like = {
       TenFilm: this.state.films[0].TenFilm,
@@ -81,16 +141,36 @@ class Detail extends React.Component {
           return window.alert(res.data.error)
         }
       });
+  }
 
+  handleCalculateAverageRating = () => {
+    let averageRating = 0
+    if(this.state.films[0] && this.state.films[0].Rating) {
+      if(this.state.films[0].Rating.length === 0) {
+        return averageRating
+      } else {
+        for (let i = 0; i < this.state.films[0].Rating.length; i++) {
+          averageRating += this.state.films[0].Rating[i]["star"]
+        }
+        return averageRating/this.state.films[0].Rating.length
+      }
+    }
   }
 
   render() {
     if (this.props.films[0] && this.state.counter === 0) {
       this.setStateFilms(this.props.films)
       if (localStorage.getItem('user')) {
-        for (var i = 0; i < this.props.films[0].TheoDoi.length; i++) {
+        for (let i = 0; i < this.props.films[0].TheoDoi.length; i++) {
           if (this.props.films[0].TheoDoi[i] === JSON.parse(localStorage.getItem('user')).email) {
             this.setState({ theodoi: "Bỏ theo dõi" })
+          }
+        }
+        if(this.props.films[0].Rating) {
+          for (let i = 0; i < this.props.films[0].Rating.length; i++) {
+            if (this.props.films[0].Rating[i]["email"] === JSON.parse(localStorage.getItem('user')).email) {
+              this.setState({ rating: true, star:this.props.films[0].Rating[i]["star"]})
+            }
           }
         }
       }
@@ -122,12 +202,72 @@ class Detail extends React.Component {
                     <div className="rating-wrap detail">
                       <div className="rating-movie detail">
                         <div className="rating-value detail">
-                          <strong>7.4</strong>
-                          <span>/10</span>
+                          <strong>{this.handleCalculateAverageRating()}</strong>
+                          <span>/5</span>
                           <div className="rating-view">
-                            <span>48</span>
+                            <span>{(this.state.films[0]["Rating"]) ? this.state.films[0]["Rating"].length : 0}</span>
                           </div>
                         </div>
+
+                        
+                        
+
+                        <div className="rating-user" >
+                          <htv-rating>
+                            <fieldset class="rating" onChange={this.onChangeRating.bind(this)}>
+                              <input type="radio" id="star5" name="rating" value="5" checked={(this.state.star === 5)? true : false}/>
+                              <label class="full" for="star5" title="Awesome - 5 stars">
+                              </label>
+
+                              <input type="radio" id="star4half" name="rating" value="4.5" checked={(this.state.star === 4.5) ? true : false}/>
+                              <label class="half" for="star4half" title="Pretty good - 4.5 stars">
+                              </label>
+
+                              <input type="radio" id="star4" name="rating" value="4" checked={(this.state.star === 4)? true : false}/>
+                              <label class="full" for="star4" title="Pretty good - 4 stars">
+                              </label>
+
+                              <input type="radio" id="star3half" name="rating" value="3.5" checked={(this.state.star === 3.5)? true : false}/>
+                              <label class="half" for="star3half" title="Meh - 3.5 stars">
+                              </label>
+
+                              <input type="radio" id="star3" name="rating" value="3" checked={(this.state.star === 3)? true : false}/>
+                              <label class="full" for="star3" title="Meh - 3 stars">
+                              </label>
+
+                              <input type="radio" id="star2half" name="rating" value="2.5" checked={(this.state.star === 2.5)? true : false}/>
+                              <label class="half" for="star2half" title="Kinda bad - 2.5 stars">
+                              </label>
+
+                              <input type="radio" id="star2" name="rating" value="2" checked={(this.state.star === 2)? true : false}/>
+                              <label class="full" for="star2" title="Kinda bad - 2 stars">
+                              </label>
+
+                              <input type="radio" id="star1half" name="rating" value="1.5" checked={(this.state.star === 1.5)? true : false}/>
+                              <label class="half" for="star1half" title="Meh - 1.5 stars">
+                              </label>
+
+                              <input type="radio" id="star1" name="rating" value="1" checked={(this.state.star === 1)? true : false}/>
+                              <label class="full" for="star1" title="Sucks big time - 1 star">
+                              </label>
+
+                              {/* <input type="radio" id="starhalf" name="rating" value="0.5" />
+                              <label class="half" for="starhalf" title="Sucks big time - 0.5 stars">
+                              </label> */}
+                            </fieldset>
+                          </htv-rating>
+                        </div>
+                        
+                        {
+                          (!this.state.rating) ?
+                            <div className="rating-bt">
+                              <div className="btn-xemtrailer-detailfilm">
+                                <button className="btn btn-primary btn-sm" onClick={this.handleClickRating.bind(this)}>Đánh giá</button>
+                              </div>
+                            </div>
+                          :
+                            null
+                        }
 
                         {/* Video Trailer Film */}
                         <div className="rating-bt">
@@ -135,59 +275,7 @@ class Detail extends React.Component {
                             <TrailerFilm films={item} />
                           </div>
                         </div>
-
-                        <div className="rating-bt">
-                          <div className="btn-xemtrailer-detailfilm">
-                            <button className="btn btn-primary btn-sm">Đánh giá</button>
-                          </div>
-                        </div>
-
-                        <div className="rating-user" >
-                          <htv-rating
-                            value="7.375010967254639">
-                            <fieldset class="rating">
-                              <input type="radio" id="star5" name="rating" value="5" />
-                              <label class="full" for="star5" title="Awesome - 5 stars">
-                              </label>
-
-                              <input type="radio" id="star4half" name="rating" value="4 and a half" />
-                              <label class="half" for="star4half" title="Pretty good - 4.5 stars">
-                              </label>
-
-                              <input type="radio" id="star4" name="rating" value="4" />
-                              <label class="full" for="star4" title="Pretty good - 4 stars">
-                              </label>
-
-                              <input type="radio" id="star3half" name="rating" value="3 and a half" />
-                              <label class="half" for="star3half" title="Meh - 3.5 stars">
-                              </label>
-
-                              <input type="radio" id="star3" name="rating" value="3" />
-                              <label class="full" for="star3" title="Meh - 3 stars">
-                              </label>
-
-                              <input type="radio" id="star2half" name="rating" value="2 and a half" />
-                              <label class="half" for="star2half" title="Kinda bad - 2.5 stars">
-                              </label>
-
-                              <input type="radio" id="star2" name="rating" value="2" />
-                              <label class="full" for="star2" title="Kinda bad - 2 stars">
-                              </label>
-
-                              <input type="radio" id="star1half" name="rating" value="1 and a half" />
-                              <label class="half" for="star1half" title="Meh - 1.5 stars">
-                              </label>
-
-                              <input type="radio" id="star1" name="rating" value="1" />
-                              <label class="full" for="star1" title="Sucks big time - 1 star">
-                              </label>
-
-                              <input type="radio" id="starhalf" name="rating" value="half" />
-                              <label class="half" for="starhalf" title="Sucks big time - 0.5 stars">
-                              </label>
-                            </fieldset>
-                          </htv-rating>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -239,25 +327,30 @@ class Detail extends React.Component {
                     <div className="detail-info-row">
                       <label>Đạo diễn:&nbsp;</label>
                       <div className="detail-info-right">
-                        <a href="/">{item.DaoDien}</a>
+                        <a href>{item.DaoDien}</a>
                       </div>
                     </div>
                     <div className="detail-info-row">
                       <label>Thể loại:&nbsp;</label>
                       <div className="detail-info-right">
-                        <a href="/">{item.TheLoai}</a>
+                        <a href>{item.TheLoai}</a>
                       </div>
                     </div>
                     <div className="detail-info-row">
                       <label>Quốc gia:&nbsp;</label>
                       <div className="detail-info-right">
-                        <a href="/">{item.TenNuocSX}</a>
+                        <a href>{item.TenNuocSX}</a>
                       </div>
                     </div>
                     <div className="detail-info-row">
                       <label>Diễn viên:&nbsp;</label>
                       <div className="detail-info-right">
-                        <a  style={{color: 'white'}}>a</a>
+                        {
+                          (item.TenFilm === "Bloodshot") ?
+                            <a>Vin Diesel, Eiza González, Sam Heughan</a>
+                          : 
+                            <a  style={{color: 'white'}}>.</a>
+                        }
                       </div>
                     </div>
                     <div className="detail-info-row">

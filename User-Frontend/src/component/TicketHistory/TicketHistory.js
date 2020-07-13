@@ -101,7 +101,7 @@ class TicketHistory extends React.Component {
                 </div>
                 <div className="col-md-8" >
                   <div htv-scroll-follow-content className="ticket-header aa">
-                    <section className="ticket-feature">
+                    <section className="ticket-feature wrap-info-ticket">
                       <article className="row">
                         <div className="col-md-12">
                           <div className="ticket-detail">

@@ -102,6 +102,18 @@ class FilmByCountry extends React.Component {
                                                                             <div className="decription-hover overlay">
                                                                                 <div className="movies-content">
                                                                                     <div className="group">
+                                                                                        <div className="content-text-actors-info content-text">
+                                                                                            <auto-folded folded-height={200}>
+                                                                                                <div>
+                                                                                                    <div className="shadow hidden" />
+                                                                                                    <div className="auto-folded bot-text" style={{ display: "block" }}>
+                                                                                                        <p className="p-tabmovie">
+                                                                                                            {item.TomTat}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </auto-folded>
+                                                                                        </div>
                                                                                         <div className="btn secondary-white">mua vé</div>
                                                                                     </div>
                                                                                 </div>
@@ -150,6 +162,18 @@ class FilmByCountry extends React.Component {
                                                                             <div className="decription-hover overlay">
                                                                                 <div className="movies-content">
                                                                                     <div className="group">
+                                                                                        <div className="content-text-actors-info content-text">
+                                                                                            <auto-folded folded-height={200}>
+                                                                                                <div>
+                                                                                                    <div className="shadow hidden" />
+                                                                                                    <div className="auto-folded bot-text" style={{ display: "block" }}>
+                                                                                                        <p className="p-tabmovie">
+                                                                                                            {item.TomTat}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </auto-folded>
+                                                                                        </div>
                                                                                         <div className="btn secondary-white">mua vé</div>
                                                                                     </div>
                                                                                 </div>

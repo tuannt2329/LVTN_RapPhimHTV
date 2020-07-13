@@ -108,5 +108,9 @@ module.exports = new Schema({
   TheoDoi: {
     type: [String],
     default: []
+  },
+  Rating: {
+    type: [],
+    default: []
   }
 })

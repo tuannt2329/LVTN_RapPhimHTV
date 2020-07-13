@@ -30,7 +30,8 @@ class Seat extends React.Component {
       Ghe: [],
       choosing: [],
       TongTienVe: 0,
-      paymentmethods: "payonline"
+      paymentmethods: "payonline",
+      LoaiVe: []
     }
     this.getGhebyPhong = this.getGhebyPhong.bind(this);
     this.updateStatusGhe = this.updateStatusGhe.bind(this)
@@ -49,6 +50,10 @@ class Seat extends React.Component {
       .then((res) => {
         this.setStateFilms(res.data.film)
       })
+    axios.post("http://htvcinemas.live:8000/giave/find")
+      .then((res) => {
+          this.setState({LoaiVe: res.data.loaive});
+      });
   }
 
   isLocalStorage = () => {
@@ -100,7 +105,6 @@ class Seat extends React.Component {
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
-            console.log(res.data.schedule[lc]["ThoiGianChieu"])
             if (res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
               var lichchieu = (res.data.schedule[lc]["ThoiGianChieu"]).split("T");
               var i = 0;
@@ -452,6 +456,7 @@ class Seat extends React.Component {
   }
 
   render() {
+    console.log(this.state.LoaiVe)
     let thu = []
     if(this.state.LichChieu.length != 0 && this.state.LichChieu[0].NgayChieu) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
@@ -463,7 +468,6 @@ class Seat extends React.Component {
         }
       }
     }
-    console.log(this.state.LichChieu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -620,6 +624,18 @@ class Seat extends React.Component {
                               <li className="choosing">Ghế đang chọn</li>
                               <li className="busy">Ghế đã chọn</li>
                               <li className="road">Lối đi</li>
+                              {
+                                (this.state.LoaiVe.length != 0) ?
+                                  <li className=""><div className="price-ticket">Ghế VIP:</div> {this.state.LoaiVe[0]["GiaVe"]} đồng</li>
+                                  :
+                                  null
+                              }
+                              {
+                                (this.state.LoaiVe.length != 0) ?
+                                  <li className=""><div className="price-ticket">Ghế COUPLE:</div>{this.state.LoaiVe[1]["GiaVe"]} đồng</li>
+                                  :
+                                  null
+                              }
                             </ul>
                           </div>
                         </div>
@@ -646,7 +662,7 @@ class Seat extends React.Component {
                           <div className="ticket-info">
                             <p><b>Rạp: &nbsp;</b>HTV Thủ đức&nbsp; | RAP {this.state.TenPhong}&nbsp;</p>
                             <p><b>Suất chiếu: &nbsp;</b>{this.state.GioChieu.substring(0, this.state.GioChieu.length - 8)}&nbsp; | {this.state.NgayChieu}</p>
-                            <p className="  "><b>Combo: &nbsp;</b></p>
+                            {/* <p className="  "><b>Combo: &nbsp;</b></p> */}
                             <p className="  "><b>Ghế: {strghe}&nbsp;</b></p>
                           </div>
                           <div className="ticket-price-total">
@@ -662,7 +678,7 @@ class Seat extends React.Component {
 
                           <div className="require-col" onChange={this.onChangePay}>
                             <label className="gender">
-                              <input type="radio"
+                              <input type="radio" checked
                                 name="gender"
                                 title="Chọn hình thức thanh toán trực tuyến"
                                 value="payonline" />

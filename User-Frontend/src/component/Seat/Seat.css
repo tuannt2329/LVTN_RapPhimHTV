@@ -17,8 +17,18 @@
   position: sticky;
   position: -webkit-sticky;
   right: 10px;
-  top: 150px;
+  top: 1px;
   overflow: hidden;
+}
+
+.price-ticket{
+  color: #286ffc;
+  display: inline-block;
+  line-height: 46px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 7px;
 }
 
 .cinema-title {
@@ -515,21 +525,7 @@ input[type="radio"i] {
 
 }
 
-.gender-shape {
-  display: inline-block;
-  width: 26px;
-  height: 30px;
-  background: url('/htv/website/images/icon-radio-user.jpg') no-repeat center bottom;
-  vertical-align: top;
-  margin: 0 5px;
-  pointer-events: none;
-  font-size: 10px;
-}
 
-.gender input:checked~.gender-shape {
-  background: url('/htv/website/images/icon-radio-active-user.jpg') no-repeat center bottom;
-  font-size: 10px;
-}
 
 .input_taiquay {
   /* padding: 5px 0px 0px 25px; */
