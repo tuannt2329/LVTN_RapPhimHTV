@@ -238,9 +238,9 @@ class Detail extends React.Component {
                               <label class="full" for="star1" title="Sucks big time - 1 star">
                               </label>
 
-                              {/* <input type="radio" id="starhalf" name="rating" value="0.5" />
+                              <input type="radio" id="starhalf" name="rating" value="0.5" checked={(this.state.star === 0.5)? true : false}/>
                               <label class="half" for="starhalf" title="Sucks big time - 0.5 stars">
-                              </label> */}
+                              </label>
                             </fieldset>
                           </htv-rating>
                         </div>

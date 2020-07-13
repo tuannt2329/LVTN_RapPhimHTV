@@ -97,6 +97,19 @@
     font-size: large;
 }
 
+.font-note {
+    font: inherit;
+    /* padding: 20px 0px 20px 0px;  */
+    padding: 0 0px 20px 0px; 
+    font-weight: 500;
+    position: relative;
+    text-decoration: none;
+    color: #ff0000;
+    -webkit-transition: all 0.5s;
+    font-size: large;
+}
+
+
 .ticket-header-giave {
     width: 100%;
     padding: 0 10px 0 ;
