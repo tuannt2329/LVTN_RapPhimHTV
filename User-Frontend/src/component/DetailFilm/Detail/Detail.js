@@ -141,7 +141,7 @@ class Detail extends React.Component {
         for (let i = 0; i < this.state.films[0].Rating.length; i++) {
           averageRating += this.state.films[0].Rating[i]["star"]
         }
-        return averageRating/this.state.films[0].Rating.length
+        return (averageRating/this.state.films[0].Rating.length).toFixed(1)
       }
     }
   }
