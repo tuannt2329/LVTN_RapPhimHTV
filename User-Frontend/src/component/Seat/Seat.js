@@ -71,7 +71,6 @@ class Seat extends React.Component {
   getFilminLichChieu = () => {
     var tenfilm = { TenFilm: this.state.TenFilm };
     var today = new Date()
-    console.log(today)
     let date = today.getFullYear()
     if ((today.getMonth() + 1) < 10) {
       date += '-0' + (today.getMonth() + 1)
@@ -84,15 +83,25 @@ class Seat extends React.Component {
       date += '-' + today.getDate()
     }
     let time = ''
-    if (today.getHours() < 10) {
-      time += '0' + today.getHours()
+    if((today.getMinutes() + 5) < 55) {
+      if (today.getHours() < 10) {
+        time += '0' + today.getHours()
+      } else {
+        time += today.getHours()
+      }
+
+      time += ':' + (today.getMinutes() + 5)
     } else {
-      time += today.getHours()
-    }
-    if ((today.getMinutes() - 5) < 10) {
-      time += ':0' + (today.getMinutes() - 5)
-    } else {
-      time += ':' + (today.getMinutes() - 5)
+      if (today.getHours() + 1 < 10) {
+        time += '0' + (today.getHours() + 1)
+      } else {
+        time += (today.getHours() + 1)
+      }
+      if((today.getMinutes() - 55) < 10) {
+        time += ':0' + (today.getMinutes() - 55)
+      } else {
+        time += ':' + (today.getMinutes() - 55)
+      }
     }
     if (today.getSeconds() < 10) {
       time += ':0' + today.getSeconds()
@@ -132,7 +141,6 @@ class Seat extends React.Component {
 
             list[n]["GioChieu"] = a;
           }
-          console.log(list)
           list.sort(this.dynamicsort("NgayChieu"))
           for(let i = 0; i < list.length; i++) {
             list[i].GioChieu.sort()
@@ -176,7 +184,6 @@ class Seat extends React.Component {
     stt = []
     strghe = ""
     tongtien = 0
-    console.log("xx", ngaychieu)
     this.setState({ GioChieu: '', Ghe: [], choosing: [], TongTienVe: 0 })
     this.setState({ NgayChieu: ngaychieu });
   }
@@ -214,16 +221,68 @@ class Seat extends React.Component {
     tongtien = 0
     this.setState({ GioChieu: giochieu, choosing: [], TongTienVe: 0 });
 
+    
     var lichchieu = {
       TenFilm: this.state.TenFilm,
       ThoiGianChieu: this.state.NgayChieu + "T" + giochieu
     }
+
+    var today = new Date()
+    let date = today.getFullYear()
+    if ((today.getMonth() + 1) < 10) {
+      date += '-0' + (today.getMonth() + 1)
+    } else {
+      date += '-' + (today.getMonth() + 1)
+    }
+    if (today.getDate() < 10) {
+      date += '-0' + today.getDate()
+    } else {
+      date += '-' + today.getDate()
+    }
+    let time = ''
+    
+    if((today.getMinutes() + 15) < 45) {
+      if (today.getHours() < 10) {
+        time += '0' + today.getHours()
+      } else {
+        time += today.getHours()
+      }
+
+      time += ':' + (today.getMinutes() + 15)
+    } else {
+      if (today.getHours() + 1 < 10) {
+        time += '0' + (today.getHours() + 1)
+      } else {
+        time += (today.getHours() + 1)
+      }
+      if((today.getMinutes() - 45) < 10) {
+        time += ':0' + (today.getMinutes() - 45)
+      } else {
+        time += ':' + (today.getMinutes() - 45)
+      }
+    }
+    if (today.getSeconds() < 10) {
+      time += ':0' + today.getSeconds()
+    } else {
+      time += ':' + today.getSeconds()
+    }
+    time += '.000Z'
+    const datetime = date + 'T' + time
+
     axios.post('http://htvcinemas.live:8000/schedule/find', lichchieu)
       .then((res) => {
         if (!res.data.error) {
           this.setState({ TenPhong: res.data.schedule[0]["TenPhong"] });
+
+          const ticketdeleteparams = {
+            TenFilm: this.state.TenFilm,
+            ThoiGianChieu: datetime,
+            TenPhong: this.state.TenPhong,
+            ThoiGianChieu1: this.state.NgayChieu + "T" + giochieu
+          }
+
           if (localStorage.getItem('user') && this.state.choosing) {
-            this.getGhebyPhong(lichchieu)
+            this.handleDeleteTicket(ticketdeleteparams)
           } else {
             return window.alert("Bạn cần đăng nhập trước khi chọn ghế")
           }
@@ -231,6 +290,23 @@ class Seat extends React.Component {
           return window.alert(res.data.error)
         }
       });
+  }
+
+  handleDeleteTicket = (params) => {
+    axios.post('http://htvcinemas.live:8000/ticket/deleteTicket', params)
+      .then((res) => {
+        if(!res.data.error) {
+          var lichchieu = {
+            TenFilm: params.TenFilm,
+            ThoiGianChieu: params.ThoiGianChieu1
+          }
+          this.getGhebyPhong(lichchieu)
+          return("success")
+        } else {
+          window.alert(res.data.error)
+          return ({error: res.data.error})
+        }
+      })
   }
 
   renderGhe = () => {
@@ -378,12 +454,13 @@ class Seat extends React.Component {
           thoigianxacthuc += "0";
         }
         thoigianxacthuc += thoigianthuc.getDate() + "T";
+        let thoigiandatve = thoigianxacthuc
+
         if (thoigianthuc.getHours() < 10) {
           thoigianxacthuc += "0";
         }
         thoigianxacthuc += thoigianthuc.getHours() + ":";
 
-        let thoigiandatve = thoigianxacthuc
 
         if (thoigianthuc.getMinutes() < 10) {
           thoigianxacthuc += "0";
@@ -394,16 +471,31 @@ class Seat extends React.Component {
         }
         thoigianxacthuc += thoigianthuc.getSeconds() + ".000Z";
 
-        if ((thoigianthuc.getMinutes() - 5) < 10) {
-          thoigiandatve += "0";
+        if((thoigianthuc.getMinutes() + 5) < 55) {
+          if (thoigianthuc.getHours() < 10) {
+            thoigiandatve += '0' + thoigianthuc.getHours()
+          } else {
+            thoigiandatve += thoigianthuc.getHours()
+          }
+    
+          thoigiandatve += ':' + (thoigianthuc.getMinutes() + 5)
+        } else {
+          if (thoigianthuc.getHours() + 1 < 10) {
+            thoigiandatve += '0' + (thoigianthuc.getHours() + 1)
+          } else {
+            thoigiandatve += (thoigianthuc.getHours() + 1)
+          }
+          if((thoigianthuc.getMinutes() - 55) < 10) {
+            thoigiandatve += ':0' + (thoigianthuc.getMinutes() - 55)
+          } else {
+            thoigiandatve += ':' + (thoigianthuc.getMinutes() - 55)
+          }
         }
-        thoigiandatve += (thoigianthuc.getMinutes() - 5) + ":";
         if (thoigianthuc.getSeconds() < 10) {
-          thoigiandatve += "0";
+          thoigiandatve += ":0";
         }
-        thoigiandatve += thoigianthuc.getSeconds() + ".000Z";
+        thoigiandatve += ":" + thoigianthuc.getSeconds() + ".000Z";
         console.log(thoigiandatve)
-        console.log(this.state.NgayChieu + "T" + this.state.GioChieu)
         if(thoigiandatve < (this.state.NgayChieu + "T" + this.state.GioChieu)) {
           if (this.state.paymentmethods === "payonline") {
             let ve = {
@@ -456,7 +548,6 @@ class Seat extends React.Component {
   }
 
   render() {
-    console.log(this.state.LoaiVe)
     let thu = []
     if(this.state.LichChieu.length != 0 && this.state.LichChieu[0].NgayChieu) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
@@ -678,7 +769,7 @@ class Seat extends React.Component {
 
                           <div className="require-col" onChange={this.onChangePay}>
                             <label className="gender">
-                              <input type="radio" checked
+                              <input type="radio" defaultChecked
                                 name="gender"
                                 title="Chọn hình thức thanh toán trực tuyến"
                                 value="payonline" />

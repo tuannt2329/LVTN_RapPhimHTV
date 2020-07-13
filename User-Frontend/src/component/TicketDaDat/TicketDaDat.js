@@ -179,6 +179,7 @@ class TicketDaDat extends React.Component {
           <div className="row">
             <div className="container">
               <center><h2 className="font-header-ticket-history">VÉ ĐÃ ĐẶT</h2></center>
+              <center><h4 className="font-note">Lưu ý: Những vé chưa thanh toán vui lòng thanh toán trước khi phim chiếu 15 phút </h4> </center>
               {this.renderVe()}
             </div>
           </div>
