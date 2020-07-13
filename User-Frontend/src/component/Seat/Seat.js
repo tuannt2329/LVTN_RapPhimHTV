@@ -30,7 +30,8 @@ class Seat extends React.Component {
       Ghe: [],
       choosing: [],
       TongTienVe: 0,
-      paymentmethods: "payonline"
+      paymentmethods: "payonline",
+      LoaiVe: []
     }
     this.getGhebyPhong = this.getGhebyPhong.bind(this);
     this.updateStatusGhe = this.updateStatusGhe.bind(this)
@@ -49,6 +50,10 @@ class Seat extends React.Component {
       .then((res) => {
         this.setStateFilms(res.data.film)
       })
+    axios.post("http://localhost:8000/giave/find")
+      .then((res) => {
+          this.setState({LoaiVe: res.data.loaive});
+      });
   }
 
   isLocalStorage = () => {
@@ -100,7 +105,6 @@ class Seat extends React.Component {
       .then((res) => {
         if (!res.data.error) {
           for (const lc in res.data.schedule) {
-            console.log(res.data.schedule[lc]["ThoiGianChieu"])
             if (res.data.schedule[lc]["ThoiGianChieu"] >= datetime) {
               var lichchieu = (res.data.schedule[lc]["ThoiGianChieu"]).split("T");
               var i = 0;
@@ -452,6 +456,7 @@ class Seat extends React.Component {
   }
 
   render() {
+    console.log(this.state.LoaiVe)
     let thu = []
     if(this.state.LichChieu.length != 0 && this.state.LichChieu[0].NgayChieu) {
       for(let i = 0; i < this.state.LichChieu.length; i++) {
@@ -463,7 +468,6 @@ class Seat extends React.Component {
         }
       }
     }
-    console.log(this.state.LichChieu)
     return (
       <div className="container container-wrap-magin-top">
         <div className="row">
@@ -620,6 +624,19 @@ class Seat extends React.Component {
                               <li className="choosing">Ghế đang chọn</li>
                               <li className="busy">Ghế đã chọn</li>
                               <li className="road">Lối đi</li>
+                              {
+                                (this.state.LoaiVe.length != 0) ?
+                                  <li className="">Ghế VIP: {this.state.LoaiVe[0]["GiaVe"]} đồng</li>
+                                :
+                                 null
+                              }
+                              {
+                                 (this.state.LoaiVe.length != 0) ?
+                                 <li className=""> <span className="ticket-price-total">Ghế COUPLE: </span>{this.state.LoaiVe[1]["GiaVe"]} đồng</li>
+                               :
+                                null
+                               
+                              }
                             </ul>
                           </div>
                         </div>
