@@ -12,6 +12,7 @@ class AllTickets extends Component {
             ids: [],
             searchText: ""
         };
+        this.handleDeleteTicketExpired = this.handleDeleteTicketExpired.bind(this)
         this.onchangeSearch = this.onchangeSearch.bind(this)
         this.onSubmitSearch = this.onSubmitSearch.bind(this)
     }
@@ -25,7 +26,8 @@ class AllTickets extends Component {
             .then((res) => {
                 if(!res.data.error) {
                     this.setStateFilms(res.data)
-                    res.data.ticket.map((item) => {
+                    this.handleDeleteTicketExpired()
+                    this.state.films.map((item) => {
                         idArray.push(item._id)
                     })
                     this.setState({ids: idArray})
@@ -34,6 +36,77 @@ class AllTickets extends Component {
                         return window.alert(res.data.error)
                 }
             });
+    }
+
+    handleDeleteTicketExpired = async () => {
+        var today = new Date()
+        let date = today.getFullYear()
+        if ((today.getMonth() + 1) < 10) {
+          date += '-0' + (today.getMonth() + 1)
+        } else {
+          date += '-' + (today.getMonth() + 1)
+        }
+        if (today.getDate() < 10) {
+          date += '-0' + today.getDate()
+        } else {
+          date += '-' + today.getDate()
+        }
+        let time = ''
+        
+        if((today.getMinutes() + 15) < 45) {
+          if (today.getHours() < 10) {
+            time += '0' + today.getHours()
+          } else {
+            time += today.getHours()
+          }
+    
+          time += ':' + (today.getMinutes() + 15)
+        } else {
+          if (today.getHours() + 1 < 10) {
+            time += '0' + (today.getHours() + 1)
+          } else {
+            time += (today.getHours() + 1)
+          }
+          if((today.getMinutes() - 45) < 10) {
+            time += ':0' + (today.getMinutes() - 45)
+          } else {
+            time += ':' + (today.getMinutes() - 45)
+          }
+        }
+        if (today.getSeconds() < 10) {
+          time += ':0' + today.getSeconds()
+        } else {
+          time += ':' + today.getSeconds()
+        }
+        time += '.000Z'
+        const datetime = date + 'T' + time
+    
+        if(this.state.films.length != 0) {
+          await this.state.films.forEach( async (element, index) => {
+            if(element.ThoiGianChieu <= datetime && element.payed === false) {
+              const ticketdeleteparams = {
+                TenFilm: element.TenFilm,
+                ThoiGianChieu: datetime,
+                TenPhong: element.TenPhong,
+                ThoiGianChieu1: element.ThoiGianChieu
+              }
+              await axios.post('http://localhost:8000/ticket/deleteTicket', ticketdeleteparams)
+                .then((res) => {
+                  if(!res.data.error) {
+                    let arrticket = this.state.films
+                    arrticket.splice(index, 1);
+                    this.setState({ films: arrticket})
+    
+                    return("success")
+                  } else {
+                    window.alert(res.data.error)
+                    return ({error: res.data.error})
+                  }
+                })
+            }
+          });
+        }
+        
     }
 
     setStateFilms = (data) => {
@@ -77,7 +150,6 @@ class AllTickets extends Component {
     }
 
     render() {
-        console.log(this.state)
         return (
             <div>
                 <Menu />
@@ -103,7 +175,7 @@ class AllTickets extends Component {
                                 <div className="col-sm-6">
                                     <ol className="breadcrumb float-sm-right">
                                         <li className="breadcrumb-item"><a href="/menu">Home</a></li>
-                                        <li className="breadcrumb-item active">AllTickets</li>
+                                        <li className="breadcrumb-item actifilms">AllTickets</li>
                                     </ol>
                                 </div>
                             </div>
