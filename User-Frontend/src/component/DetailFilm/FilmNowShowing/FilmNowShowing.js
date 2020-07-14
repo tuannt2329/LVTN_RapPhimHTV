@@ -61,14 +61,14 @@ class FilmNowShowing extends React.Component {
                             null
 
                     )}
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-md-10 col-sm-10 col-xs-10 pull-right">
                             <a href="/"
                                 className="btn secondary fl-right btn-xemthem-detailfilm">
                                 Xem thêm
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

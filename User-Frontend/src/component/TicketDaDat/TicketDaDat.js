@@ -10,6 +10,7 @@ class TicketDaDat extends React.Component {
       image: []
     }
     this.getVebyemail = this.getVebyemail.bind(this);
+    this.handleDeleteTicketExpired = this.handleDeleteTicketExpired.bind(this)
     // this.renderVe = this.renderVe.bind(this);
     this.getImageByFilmName = this.getImageByFilmName.bind(this);
   }
@@ -30,6 +31,7 @@ class TicketDaDat extends React.Component {
         .then((res) => {
           if (!res.data.error) {
             this.setState({ ve: res.data.ticket });
+            this.handleDeleteTicketExpired()
             for (let i in this.state.ve) {
               this.getImageByFilmName(this.state.ve[i]["TenFilm"]);
             }
@@ -153,6 +155,77 @@ class TicketDaDat extends React.Component {
         </div>
       )
     }
+  }
+
+  handleDeleteTicketExpired = async () => {
+    var today = new Date()
+    let date = today.getFullYear()
+    if ((today.getMonth() + 1) < 10) {
+      date += '-0' + (today.getMonth() + 1)
+    } else {
+      date += '-' + (today.getMonth() + 1)
+    }
+    if (today.getDate() < 10) {
+      date += '-0' + today.getDate()
+    } else {
+      date += '-' + today.getDate()
+    }
+    let time = ''
+    
+    if((today.getMinutes() + 15) < 45) {
+      if (today.getHours() < 10) {
+        time += '0' + today.getHours()
+      } else {
+        time += today.getHours()
+      }
+
+      time += ':' + (today.getMinutes() + 15)
+    } else {
+      if (today.getHours() + 1 < 10) {
+        time += '0' + (today.getHours() + 1)
+      } else {
+        time += (today.getHours() + 1)
+      }
+      if((today.getMinutes() - 45) < 10) {
+        time += ':0' + (today.getMinutes() - 45)
+      } else {
+        time += ':' + (today.getMinutes() - 45)
+      }
+    }
+    if (today.getSeconds() < 10) {
+      time += ':0' + today.getSeconds()
+    } else {
+      time += ':' + today.getSeconds()
+    }
+    time += '.000Z'
+    const datetime = date + 'T' + time
+
+    if(this.state.ve.length != 0) {
+      await this.state.ve.forEach( async (element, index) => {
+        if(element.ThoiGianChieu <= datetime && element.payed === false) {
+          const ticketdeleteparams = {
+            TenFilm: element.TenFilm,
+            ThoiGianChieu: datetime,
+            TenPhong: element.TenPhong,
+            ThoiGianChieu1: element.ThoiGianChieu
+          }
+          await axios.post('http://localhost:8000/ticket/deleteTicket', ticketdeleteparams)
+            .then((res) => {
+              if(!res.data.error) {
+                let arrticket = this.state.ve
+                arrticket.splice(index, 1);
+                this.setState({ ve: arrticket})
+
+                return("success")
+              } else {
+                window.alert(res.data.error)
+                return ({error: res.data.error})
+              }
+            })
+        }
+      });
+    }
+    
   }
 
   render() {

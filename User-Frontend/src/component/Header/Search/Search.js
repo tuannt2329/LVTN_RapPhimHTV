@@ -27,8 +27,8 @@ class Search extends React.Component {
         axios.post("http://htvcinemas.live:8000/film/find")
             .then((res) => {
                 if (!res.data.error) {
-                    this.setStateFilms(res.data)
-                    res.data.film.map((item) => {
+                    this.setStateFilms(res.data.film.filter(item => Date.parse(item["NgayKetThuc"]) >  Date.parse(Date())))
+                    this.state.films.map((item) => {
                         // tenphimArray.push(item.TenFilm, item.DaoDien)
                         tenphimArray.push(item.TenFilm)
                     })
@@ -41,8 +41,8 @@ class Search extends React.Component {
     }
 
     setStateFilms = (data) => {
-        tenfilm = data.film
-        this.setState({ films: data.film });
+        tenfilm = data
+        this.setState({ films: data });
     }
 
     handleOnclickFilm = (tenphim) => {
@@ -99,7 +99,7 @@ class Search extends React.Component {
                 <htv-search-bar>
                     <form className="search-form">
                         <div className="input-append">
-                            <input placeholder="Tìm tên phim, diễn viên..."
+                            <input placeholder="Nhập tên phim ..."
                                 className="search-box"
                                 onChange={this.onTextChange} value={text} />
                             {this.renderSuggestions()}
