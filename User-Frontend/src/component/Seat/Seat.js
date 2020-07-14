@@ -442,7 +442,11 @@ class Seat extends React.Component {
   }
 
   handleOnclickXacNhanDatVe = () => {
-    if (window.confirm("bạn đã suy nghĩ kĩ?")) {
+    if(this.state.TongTienVe <= 0)
+    {
+      return window.alert("Vui lòng chọn ghế");
+    }
+    else if (window.confirm("bạn đã suy nghĩ kĩ?")) {
       if (localStorage.getItem('user') && this.state.choosing) {
         var thoigianthuc = new Date();
         var thoigianxacthuc = thoigianthuc.getFullYear() + "-";

@@ -88,11 +88,11 @@ class TabMovie extends React.Component {
 
                         )}
                       </div>
-                      <div className="row">
+                      {/* <div className="row">
                         <div className="col-md-12 col-sm-12 col-xs-12 pull-right">
                           <a href="/" className="btn secondary fl-right">Xem thêm</a>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Phim sắp chiếu */}
@@ -136,11 +136,11 @@ class TabMovie extends React.Component {
                             null
                         )}
                       </div>
-                      <div className="row">
+                      {/* <div className="row">
                         <div className="col-md-12 col-sm-12 col-xs-12 pull-right">
                           <a href="/" className="btn secondary fl-right">Xem thêm</a>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

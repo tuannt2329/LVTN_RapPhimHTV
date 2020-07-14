@@ -86,7 +86,21 @@ class successPayment extends React.Component {
                   this.state.ve.payed === true ?
                     <h2 className="font-header-ticket-history header-successPayment">Thanh toán thành công</h2>
                   :
-                    <h2 className="font-header-ticket-history header-successPayment">Đặt vé thành công</h2>
+                  <div>
+                    <h2 className="font-header-ticket-history header-successPayment">
+                      Đặt vé thành công
+                    </h2>
+                    
+                    <div className="row">
+                      <div className="container">
+                        <center>
+                          <h4 className="font-note">
+                            Lưu ý: Vui lòng thanh toán trước khi phim chiếu 15 phút
+                          </h4>
+                        </center>
+                      </div>
+                    </div>
+                  </div>
                 }
                 
               </center>

@@ -13,19 +13,19 @@ class Footer extends React.Component {
                     <h1 className="title-widget">Hệ thống rạp</h1>
                     <ul>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> HTV Thủ Đức</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> HTV Gò Vấp</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> HTV Buôn Mê Thuột</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> HTV Kinh Dương Vương</a>
                       </li>
                     </ul>
@@ -38,19 +38,19 @@ class Footer extends React.Component {
                     <h1 className="title-widget">HTV Cinemas</h1>
                     <ul>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Phim đang chiếu</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Phim sắp chiếu</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Phim hay tháng</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Lịch chiếu</a>
                       </li>
 
@@ -64,19 +64,19 @@ class Footer extends React.Component {
                     <h1 className="title-widget">Thông tin</h1>
                     <ul>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Về chúng tôi</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Hỏi &amp; Đáp</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Rạp / giá vé</a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Tin tức</a>
                       </li>
                     </ul>
@@ -89,13 +89,13 @@ class Footer extends React.Component {
                     <h1 className="title-widget">Chăm sóc khách hàng</h1>
                     <ul className="nomargin">
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Giờ làm việc: 8:00 - 22:00
                           <div>(Tất cả các ngày bao gồm cả Lễ Tết)</div>
                         </a>
                       </li>
                       <li>
-                        <a href="/">
+                        <a>
                           <i className="fa fa-angle-double-right" /> Email hỗ trợ: tuanhungcinema@gmail.com</a>
                       </li>
                     </ul>
