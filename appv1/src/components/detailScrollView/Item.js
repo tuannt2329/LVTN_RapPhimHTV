@@ -24,7 +24,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../../constants/index.style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import * as types from '../../constants';
-
+import {Rating, AirbnbRating} from 'react-native-elements';
+import {round} from 'react-native-reanimated';
 const MIN_HEIGHT = Header.HEIGHT;
 const MAX_HEIGHT = 250;
 
@@ -138,7 +139,13 @@ class Item extends Component {
       numLike: 0,
       like: false,
       LuotLike: this.props.film.LuotLike,
+      Rating: null,
       iconLike: 'like1',
+      star: 0,
+      avengerRating: 0,
+      totalEmail: 0,
+      rated: false,
+      readOnly: false,
     };
   }
   onCloseModal = () => {
@@ -150,43 +157,47 @@ class Item extends Component {
     this.setState({modal: true});
   };
   pressLike = async () => {
-    if (this.state.like === false) {
-      console.log('like');
-      await this.setState({
-        like: true,
-        LuotLike: this.state.LuotLike + 1,
-        iconLike: 'check',
-      });
-    } else {
-      console.log('unlike');
-      await this.setState({
-        like: false,
-        LuotLike: this.state.LuotLike - 1,
-        iconLike: 'like1',
-      });
-    }
-    const putUpdate = async () => {
-      await fetch(`${types.API}film/updatefilm/`, {
-        method: 'PUT',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          TenFilm: this.props.film.TenFilm,
-          LuotLike: this.state.LuotLike,
-        }),
-      })
-        .then(res => res.json())
-        .then(a => {
-          if (a.error) {
-            console.log('err');
-          } else {
-            console.log('ok');
-          }
+    if (this.props.user !== null) {
+      if (this.state.like === false) {
+        console.log('like');
+        await this.setState({
+          like: true,
+          LuotLike: this.state.LuotLike + 1,
+          iconLike: 'check',
         });
-    };
-    putUpdate();
+      } else {
+        console.log('unlike');
+        await this.setState({
+          like: false,
+          LuotLike: this.state.LuotLike - 1,
+          iconLike: 'like1',
+        });
+      }
+      const putUpdate = async () => {
+        await fetch(`${types.API}film/updatefilm/`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            TenFilm: this.props.film.TenFilm,
+            LuotLike: this.state.LuotLike,
+          }),
+        })
+          .then(res => res.json())
+          .then(a => {
+            if (a.error) {
+              console.log('err');
+            } else {
+              console.log('ok');
+            }
+          });
+      };
+      putUpdate();
+    } else {
+      Alert.alert('Cần Đăng Nhập', 'Bạn phải đăng nhập để thích phim');
+    }
   };
   pressFollow = () => {
     if (this.props.user !== null) {
@@ -226,7 +237,84 @@ class Item extends Component {
           : this.setState({isFollow: false});
       }
     }
+    if (this.props.film.Rating.length > 0) {
+      let totalEmail = this.props.film.Rating.length || 0;
+      let totalRating = 0;
+      this.props.film.Rating.map(a => {
+        totalRating += a.star;
+      });
+      this.setState({
+        Rating: this.props.film.Rating,
+        totalEmail: totalEmail,
+        avengerRating: (totalRating / totalEmail).toFixed(1),
+      });
+      if (this.props.user !== null) {
+        this.props.film.Rating.map(item => {
+          if (item.email === this.props.user.user.email) {
+            this.setState({star: item.star, rated: true, readOnly: true});
+          }
+        });
+      }
+    }
   }
+
+  // roundByNum = (num, rounder) => {
+  //   var multiplier = 1 / (rounder || 0.5);
+  //   return Math.round(num * multiplier) / multiplier;
+  // };
+
+  ratingCompleted = rating => {
+    console.log(rating);
+    // if (rating <= 1) rating = 1;
+    console.log(rating);
+    console.log('Rating is: ' + Math.round(rating * 2) / 2);
+    // let rate = this.roundByNum(rating, 0.5);
+    let rate = Math.round(rating * 2) / 2;
+    // if (rate <= 1) rate = 1;
+    // console.log(rate);
+    this.setState({
+      star: rate,
+    });
+  };
+
+  onPressRating = () => {
+    if (this.props.user !== null) {
+      let arrayRatingg = this.props.film.Rating;
+      arrayRatingg.push({
+        email: this.props.user.user.email,
+        star: this.state.star,
+      });
+      fetch(`${types.API}film/updaterating/`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          TenFilm: this.props.film.TenFilm,
+          Rating: arrayRatingg,
+        }),
+      }).then(async a => {
+        let totalEmail = this.state.totalEmail + 1;
+        let totalRating = 0;
+        console.log(this.state.star);
+        await this.props.film.Rating.map(a => {
+          totalRating += a.star;
+        });
+        let sum = Number(totalRating / totalEmail).toFixed(1);
+        console.log(sum);
+        await this.setState({
+          rated: true,
+          totalEmail: totalEmail,
+          avengerRating: sum,
+          readOnly: true,
+        });
+      });
+    } else {
+      Alert.alert('Cần Đăng Nhập', 'Bạn phải đăng nhập để đánh giá phim');
+    }
+  };
+
   render() {
     const {film} = this.props;
     const date = film.NgayChieu.split('T')[0]
@@ -258,13 +346,13 @@ class Item extends Component {
           //
           onRequestClose={() => {
             Alert.alert(
-              'Hủy Quá Trình Đặt Vé.',
+              'Thoát trình xem trailer.',
               'Trở về ?',
               [
-                // {
-                //   text: 'Ok',
-                //   onPress: () => setModal(false),
-                // },
+                {
+                  text: 'Ok',
+                  onPress: () => this.setState({modal: false}),
+                },
                 {
                   text: 'Không',
                   style: 'cancel',
@@ -436,12 +524,61 @@ class Item extends Component {
                   colors={['#4c669f', '#3b5998', '#192f6a']}
                   style={styles.keywordContainer}>
                   {this.state.isFollow === true ? (
-                    <Text style={styles.keyword}>Bỏ Theo dõi</Text>
+                    <Text style={styles.keyword}>Bỏ theo dõi</Text>
                   ) : (
                     <Text style={styles.keyword}>Theo dõi</Text>
                   )}
                 </LinearGradient>
               </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <View style={{flexDirection: 'column'}}>
+                  <Text>
+                    {this.state.avengerRating}
+                    {'/5'}
+                  </Text>
+                  <Text>{this.state.totalEmail}</Text>
+                </View>
+                <Rating
+                  style={{alignItems: 'center', justifyContent: 'center'}}
+                  imageSize={20}
+                  readonly={true}
+                  startingValue={1}
+                  ratingCount={1}
+                  minValue={1}
+                />
+                <Rating
+                  // style={styles.title}
+                  readonly={this.state.readOnly}
+                  fractions={1}
+                  // showRating
+                  startingValue={this.state.star}
+                  onFinishRating={this.ratingCompleted}
+                  minValue={0}
+                />
+                {this.state.rated === false ? (
+                  <TouchableOpacity
+                    style={styles.title}
+                    onPress={() => this.onPressRating()}>
+                    <LinearGradient
+                      start={{x: 0.1, y: 0.25}}
+                      end={{x: 0.25, y: 1.0}}
+                      locations={[0.2, 0.9, 0.3]}
+                      colors={['#804080', '#fdaa2d', '#192f6a']}
+                      style={styles.keywordContainer}>
+                      <Text style={styles.keyword}>
+                        Đánh giá {this.state.star}{' '}
+                        <AntDesign name={'star'} color="yellow" />
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
             </View>
           </TriggeringView>
           <View style={styles.section}>

@@ -16,7 +16,7 @@ class Tab1 extends React.Component {
     super(props);
     this.state = {
       // nhận luôn props film từ indexTopTab
-      list: this.props.film,
+      list: this.props.film.sort((a, b) => a.TenFilm.localeCompare(b.TenFilm)),
     };
   }
   _renderItem({item, index}) {

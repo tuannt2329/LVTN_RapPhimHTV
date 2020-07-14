@@ -148,7 +148,7 @@ function Seat({route, navigation}) {
         if (item.key.slice(0, 1) !== 'R') {
           for (let i = 0; i < seat.length; i++) {
             if (seat[i].key === item.key) {
-              seat[i].Color = 'green';
+              seat[i].Color = 'blue';
             }
           }
           cost.map(value => {
@@ -159,7 +159,7 @@ function Seat({route, navigation}) {
         } else {
           for (let i = 0; i < listSeatCouple.length; i++) {
             if (listSeatCouple[i].key === item.key) {
-              listSeatCouple[i].Color = 'green';
+              listSeatCouple[i].Color = 'blue';
             }
           }
           cost.map(value => {
@@ -410,14 +410,17 @@ function Seat({route, navigation}) {
 
     if (isSubscribed === true) {
       let t = fetch(`${types.API}giave/find/`, {
-        method: 'POST',
+        method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
       })
         .then(r => r.json())
-        .then(res => setCost(res.loaive));
+        .then(res => {
+          console.log('gia', res);
+          setCost(res);
+        });
     }
 
     fetchSeatPicked();
@@ -708,7 +711,7 @@ function Seat({route, navigation}) {
                         {' '}
                         {selectedIndex === 0
                           ? 'Đã thanh toán'
-                          : 'Chưa thanh toán'}{' '}
+                          : 'Chưa thanh toán, thanh toán trước 15 phút để giữ ghế'}{'  '}
                       </Text>
                     </Text>
                   </View>
@@ -959,7 +962,7 @@ function Seat({route, navigation}) {
             style={[
               {
                 width: '30%',
-                backgroundColor: 'green',
+                backgroundColor: 'blue',
                 justifyContent: 'center',
                 alignItems: 'center',
               },
@@ -1014,8 +1017,20 @@ function Seat({route, navigation}) {
             Tiền thanh toán{' '}
             <Text style={{fontWeight: 'bold', color: 'blue'}}>
               {' '}
-              {amount} VNĐ{' '}
+              {amount !== 0
+                ? amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                : null}
+              {' VNĐ /'}
             </Text>
+            {cost !== []
+              ? cost.map(a =>
+                  a.LoaiVe === 'VIP' ? (
+                    <Text style={{fontSize: 11}}> Ghế thường {a.GiaVe} </Text>
+                  ) : (
+                    <Text style={{fontSize: 11}}> Ghế đôi {a.GiaVe} </Text>
+                  ),
+                )
+              : null}
           </Text>
         </View>
         <View style={{width: '100%'}}>

@@ -11,16 +11,13 @@ import {
   Dimensions,
 } from 'react-native';
 import * as types from '../constants';
-
-const API = 'https://swapi.co/api';
-const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {CommonActions} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 class AutocompleteExample extends Component {
   static renderFilm(film, navigation) {
-    const {TenFilm} = film;
+    // const {TenFilm} = film;
     // const roman = episode_id < ROMAN.length ? ROMAN[episode_id] : episode_id;
     return (
       <View>
@@ -28,17 +25,28 @@ class AutocompleteExample extends Component {
           {roman}. {title}
         </Text>
         <Text style={styles.directorText}>({director})</Text> */}
-        <TouchableOpacity
-          onPress={() => {
-            // console.log('a');
-            navigation.navigate('DetailFilm', {film: film});
-          }}>
-          <Image
-            source={{uri: `${types.API}/images/${film.AnhBia}`}}
-            style={styles.image}
-          />
-          <Text style={styles.openingText}>{TenFilm}</Text>
-        </TouchableOpacity>
+        {film.map(a => (
+          <>
+            <TouchableOpacity
+              style={{
+                borderColor: 'black',
+                borderWidth: 2,
+                borderRadius: 25,
+                overflow: 'hidden',
+                margin: '2%',
+              }}
+              onPress={() => {
+                // console.log('a');
+                navigation.navigate('DetailFilm', {film: a});
+              }}>
+              <Image
+                source={{uri: `${types.API}/images/${a.AnhBia}`}}
+                style={styles.image}
+              />
+              <Text style={styles.openingText}>{a.TenFilm}</Text>
+            </TouchableOpacity>
+          </>
+        ))}
       </View>
     );
   }
@@ -168,6 +176,29 @@ class AutocompleteExample extends Component {
               keyExtractor={(item, i) => {
                 return i;
               }}
+              inputContainerStyle={{
+                backgroundColor: 'green',
+                // elevation: 6,
+                borderRadius: 20,
+                borderWidth: 2,
+                margin: '2%',
+                borderColor: 'red',
+                overflow: 'hidden',
+              }}
+              listContainerStyle={{
+                backgroundColor: 'white',
+                // elevation: 6,
+                // borderRadius: 20,
+                borderWidth: 0,
+                borderColor: 'white',
+              }}
+              listStyle={{
+                backgroundColor: 'white',
+                elevation: 6,
+                borderRadius: 15,
+                borderWidth: 0,
+                borderColor: 'white',
+              }}
               defaultValue={query}
               value={query}
               onChangeText={text => this.setState({query: text})}
@@ -175,7 +206,6 @@ class AutocompleteExample extends Component {
               renderItem={({item}) => (
                 <TouchableOpacity
                   onPress={() => {
-                    console.log('a', item.TenFilm);
                     this.setState({query: item.TenFilm});
                   }}>
                   <Text style={styles.itemText}>{item.TenFilm}</Text>
@@ -186,7 +216,8 @@ class AutocompleteExample extends Component {
 
           <View style={styles.descriptionContainer}>
             {films.length > 0 ? (
-              AutocompleteExample.renderFilm(films[0], this.props.navigation)
+              // AutocompleteExample.renderFilm(films[0], this.props.navigation)
+              AutocompleteExample.renderFilm(films, this.props.navigation)
             ) : (
               // <Text>asd</Text>
               <Text style={styles.infoText}>Nhập tên bộ phim để tìm kiếm</Text>
@@ -211,8 +242,12 @@ const styles = StyleSheet.create({
     // right: 0,
     // top: 0,
     // zIndex: 1,
-    borderColor: 'white',
-    borderWidth: 3,
+    // borderRadius: 25,
+    // elevation: 6,
+    // backgroundColor: 'white',
+    // borderColor: 'white',
+    // borderWidth: 0,
+    overflow: 'hidden',
   },
   itemText: {
     fontSize: 15,

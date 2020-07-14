@@ -72,7 +72,7 @@ import ListFilmSearch from '../screens/ListFilmSearch';
 import DemoAnt from '../screens/DemoAnt';
 import Ticket from '../screens/Ticket';
 import ListFilmSearchName from '../screens/ListFilmSearchName';
-
+import ListFilmSearchDate from '../screens/ListFilmSearchDate';
 const showHeader = () => ({
   headerShown: false,
 });
@@ -290,6 +290,15 @@ const Screens = ({navigation, style}) => {
           component={ListFilmSearchName}>
           {/* {props => <ListFilmSearchName {...props} />} */}
         </Stack.Screen>
+        <Stack.Screen
+          name="ListFilmSearchDate"
+          options={{
+            cardStyleInterpolator: forFade,
+            headerStyleInterpolator: forFadeHeader,
+          }}
+          component={ListFilmSearchDate}>
+          {/* {props => <ListFilmSearchName {...props} />} */}
+        </Stack.Screen>
         {/*<Stack.Screen name="SliderEntry" component={SliderEntry} />*/}
       </Stack.Navigator>
     </Animatedd.View>
@@ -305,7 +314,7 @@ const DrawerContent = props => {
       {...props}
       scrollEnabled={false}
       contentContainerStyle={{flex: 1}}>
-      <Block top center>
+      <Block middle center>
         <Block
           flex={0.5}
           margin={3}
@@ -378,6 +387,18 @@ const DrawerContent = props => {
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('ListFilmSearchName')}
+                icon={() => <FontAwesome5 name={'search'} size={30} />}
+              />
+              <DrawerItem
+                label="Phim theo ngày"
+                labelStyle={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  // marginLeft: -16,
+                  fontSize: 15,
+                }}
+                style={styles.drawerItem}
+                onPress={() => props.navigation.navigate('ListFilmSearchDate')}
                 icon={() => <FontAwesome5 name={'search'} size={30} />}
               />
             </View>

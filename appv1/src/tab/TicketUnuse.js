@@ -30,6 +30,9 @@ function TicketUnuse({films, image}) {
     });
     return (
       <View style={{flex: 1, width: '100%'}}>
+        <Text style={{color: 'red'}}>
+          Vé đặt tại quầy thanh toán trước 15 phút để giữ ghế
+        </Text>
         <TouchableOpacity style={styles.card}>
           <Image
             style={styles.cardImage}
@@ -100,7 +103,7 @@ function TicketUnuse({films, image}) {
             </Text>
             <Text style={styles.cardSize}>
               <Text style={{color: 'red'}}>
-                {item.payed === true ? null : 'Chưa thanh toán'}
+                {item.payed === true ? 'Đã thanh toán' : 'Chưa thanh toán'}
               </Text>
             </Text>
           </View>

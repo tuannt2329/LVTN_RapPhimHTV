@@ -12,7 +12,7 @@ class Tab2 extends React.Component {
     super(props);
     //nhận trực tiếp list từ props của indexTopTab
     this.state = {
-      list: this.props.film,
+      list: this.props.film.sort((a, b) => a.TenFilm.localeCompare(b.TenFilm)),
     };
   }
 

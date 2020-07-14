@@ -318,12 +318,10 @@ function DetailFilm({route, navigation}) {
           flexDirection: 'column',
           alignItems: 'center',
           width: 120,
-          // borderColor: 'red',
-          // borderWidth: 1,
           borderRadius: 10,
-          // backgroundColor: 'blue',
+          justifyContent: 'center',
           margin: 2,
-          // height: '100%',
+          alignSelf: 'center',
           textAlign: 'center',
         }}>
         <LinearGradient
@@ -337,12 +335,12 @@ function DetailFilm({route, navigation}) {
             borderWidth: 1,
             width: 120,
             borderColor: 'orange',
-            borderBottomWidth: 1,
+            borderBottomWidth: 2,
             shadowColor: '#000',
             shadowOffset: {width: 0, height: 2},
             shadowOpacity: 0.8,
             shadowRadius: 2,
-            elevation: 4,
+            elevation: 10,
           }}>
           <TouchableOpacity onPress={() => selectedDate(item)}>
             <Text
@@ -399,26 +397,6 @@ function DetailFilm({route, navigation}) {
     );
   }
   //
-
-  // var fullDate = new Date(film.NgayKetThuc);
-  // console.log(fullDate);
-  // var twoDigitMonth = fullDate.getMonth() + '';
-  // if (twoDigitMonth.length == 1) twoDigitMonth = '0' + twoDigitMonth;
-  // var twoDigitDate = fullDate.getDate() + '';
-  // if (twoDigitDate.length == 1) twoDigitDate = '0' + twoDigitDate;
-  // const endDate =
-  //   twoDigitDate + '/' + twoDigitMonth + '/' + fullDate.getFullYear();
-  // console.log(endDate);
-
-  // var startDate = new Date(film.NgayChieu);
-  // console.log(startDate);
-  // var twoDigitMonth1 = startDate.getMonth() + '';
-  // if (twoDigitMonth1.length == 1) twoDigitMonth1 = '0' + twoDigitMonth1;
-  // var twoDigitDate2 = startDate.getDate() + '';
-  // if (twoDigitDate2.length == 1) twoDigitDate2 = '0' + twoDigitDate2;
-  // const start =
-  //   twoDigitDate + '/' + twoDigitMonth + '/' + startDate.getFullYear();
-  // console.log(endDate);
 
   navigation.setOptions({
     title: 'Nội Dung Phim',
@@ -504,8 +482,9 @@ function DetailFilm({route, navigation}) {
                   width: '100%',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  elevation: 10,
+                  // elevation: 10,
                   paddingBottom: 0,
+                  borderRadius: 30,
                 }}>
                 {/*
                     View Button X đóng modal
@@ -519,11 +498,8 @@ function DetailFilm({route, navigation}) {
                     alignItems: 'center',
                     backgroundColor: 'white',
                     borderColor: 'red',
-                    // borderTopWidth: 6,
                     borderBottomWidth: 1,
-
                     marginBottom: 0,
-
                     elevation: 20,
                     borderRadius: 25,
                     overflow: 'hidden',
@@ -569,6 +545,7 @@ function DetailFilm({route, navigation}) {
                       width: '100%',
                       flexDirection: 'column',
                       flexWrap: 'wrap',
+                      borderRadius: 30,
                     }}>
                     {show === false ||
                     haveSchedule === false ||
@@ -576,9 +553,10 @@ function DetailFilm({route, navigation}) {
                       <View style={{flex: 2, width: '100%'}}>
                         <Text
                           style={{
-                            marginTop: 10,
+                            marginTop: '3%',
                             fontSize: 17,
                             fontWeight: 'bold',
+                            marginLeft: '3%',
                             // textAlign: 'center',
                           }}>
                           Chọn ngày chiếu
@@ -589,10 +567,16 @@ function DetailFilm({route, navigation}) {
                             flex: 1,
                             flexDirection: 'column',
                             width: '100%',
+                            // margin: '3%',
                           }}>
                           <View style={{height: '100%'}}>
                             <FlatList
-                              style={{backgroundColor: 'white', opacity: 0.5}}
+                              style={{
+                                backgroundColor: 'white',
+                                borderRadius: 30,
+                                opacity: 0.5,
+                                // margin: '2%',
+                              }}
                               horizontal={true}
                               data={arrDate.sort((a, b) =>
                                 Date.parse(a.NgayChieu) >
@@ -609,7 +593,8 @@ function DetailFilm({route, navigation}) {
                         </View>
                       </View>
                     )}
-                    <View style={{flex: 1, width: '100%'}}>
+                    <View
+                      style={{flex: 1, width: '100%', alignItems: 'center'}}>
                       {date !== null ? (
                         <>
                           <Text
@@ -626,37 +611,54 @@ function DetailFilm({route, navigation}) {
                               .reverse()
                               .join('-')}`}
                           </Text>
-                          <Picker
-                            itemStyle={{
-                              // flex: 1,
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              textAlign: 'center',
-                              backgroundColor: '#D8B4D8',
-                            }}
-                            selectedValue={hour}
+                          <View
                             style={{
-                              top: 15,
-                              backgroundColor: '#D8B4D8',
-                              width: '100%',
+                              borderRadius: 25,
+                              borderWidth: 2,
+                              margin: '2%',
+                              // height: '45%',
+                              width: '45%',
+                              borderColor: 'orange',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              textAlign: 'center',
-                              color: 'red',
-                            }}
-                            mode="dropdown"
-                            onValueChange={(itemValue, itemIndex) =>
-                              selectedHour(itemValue, itemIndex)
-                            }>
-                            {date !== null
-                              ? time.map(val => (
-                                  <Picker.Item
-                                    label={val.toString()}
-                                    value={val}
-                                  />
-                                ))
-                              : null}
-                          </Picker>
+                              // borderColor: '#bdc3c7',
+                              overflow: 'hidden',
+                            }}>
+                            <Picker
+                              itemStyle={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                alignSelf: 'center',
+                                margin: 10,
+                                // backgroundColor: '#D8B4D8',
+                                // overflow: 'hidden',
+                              }}
+                              selectedValue={hour}
+                              style={{
+                                // top: 15,
+                                // backgroundColor: '#D8B4D8',
+                                width: '100%',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                color: 'red',
+                                margin: '3%',
+                              }}
+                              mode="dropdown"
+                              onValueChange={(itemValue, itemIndex) =>
+                                selectedHour(itemValue, itemIndex)
+                              }>
+                              {date !== null
+                                ? time.map(val => (
+                                    <Picker.Item
+                                      label={val.toString()}
+                                      value={val}
+                                    />
+                                  ))
+                                : null}
+                            </Picker>
+                          </View>
                           <Text
                             style={{
                               marginTop: 20,
