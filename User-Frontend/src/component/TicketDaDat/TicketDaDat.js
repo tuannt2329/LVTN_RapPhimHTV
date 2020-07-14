@@ -209,7 +209,7 @@ class TicketDaDat extends React.Component {
             TenPhong: element.TenPhong,
             ThoiGianChieu1: element.ThoiGianChieu
           }
-          await axios.post('http://localhost:8000/ticket/deleteTicket', ticketdeleteparams)
+          await axios.post('http://htvcinemas.live:8000/ticket/deleteTicket', ticketdeleteparams)
             .then((res) => {
               if(!res.data.error) {
                 let arrticket = this.state.ve
