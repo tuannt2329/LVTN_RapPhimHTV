@@ -166,7 +166,7 @@ class UpdateUser extends Component {
             );
         }
         return (
-            <div></div>
+            <div><Menu /></div>
         );
 
     }

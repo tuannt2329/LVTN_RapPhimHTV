@@ -76,12 +76,12 @@ class Menu extends Component {
                         <p>All Users</p>
                       </a>
                     </li>
-                    <li className="nav-item">
+                    {/* <li className="nav-item">
                       <a href="/adduser" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Add User</p>
                       </a>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                       <a href="/allusers" className="nav-link">
                         <i className="far fa-circle nav-icon" />

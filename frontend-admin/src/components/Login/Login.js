@@ -43,7 +43,8 @@ class Login extends React.Component {
         if (!res.data.error) {
           if(res.data.user["role"] === "admin") {
             sessionStorage.setItem("user",JSON.stringify(res.data.user))
-            this.setState({submit: true})
+            // this.setState({submit: true})
+            return window.location = '/allfilms'
           } else {
             return window.alert("Email is not authorized to access this website!!!")
           }
