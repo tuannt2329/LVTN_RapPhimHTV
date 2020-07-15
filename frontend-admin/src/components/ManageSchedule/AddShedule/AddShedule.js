@@ -214,7 +214,7 @@ class AddShedule extends Component {
             );
         }
         return (
-            <div></div>
+            <div><Menu /></div>
         );
 
     }

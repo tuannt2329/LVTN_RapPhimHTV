@@ -159,7 +159,7 @@ class DetailTicketHistory extends Component {
       );
     }
     return (
-      <div></div>
+      <div><Menu /></div>
     );
 
   }

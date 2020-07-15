@@ -16,9 +16,9 @@ class Header extends Component {
                             <li className="nav-item d-none d-sm-inline-block">
                                 <a href="/allfilms" className="nav-link">Home</a>
                             </li>
-                            <li className="nav-item d-none d-sm-inline-block">
+                            {/* <li className="nav-item d-none d-sm-inline-block">
                                 <a href="/" className="nav-link">Login</a>
-                            </li>
+                            </li> */}
                             {/* <li className="nav-item d-none d-sm-inline-block">
                                 <a href="/contact" className="nav-link">Contact</a>
                             </li> */}
