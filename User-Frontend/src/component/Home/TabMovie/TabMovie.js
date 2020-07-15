@@ -61,17 +61,35 @@ class TabMovie extends React.Component {
               this.state.films.forEach((element) => {
                 let timeNow = moment().format('HH:MM:SS')
                 let time = moment().format(data.ThoiGianChieu.slice(11,19), "HH:MM:SS")
-                if(data.TenFilm === element.TenFilm && time > timeNow) {
-                  let count = 0
-                  for (let i = 0; i < FilmClicked.length; i++) {
-                    if(FilmClicked[i].TenFilm === element.TenFilm) {
-                      break;
-                    } else {
-                      count++
+                
+                if(data.TenFilm === element.TenFilm) {
+                  let datenow = moment().format('YYYY-MM-DD')
+                  if (datenow === ngaychieu) {
+                    if (time > timeNow) {
+                      let count = 0
+                      for (let i = 0; i < FilmClicked.length; i++) {
+                        if(FilmClicked[i].TenFilm === element.TenFilm) {
+                          break;
+                        } else {
+                          count++
+                        }
+                      }
+                      if(count === FilmClicked.length) {
+                        FilmClicked.push(element)
+                      }
                     }
-                  }
-                  if(count === FilmClicked.length) {
-                    FilmClicked.push(element)
+                  } else {
+                    let count = 0
+                    for (let i = 0; i < FilmClicked.length; i++) {
+                      if(FilmClicked[i].TenFilm === element.TenFilm) {
+                        break;
+                      } else {
+                        count++
+                      }
+                    }
+                    if(count === FilmClicked.length) {
+                      FilmClicked.push(element)
+                    }
                   }
                 }
               })
