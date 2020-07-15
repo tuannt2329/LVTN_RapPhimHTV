@@ -20,7 +20,8 @@ class TabMovie extends React.Component {
       arrday: [0, 1, 2, 3, 4, 5, 6],
       arrDate: [],
       days: [],
-      FilmClicked: []
+      FilmClicked: [],
+      NgayChieu: ''
     }
   }
 
@@ -45,6 +46,7 @@ class TabMovie extends React.Component {
   }
 
   HandleClickNgay = (ngaychieu) => {
+    this.setState({NgayChieu: ngaychieu})
     let FilmClicked = this.state.FilmClicked
     FilmClicked = []
     let deleted = {
@@ -78,13 +80,6 @@ class TabMovie extends React.Component {
         }
         this.setState({FilmClicked: FilmClicked})
       })
-   
-
-    // stt = []
-    // strghe = ""
-    // tongtien = 0
-    // this.setState({ GioChieu: '', Ghe: [], choosing: [], TongTienVe: 0 })
-    // this.setState({ NgayChieu: ngaychieu });
   }
 
   render() {
@@ -218,10 +213,11 @@ class TabMovie extends React.Component {
                               <ul className="tab--showtimes-controls slides">
                                 {
                                   this.state.arrDate.map((element, index) =>
+                                  (this.state.NgayChieu === element) ?
                                     <li className="padding-time"
                                       style={{ width: '100px', marginRight: '0px', float: 'left', display: 'block' }}>
                                       <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, element)}
-                                        className="tab--control js__tab_time_control not_active added-transaction-id js__active">
+                                        className="tab--control js__tab_time_control added-transaction-id js__active">
                                         {
                                           (this.state.days[index]) ?
                                             (this.state.days[index] !== 1) ? 
@@ -231,7 +227,23 @@ class TabMovie extends React.Component {
                                           : 
                                             null
                                         }
-                                        <br/>
+                                        <span className="day" value={element}>{element}</span>
+                                      </a>
+                                    </li>
+                                    :
+                                    <li className="padding-time"
+                                      style={{ width: '100px', marginRight: '0px', float: 'left', display: 'block' }}>
+                                      <a id="showtime-tab-1" onClick={this.HandleClickNgay.bind(this, element)}
+                                        className="tab--control js__tab_time_control not_active added-transaction-id">
+                                        {
+                                          (this.state.days[index]) ?
+                                            (this.state.days[index] !== 1) ? 
+                                            <span className="week">Thứ {this.state.days[index]}</span>
+                                            :
+                                            <span className="week">Chủ nhật</span>
+                                          : 
+                                            null
+                                        }
                                         <span className="day" value={element}>{element}</span>
                                       </a>
                                     </li>
@@ -243,7 +255,7 @@ class TabMovie extends React.Component {
                         </div>
                         </div>
                       </div>
-                          
+                      <br/>
                         { (this.state.FilmClicked.length != 0) ?
                         this.state.FilmClicked.map((item, index) =>
                           <div className="col-md-4 col-sm-4 col-xs-6 movie-item">
@@ -280,7 +292,7 @@ class TabMovie extends React.Component {
                           </div>
                         )
                         : 
-                          <div>Hiện tại không có phim đang chiếu</div>
+                          <div><center>Hiện tại không có phim đang chiếu</center></div>
                         }
                       </div>
                       {/* <div className="row">
