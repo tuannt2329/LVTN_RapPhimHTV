@@ -16,7 +16,6 @@ function TicketUsed({films, image}) {
   const [seatCouple, setSeatCouple] = useState([]);
   // const [image, setImage] = useState([]);
   useEffect(() => {
-
     let vip = [],
       couple = [];
   }, []);
@@ -101,6 +100,9 @@ function TicketUsed({films, image}) {
                 {' '}
                 {item.ThoiGianXacNhan.split('T')[1].slice(0, 5)}{' '}
               </Text>
+            </Text>
+            <Text style={styles.cardSize}>
+              Id <Text style={{color: 'red'}}> {item._id}</Text>
             </Text>
             <Text
               style={{

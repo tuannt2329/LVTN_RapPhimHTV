@@ -626,7 +626,7 @@ function Seat({route, navigation}) {
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'gray',
+                backgroundColor: 'white',
                 borderColor: 'red',
                 borderBottomWidth: 1,
                 marginBottom: 0,
@@ -642,7 +642,14 @@ function Seat({route, navigation}) {
                   justifyContent: 'center',
                 }}>
                 <TouchableOpacity style={styles.card}>
-                  <Text style={(styles.cardSize, {color: 'red'})}>
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontSize: 18,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 'bold',
+                    }}>
                     {selectedIndex === 0
                       ? 'Mua vé thành công'
                       : 'Đặt vé thành công'}
@@ -899,7 +906,7 @@ function Seat({route, navigation}) {
           borderColor: 'blue',
           borderWidth: 1,
           borderRadius: 10,
-          padding: 2
+          padding: 2,
         }}>
         {show === true ? (
           <>
@@ -1038,12 +1045,12 @@ function Seat({route, navigation}) {
               {amount !== 0
                 ? amount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
                 : null}
-              {' VNĐ /'}
+              {' VNĐ '}
             </Text>
             {cost !== []
               ? cost.map(a =>
                   a.LoaiVe === 'VIP' ? (
-                    <Text style={{fontSize: 11}}> Ghế thường {a.GiaVe} </Text>
+                    <Text style={{fontSize: 11}}>/ Ghế thường {a.GiaVe} </Text>
                   ) : (
                     <Text style={{fontSize: 11}}> Ghế đôi {a.GiaVe} </Text>
                   ),

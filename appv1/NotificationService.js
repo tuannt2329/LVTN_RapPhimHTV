@@ -172,7 +172,6 @@ export default class NotificationService {
               parseTime(thoigianxacthuc.split('T')[1].slice(0, 5));
             if (minutes > 60) {
               let plus = minutes - 60;
-              console.log(plus);
               await PushNotification.localNotificationSchedule({
                 date: new Date(Date.now() + 60 * 1000 * plus), //30 seconds
                 title: 'HTV cinemas',

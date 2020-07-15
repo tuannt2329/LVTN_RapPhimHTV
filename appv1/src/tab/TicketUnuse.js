@@ -77,6 +77,9 @@ function TicketUnuse({films, image}) {
                 {item.ThoiGianDat.split('T')[0].slice(0, 10)}{' '}
               </Text>
             </Text>
+            <Text style={styles.cardSize}>
+              Id <Text style={{color: 'red'}}> {item._id}</Text>
+            </Text>
             <Text
               style={{
                 fontSize: 17,
@@ -99,9 +102,11 @@ function TicketUnuse({films, image}) {
               </Text>
             </Text>
             <Text style={styles.cardSize}>
-              <Text style={{color: 'red'}}>
-                {item.payed === true ? 'Đã thanh toán' : 'Chưa thanh toán'}
-              </Text>
+              {item.payed === true ? (
+                <Text style={{color: 'blue'}}>Đã thanh toán </Text>
+              ) : (
+                <Text style={{color: 'red'}}>Chưa thanh toán</Text>
+              )}
             </Text>
           </View>
         </TouchableOpacity>
@@ -120,7 +125,7 @@ function TicketUnuse({films, image}) {
           marginTop: 10,
         }}>
         <Text style={{color: 'red'}}>
-          Vé đặt tại quầy thanh toán trước 15 phút để giữ ghế
+          Vé chưa thanh toán, thanh toán trước 15 phút để giữ ghế
         </Text>
         <FlatList
           data={films}
@@ -170,7 +175,8 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: 'contain',
     borderWidth: 1,
-    borderColor: 'red',
+    // overflow: "hidden",
+    borderColor: 'white',
   },
   buttonFilter: {
     backgroundColor: 'blue',

@@ -225,7 +225,6 @@ function ListFilmSearchDate({navigation}) {
   }
 
   function renderScrollVertical({item}) {
-    console.log('detail', item.detail);
     return (
       <View
         style={{

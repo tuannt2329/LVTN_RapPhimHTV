@@ -126,8 +126,8 @@ function Ticket({navigation, route}) {
                     .filter(val => val.status === false)
                     .sort(
                       (a, b) =>
-                        Date.parse(b.ThoiGianChieu.split('T')[0]) -
-                        Date.parse(a.ThoiGianChieu.split('T')[0]),
+                        Date.parse(b.ThoiGianDat) -
+                        Date.parse(a.ThoiGianDat),
                     )}
                   image={image}
                 />
@@ -143,8 +143,8 @@ function Ticket({navigation, route}) {
                     .filter(val => val.status === true)
                     .sort(
                       (a, b) =>
-                        Date.parse(b.ThoiGianChieu.split('T')[0]) -
-                        Date.parse(a.ThoiGianChieu.split('T')[0]),
+                        Date.parse(b.ThoiGianDat) -
+                        Date.parse(a.ThoiGianDat),
                     )}
                   image={image}
                 />
