@@ -574,7 +574,7 @@ function DetailFilm({route, navigation}) {
                               style={{
                                 backgroundColor: 'white',
                                 borderRadius: 30,
-                                opacity: 0.5,
+                                opacity: 0.8,
                                 // margin: '2%',
                               }}
                               horizontal={true}

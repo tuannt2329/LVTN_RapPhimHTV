@@ -61,6 +61,7 @@ const Tab = createMaterialBottomTabNavigator();
 import LinearGradient from 'react-native-linear-gradient';
 import styless, {colors} from '../constants/index.style';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Animatedd from 'react-native-reanimated';
 import Block from '../components/block';
 import Text from '../components/text';
@@ -399,20 +400,15 @@ const DrawerContent = props => {
                 }}
                 style={styles.drawerItem}
                 onPress={() => props.navigation.navigate('ListFilmSearchDate')}
-                icon={() => <FontAwesome5 name={'search'} size={30} />}
+                icon={() =>
+                  <AntDesign name={'calendar'} color="black" size={30} />
+              }
               />
             </View>
           )}
         </Block>
         {user === null ? (
-          <Block>
-            <DrawerItem
-              label=""
-              // labelStyle={styles.drawerLabel}
-              style={{width: '0%'}}
-              onPress={() => {}}
-              // icon={() => <FontAwesome5 name={'sign-in-alt'} size={30} />}
-            />
+          <Block middle >
             <DrawerItem
               label="Đăng Nhập"
               labelStyle={styles.drawerLabel}
@@ -438,6 +434,16 @@ const DrawerContent = props => {
                 <FontAwesome5 name={'search'} color="black" size={30} />
               )}
             />
+            <DrawerItem
+              label="Phim theo ngày"
+              labelStyle={styles.drawerLabel}
+              style={{alignItems: 'flex-start', marginVertical: 0}}
+              onPress={() =>  props.navigation.navigate('ListFilmSearchDate')}
+              icon={() => (
+                <AntDesign name={'calendar'} color="black" size={30} />
+              )}
+            />
+          
 
             {/*<DrawerItem*/}
             {/*  label="Contact us"*/}
@@ -546,7 +552,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     marginLeft: -16,
-    fontSize: 23,
+    fontSize: 17,
   },
   avatar: {
     // borderRadius: 20,

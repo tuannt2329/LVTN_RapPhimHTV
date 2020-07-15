@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     backgroundColor: '#fff',
-
+    borderRadius: 20,
+    overflow: 'hidden',
     marginBottom: 10,
     // marginLeft: '5%',
     // marginRight: '1%',

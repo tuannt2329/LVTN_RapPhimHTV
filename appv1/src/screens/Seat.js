@@ -464,6 +464,20 @@ function Seat({route, navigation}) {
     if (item.empty === true) {
       return <View style={[styles.item, styles.itemInvisible]} />;
     }
+    if (item.key === 'R04') {
+      return (
+        <View
+          style={[
+            styles.item,
+            {
+              borderColor: 'white',
+              borderWidth: 2,
+              backgroundColor: 'white',
+            },
+          ]}
+        />
+      );
+    }
     return (
       <View
         style={[
@@ -596,7 +610,7 @@ function Seat({route, navigation}) {
           setShowModalTicket(true);
         }}>
         <View style={{flex: 1}}>
-          <View style={{flex: 1}} />
+          <View style={{flex: 0.5}} />
           <View
             style={{
               flex: 2,
@@ -629,7 +643,9 @@ function Seat({route, navigation}) {
                 }}>
                 <TouchableOpacity style={styles.card}>
                   <Text style={(styles.cardSize, {color: 'red'})}>
-                    Mua vé thành công
+                    {selectedIndex === 0
+                      ? 'Mua vé thành công'
+                      : 'Đặt vé thành công'}
                   </Text>
                   <Text style={(styles.cardSize, {color: 'red'})}>
                     Thông Tin Vé
@@ -707,11 +723,10 @@ function Seat({route, navigation}) {
                       </Text>
                     </Text>
                     <Text style={styles.cardSize}>
-                      <Text style={{color: 'red'}}>
-                        {' '}
+                      <Text style={{color: 'red', textAlign: 'center'}}>
                         {selectedIndex === 0
                           ? 'Đã thanh toán'
-                          : 'Chưa thanh toán, thanh toán trước 15 phút để giữ ghế'}{'  '}
+                          : 'Chưa thanh toán, thanh toán trước 15 phút để giữ ghế'}
                       </Text>
                     </Text>
                   </View>
@@ -883,6 +898,8 @@ function Seat({route, navigation}) {
           marginRight: 6,
           borderColor: 'blue',
           borderWidth: 1,
+          borderRadius: 10,
+          padding: 2
         }}>
         {show === true ? (
           <>
@@ -917,6 +934,7 @@ function Seat({route, navigation}) {
             width: '33.3%',
             alignItems: 'center',
             justifyContent: 'center',
+            marginTop: '2%',
           }}>
           <View
             style={[
@@ -949,7 +967,7 @@ function Seat({route, navigation}) {
             ]}>
             <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
           </View>
-          <Text style={{fontSize: 10}}>Ghế đã đặt</Text>
+          <Text style={{fontSize: 10}}> Ghế đã đặt</Text>
         </View>
         <View
           style={{
@@ -969,7 +987,7 @@ function Seat({route, navigation}) {
             ]}>
             <MaterialCommunityIcons name={'seat'} color={'white'} size={15} />
           </View>
-          <Text style={{fontSize: 10}}>Ghế đang chọn</Text>
+          <Text style={{fontSize: 10}}> Ghế đang chọn</Text>
         </View>
         <View
           style={{flexDirection: 'row', width: '30%', alignItems: 'center'}}>
@@ -1132,7 +1150,8 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     backgroundColor: '#fff',
-
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     marginBottom: 10,
     // marginLeft: '5%',
     // marginRight: '1%',
@@ -1145,7 +1164,6 @@ const styles = StyleSheet.create({
       height: 7,
     },
     shadowOpacity: 0.41,
-    shadowRadius: 9.11,
     elevation: 14,
   },
   cardImage: {

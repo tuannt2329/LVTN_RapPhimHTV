@@ -30,9 +30,6 @@ function TicketUnuse({films, image}) {
     });
     return (
       <View style={{flex: 1, width: '100%'}}>
-        <Text style={{color: 'red'}}>
-          Vé đặt tại quầy thanh toán trước 15 phút để giữ ghế
-        </Text>
         <TouchableOpacity style={styles.card}>
           <Image
             style={styles.cardImage}
@@ -122,6 +119,9 @@ function TicketUnuse({films, image}) {
           marginLeft: '10%',
           marginTop: 10,
         }}>
+        <Text style={{color: 'red'}}>
+          Vé đặt tại quầy thanh toán trước 15 phút để giữ ghế
+        </Text>
         <FlatList
           data={films}
           keyExtractor={(item, index) => 'key' + index}
@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     backgroundColor: '#fff',
-
+    borderRadius: 20,
+    overflow: 'hidden',
     marginBottom: 10,
     // marginLeft: '5%',
     // marginRight: '1%',
