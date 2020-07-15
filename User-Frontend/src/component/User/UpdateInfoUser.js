@@ -88,6 +88,7 @@ class UpdateInfoUser extends React.Component {
     axios.put('http://htvcinemas.live:8000/user/updateInfo', User)
       .then((res) => {
         if (!res.data.error) {
+          localStorage.setItem("user", JSON.stringify(this.state.User))
           window.alert("update info user success!")
           return window.location.reload()
         } else {
