@@ -52,7 +52,7 @@ class TabMovie extends React.Component {
     let deleted = {
       deleted: false
     }
-    axios.post('http://localhost:8000/schedule/find', deleted)
+    axios.post('http://htvcinemas.live:8000/schedule/find', deleted)
       .then((res) => {
         if (!res.data.error) {
           res.data.schedule.forEach((data) => {
@@ -262,7 +262,7 @@ class TabMovie extends React.Component {
                             <div className="article-movie-home">
                               <img style={{ height: 264 }}
                                 key={index}
-                                src={"http://localhost:8000/images/" + item.AnhBia}
+                                src={"http://htvcinemas.live:8000/images/" + item.AnhBia}
                                 className="lazy loaded" />
                               <Link to="/detailfilm" onClick={this.handleOnclickFilm.bind(this, item.TenFilm)}>
                                 <div className="decription-hover overlay">
